@@ -32,11 +32,10 @@ include_once "head1.php";
         font-family: Arial, sans-serif;
     }
 
-    .topbar,
-    .footer {
+    .topbar {
         position: sticky;
         width: 100%;
-        height: 50px;
+        height: 80px;
         background-color: #333;
         color: white;
         text-align: center;
@@ -56,26 +55,30 @@ include_once "head1.php";
     .topbar .menu-icon,
     .topbar .logout-icon {
         position: absolute;
-        top: 20px;
+        top: 30px;
+        font-size: 20px;
         cursor: pointer;
+    }
+    .topbar{
+        position: absolute;
+        font-size: 30px;
+ 
     }
 
     .topbar .menu-icon {
-        left: 10px;
+        left: 20px;
     }
 
     .topbar .logout-icon {
-        right: 10px;
+        right: 20px;
     }
 
     .sidebar {
         position: fixed;
-        top: 50px;
-        /* height of the topbar */
+        top: 80px;
         left: 0;
         width: auto;
-        height: calc(100% - 100px);
-        /* height of topbar + footer */
+        height: calc(100% - 0px);
         background-color: #444;
         color: white;
         overflow-y: auto;
@@ -111,10 +114,8 @@ include_once "head1.php";
     }
 
     .content {
-        margin-top: 50px;
-        /* height of the topbar */
-        margin-bottom: 50px;
-        /* height of the footer */
+        margin-top: 80px;
+        margin-bottom: 0;
         padding: 20px;
     }
 
@@ -136,16 +137,16 @@ include_once "head1.php";
 <body>
     <div class="topbar">
         <i class="fas fa-bars menu-icon" id="menu-icon"></i>
-        EOvijat
+        <p>EOvijat</p>
         <i class="fas fa-sign-out-alt logout-icon" onclick="window.location.href='logout.php'"></i>
     </div>
     <div class="sidebar" id="sidebar">
         <ul>
             <!-- Generate 50 demo menu items -->
-            <li><a href="index.php"><i class="fas fa-folder"></i> Dashboard</li>
-            <li><a href="person.php"><i class="fas fa-folder"></i> Person</li>
-            <li><a href="user.php"><i class="fas fa-folder"></i> User</li>
-            <li><a href="profile.php"><i class="fas fa-folder"></i> Profile</li>
+            <li><a href="index.php"><i class="fa fa-house"></i> Dashboard</li>
+            <li><a href="person.php"><i class="fas fa-address-card"></i> Person</li>
+            <li><a href="user.php"><i class="fas fa-users"></i> User</li>
+            <li><a href="profile.php"><i class="fas fa-profile"></i> Profile</li>
         </ul></a></li>
     </div>
  
