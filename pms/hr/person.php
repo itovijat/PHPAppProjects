@@ -2,7 +2,9 @@
 
 include_once "head2.php";
 
+?>
 
+<?php  
 
 $insert = false;
 $update = false;
@@ -11,20 +13,21 @@ $delete = false;
 $already_card = false;
 
 
-        if(isset($_GET['editbtn'])){
+        if(isset($_POST['editbtn'])){
 
-            $id= $_GET['idtoEdit'];
-            $name= $_GET['nameEdit'];
-            $id_no= $_GET['id_noEdit'];
-            $bloodgroup= $_GET['bloodgroupEdit'];
+            $id= $_POST['idtoEdit'];
+            $name= $_POST['nameEdit'];
+            $id_no= $_POST['id_noEdit'];
+            $bloodgroup= $_POST['bloodgroupEdit'];
            
-            $email= $_GET['emailEdit'];
-            $issuedate= $_GET['issuedateEdit'];
-            $phone= $_GET['phoneEdit'];
-            $post= $_GET['postEdit'];
-            $dept= $_GET['deptEdit'];
+            $email= $_POST['emailEdit'];
+            $issuedate= $_POST['issuedateEdit'];
+            $phone= $_POST['phoneEdit'];
+            $post= $_POST['postEdit'];
+            $dept= $_POST['deptEdit'];
+            $status= $_POST['statusEdit'];
 
-            $sql = "UPDATE `person` SET `name` = '$name', `pid` = '$id_no', `bloodgroup` = '$bloodgroup', `email` = '$email', `issuedate` = '$issuedate', 
+            $sql = "UPDATE `person` SET `name` = '$name', `pid` = '$id_no', `bloodgroup` = '$bloodgroup',`status` = '$status', `email` = '$email', `issuedate` = '$issuedate', 
             `phone` = '$phone', `post` = '$post', `dept` = '$dept' WHERE `id` = '$id' ";
             $result = mysqli_query($conn, $sql);
 
@@ -38,11 +41,19 @@ $already_card = false;
 
                     
 
-if(isset($_GET['delete'])){
-  $sno = $_GET['delete'];
-  $delete = true;
-  $sql = "DELETE FROM `person` WHERE `pid` = $sno";
+if(isset($_GET['deleteid'])){
+  $sno = $_GET['deleteid'];
+  $oldphoto=$_GET['oldphoto'];
+  $sql = "DELETE FROM `person` WHERE `id` = $sno";
   $result = mysqli_query($conn, $sql);
+if($result){
+  $delete = true;
+  //delete the image from folder
+  unlink("../assets/person/".$oldphoto);
+
+}
+
+
 }
 
 if (isset($_POST['savebtn'])) {
@@ -224,6 +235,7 @@ if (isset($_POST['savebtn'])) {
                     $photo = $row['photo'];
                     $post = $row['post'];
                     $dept = $row['dept'];
+                    $status=$row['status'];
                 }
             } else {
                 echo "<script>alert('No record found.');</script>";
@@ -250,7 +262,7 @@ if (isset($_POST['savebtn'])) {
 
        
 
-                    <form action="<?php   echo basename($_SERVER['PHP_SELF']);?>"id="newedit" method="GET" encrypt="multipart/form-data">
+                    <form action="<?php   echo basename($_SERVER['PHP_SELF']);?>"id="newedit" method="POST" encrypt="multipart/form-data">
                         <div class="modal-body">
                             <input type="hidden" name="idtoEdit" id="snoEdit" value="<?php if(isset($_GET['editid'])){echo $id; }?>">
 
@@ -299,6 +311,22 @@ if (isset($_POST['savebtn'])) {
 
                             <div class="row">
                             <div class="form-group col-3">
+                                <label for="desc">Status</label>
+                                <Select class="form-control" id="bloodgroupEdit" name="statusEdit" rows="3"  required>
+                                    <option value="0" <?php
+        if(isset($_GET['editid']) AND $status==0){
+        echo "selected"; }?>>Active<option>
+                                    <option value="1" <?php
+        if(isset($_GET['editid']) AND $status==1){
+        echo "selected"; }?>>Block<option>
+
+
+
+
+                                </Select>
+                            </div>
+
+                            <div class="form-group col-2">
                                 <label for="desc">Blood</label>
                                 <input class="form-control" id="bloodgroupEdit" name="bloodgroupEdit" rows="3" value="<?php
         if(isset($_GET['editid'])){
@@ -312,7 +340,7 @@ if (isset($_POST['savebtn'])) {
         if(isset($_GET['editid'])){
         echo $pid; }?>" required></input>
                             </div>
-                            <div class="form-group  col-6">
+                            <div class="form-group  col-4">
                                 <label for="desc">Issue</label>
                                 <input class="form-control" id="issuedateEdit" name="issuedateEdit" rows="3" value="<?php
         if(isset($_GET['editid'])){
@@ -325,7 +353,8 @@ if (isset($_POST['savebtn'])) {
                         </div>
                         <div style="width:90%; margin:0 auto;" class="modal-footer d-block text-center">
                        
-                         
+                        <button class="btn btn-primary"><a style="text-decoration:none;color:white" href="<?php if(isset($_GET['editid'])){
+                            echo basename($_SERVER['PHP_SELF']).'?deleteid='.$id.'&oldphoto='.$photo;} ?>">Delete</a></button>
                         
                             <button name="editbtn" type="submit" class="btn btn-primary">Save changes</button>
                         </div>
@@ -482,19 +511,19 @@ if(isset($_POST['updatePhotobtn'])){
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label >Name</label>
-                            <input maxlength="30" type="text" name="name" class="form-control" id="inputCity">
+                            <input maxlength="30" type="text" name="name" class="form-control" id="inputCity" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label >Post/Position</label>
-                            <input maxlength="10" class="form-control" id="phone" name="post"></input>
+                            <input maxlength="30" class="form-control" id="phone" name="post" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label >Department</label>
-                            <input maxlength="10" class="form-control" id="phone" name="dept"></input>
+                            <input maxlength="30" class="form-control" id="phone" name="dept" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label >Blood</label>
-                            <select name="bloodgroup" class="form-control">
+                            <select name="bloodgroup" class="form-control" required>
                                 <option value="">Select</option>
                                 <option value="A+">A+</option>
                                 <option value="A-">A-</option>
@@ -510,27 +539,27 @@ if(isset($_POST['updatePhotobtn'])){
                   
                         <div class="form-group">
                             
-                            <input  maxlength="10" type="text" name="company" value="ovijat" hidden class="form-control">
+                            <input  maxlength="10" type="text" name="company" value="ovijat" hidden class="form-control" >
                         </div>
                         <div class="form-group col-md-2">
                             <label >Phone</label>
-                            <input maxlength="11" class="form-control" id="phone" name="phone"></input>
+                            <input maxlength="11" class="form-control" id="phone" name="phone" required>
                         </div>
                         <div class="form-group col-md-4">
-                            <label >Email Id</label>
-                            <input maxlength="30" type="text" name="email" class="form-control">
+                            <label >Email ID</label>
+                            <input maxlength="30" type="text" name="email" class="form-control" required>
                         </div>
                     
                         <div class="form-group col-md-2">
                             <label >Issue Date</label>
-                            <input type="number" name="issuedate" class="form-control" maxlength="5" max="99999">
+                            <input type="date" name="issuedate" class="form-control"  required>
                         </div>
                  
 
                    
                         <div class="form-group col-md-2">
                             <label >ID Number</label>
-                            <input class="form-control" id="id_no" name="id_no"></input>
+                            <input  type="number" class="form-control" id="id_no" name="id_no" required>
                         </div>
                         
                        
@@ -538,7 +567,7 @@ if(isset($_POST['updatePhotobtn'])){
     <img id="imagePreview" style="display:none; width:100px; height:auto; margin-right:10px;" />
     <div>
         <label>Photo</label>
-        <input class="form-control" type="file" name="image" id="imageInput" />
+        <input class="form-control" type="file" name="image" id="imageInput" required/>
     </div>
 </div>
 
@@ -567,10 +596,10 @@ if(isset($_POST['updatePhotobtn'])){
             <table class="table" id="myTable">
                 <thead>
                     <tr>
-                        <th scope="col">DID</th>
+                        <th scope="col">SN</th>
                         <th scope="col">Name</th>
                         <th scope="col">ID</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -578,15 +607,28 @@ if(isset($_POST['updatePhotobtn'])){
           $sql = "SELECT * FROM `person` order by 1 DESC";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
+          $color='';
           while($row = mysqli_fetch_assoc($result)){
             $sno = $sno + 1;
-            echo "<tr>
+
+            if($row['status']==1){
+                $color='red';
+            }
+            else{
+                $color='black';
+            }
+            echo "<tr style='color:".$color.";'>
             <th scope='row'>". $sno . "</th>
             <td>". $row['name'] . "</td>
             <td>". $row['pid'] . "</td>
             <td>
-           <a href='".basename($_SERVER['PHP_SELF'])."?editid=".$row['id']."' class=' btn btn-sm btn-primary' id=d".$row['id'].">Edit</a>  
-            <a href='".basename($_SERVER['PHP_SELF'])."?deleteid=".$row['id']."' class=' btn btn-sm btn-primary' id=d".$row['id'].">Delete</a>  </td>
+                       <a href='id.php?pid=".$row['pid']."' class=' btn btn-sm btn-primary'><i class='fas fa-print'></i></a>
+           <a href='".basename($_SERVER['PHP_SELF'])."?editid=".$row['id']."' class=' btn btn-sm btn-primary' id=d".$row['id']."><i class='fas fa-edit'></i></a>  
+           
+            
+   
+             
+             </td>
           </tr>";
         } 
 
@@ -618,6 +660,7 @@ if(isset($_POST['updatePhotobtn'])){
         const table = $('#myTable').DataTable({
             autoWidth: true,
             paging: false,
+            responsive:true,
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'csv', 'excel', 'print'

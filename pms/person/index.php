@@ -15,12 +15,12 @@ if( !isset($_REQUEST['id'])){
 
 
 
-<style>
+    <style>
 
 
 
 
-.popup {
+        .popup {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -54,7 +54,6 @@ if( !isset($_REQUEST['id'])){
         }
     </style>
 
-</style>
 
 
 
@@ -81,7 +80,7 @@ if( !isset($_REQUEST['id'])){
 
             //sql query for select data from person table
 
-             $sql = "Select * from person where pid='$id' ";
+             $sql = "Select * from person where pid='$id'";
              $result = mysqli_query($conn, $sql);
              $row = mysqli_fetch_assoc($result);
              if($row){
@@ -95,6 +94,7 @@ if( !isset($_REQUEST['id'])){
                 $photo = $row['photo'];
                 $post = $row['post'];
                 $dept = $row['dept'];
+                $status=$row['status'];
 
 
                    
@@ -121,88 +121,71 @@ if( !isset($_REQUEST['id'])){
               
 
                             ?>
-  <style>
-        .mycard {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .id-card {
-            width: 300px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        .id-card img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
-        .id-card h2 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .id-card p {
-            margin: 5px 0;
-            font-size: 15px;
-        }
-        .id-card .details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        .id-card .details div {
-            width: 45%;
-        }
-        .id-card .details p {
-            margin: 5px 0;
-        }
-        .id-card .post, .id-card .dept {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
 
-<div id="mycard" style="width:100% ">
-    <div style="width:100%; display:flex; justify-content:center; margin-bottom:20px;">
+
+<div style="display: flex; flex-direction: column; align-items: center; margin:20px; position:relative; z-index:10;">
         <a href="../" style="background-color:#4CAF50; color:white; border-radius:5px; padding:10px 20px; text-decoration:none;
          font-size:16px;">Back to Home Page</a>
+         <h1>EOvijat Online ID Card</h1>
     </div>
   
   
-    <div class="id-card">
-        <img src="../assets/person/<?php echo $photo; ?>" alt="Profile Picture">
-        <h2><?php echo $name; ?></h2>
-        <p>ID: <?php echo $id; ?></p>
-        <p class="post"><?php echo $post; ?>(<?php echo $dept; ?>)</p>
-      
-        <p><?php echo $email; ?></p>
-        <p><?php echo $phone; ?></p>
-        <div class="details">
-            <div>
-                <p>Blood Group: <?php echo $bloodgroup; ?></p>
-            </div>
-            <div>
-                <p>Issue Date: <?php echo $issuedate; ?></p>
-            </div>
+        <!--make a centered box-->
+        <style>
+            .centered {
+                margin: auto;
+                width: 50%;
+                border: 1px solid #ddd;
+                padding: 20px;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+            }
+        </style>
+
+
+
+
+        
+
+   
+
+      <?php if($status==1){?>
+        
+        <style>
+            .clickable{
+                cursor: pointer;
+            }
+        </style>
+        <div class="clickable" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background-color:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; color:white; font-size:30px;">
+            <p  onclick="window.location.href='../'">Expired ID</p>
+        </div> 
+        
+        <?php } ?>
+
+        <div class="centered">
+     
+            
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <img id="logo" src="../assets/img/logo.png" style="width: 200px; height: auto; margin:20px;">
+            <img id="pp" src="../assets/person/<?php echo $photo; ?>" style="width: 200px; height: auto; border-radius: 50%;">
+            <h2 style="text-align: center;"><?php echo $name; ?></h2>
+            <p style="text-align: center;">ID: <?php echo $id; ?></p>
+            <p style="text-align: center;" class="post"><?php echo $post; ?>(<?php echo $dept; ?>)</p>
+          
+            <p style="text-align: center;"><?php echo $email; ?></p>
+            <p style="text-align: center;"><?php echo $phone; ?></p>
+           
+            <p style="text-align: center;">Blood Group: <?php echo $bloodgroup; ?></p>
+           
+            <p style="text-align: center;">Issue Date: <?php echo $issuedate; ?></p>
         </div>
+        </div>
+
       
-    </div>
+         
+      
+      
 
 
-</div>
+
 
   

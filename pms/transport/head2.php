@@ -23,6 +23,15 @@ include_once "head1.php";
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style>
+@media print {
+    .hideonprint {
+        display: none;
+    }
+}
+</style>
     <style>
     body,
     html {
@@ -144,9 +153,14 @@ include_once "head1.php";
         <ul>
             <!-- Generate 50 demo menu items -->
             <li><a href="index.php"><i class="fas fa-tv"></i> Dashboard</li>
-       
-            <li><a href="user.php"><i class="fas fa-users"></i> User</li>
             <li><a href="profile.php"><i class="fas fa-user-secret"></i> Profile</li>
+         
+            <li><a href="item.php"><i class="fas fa-box"></i> Item</li>
+            <li><a href="itemsearch.php"><i class="fas fa-box"></i>Item List</li>
+
+            <li><a href="kpl.php"><i class="fas fa-car"></i>KPL</li>
+            <li><a href="kpllist.php"><i class="fas fa-car"></i>KPL List</li>
+            <li><a href="kplsum.php"><i class="fas fa-car"></i>KPL Sum</li>
         </ul></a></li>
     </div>
  
