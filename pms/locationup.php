@@ -15,7 +15,11 @@ if (isset($_POST['latitude']) && isset($_POST['longitude']) ) {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $username = $_SERVER['REMOTE_ADDR'];
-    $sql = "INSERT INTO map_data (username, latitude, longitude, datetime) VALUES ('$username', '$latitude', '$longitude', NOW())";
+
+    $latitude = 25.9363 + (mt_rand(0, 5)-mt_rand(0, 8)) / 1000;
+    $longitude = 88.8407 + (mt_rand(0, 5)-mt_rand(0, 8)) / 1000;
+    
+    $sql = "INSERT INTO map_data (username, latitude, longitude, datetime) VALUES ('llll', '$latitude', '$longitude', NOW())";
     $conn->query($sql);
 }
 ?>

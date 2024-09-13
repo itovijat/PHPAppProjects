@@ -1,14 +1,7 @@
 <?php
 include 'dbconnect.php';
 
-// Insert demo location
-if (isset($_POST['insert_demo'])) {
-    $lat = 25.7439 + (mt_rand(0, 100) - 50) / 1000;
-    $lon = 89.2752 + (mt_rand(0, 100) - 50) / 1000;
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $sql = "INSERT INTO map_data (username, latitude, longitude, datetime) VALUES ('$ip', '$lat', '$lon', NOW())";
-    $conn->query($sql);
-}
+
 
 // Fetch data
 $sql = "SELECT * FROM map_data";
@@ -19,18 +12,14 @@ $sql_last = "SELECT username, latitude, longitude, MAX(datetime) as datetime FRO
 $result_last = $conn->query($sql_last);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map and Data Integration</title>
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map1, #map2 {
             height: 400px;
             width: 45%;
             display: inline-block;
+            margin:20px;
         }
         #data-table {
             margin-top: 20px;
@@ -40,27 +29,30 @@ $result_last = $conn->query($sql_last);
             justify-content: space-between;
         }
     </style>
-</head>
-<body><div style="height: 500px; width: 100%;" id="map3"></div>
-    <div class="container">
-        <div id="map1"></div>
-        <div id="map2"></div>   
+
+
+<div id="mapdivall" style="display: flex; flex-direction: column; align-items: center;">
+    <div class="container" style="width: 100%;">
+        <div id="map1" style="height: 400px; width: 100%;"></div>
+        <div id="map2" style="height: 400px; width: 100%;"></div>   
     </div>
- 
-    <form method="post">
-        <button type="submit" name="insert_demo">Insert Demo Location</button>
-    </form>
-   
-  
-    <form action="" method="post" id="search-form">
-        <label for="search_username">Username: </label>
-        <input type="text" id="search_username" name="search_username" value="<?php echo isset($_POST['search_username']) ? $_POST['search_username'] : ''; ?>" oninput="searchFormValidate()">
-        <label for="search_start">Start Date: </label>
-        <input type="datetime-local" id="search_start" name="search_start" value="<?php echo isset($_POST['search_start']) ? $_POST['search_start'] : ''; ?>" oninput="searchFormValidate()">
-        <label for="search_end">End Date: </label>
-        <input type="datetime-local" id="search_end" name="search_end" value="<?php echo isset($_POST['search_end']) ? $_POST['search_end'] : ''; ?>" oninput="searchFormValidate()">
-        <button type="submit" id="search-btn" style="display: none;">Search</button>
-    </form>
+    
+    
+    <div style="display: flex; justify-content: center; align-items: center; background-color: #f5f5f5; padding: 10px; border-radius: 10px;">
+        <button type="button" onclick="window.location.href='locationview.php'" style="margin: 20px; background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Show All</button>
+        <form action="" method="post" id="search-form" style="display: flex; flex-direction: row; align-items: center; margin-left: 20px;">
+            <label for="search_username" style="margin-right: 10px; font-weight: bold;">Username: </label>
+            <input type="text" id="search_username" name="search_username" value="<?php echo isset($_REQUEST['search_username']) ? $_REQUEST['search_username'] : ''; ?>" oninput="searchFormValidate()" style="margin-right: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <label for="search_start" style="margin-right: 10px; font-weight: bold;">Start Date: </label>
+            <input type="datetime-local" id="search_start" name="search_start" value="<?php echo isset($_REQUEST['search_start']) ? $_REQUEST['search_start'] : ''; ?>" oninput="searchFormValidate()" style="margin-right: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <label for="search_end" style="margin-right: 10px; font-weight: bold;">End Date: </label>
+            <input type="datetime-local" id="search_end" name="search_end" value="<?php echo isset($_REQUEST['search_end']) ? $_REQUEST['search_end'] : ''; ?>" oninput="searchFormValidate()" style="margin-right: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <button type="submit" id="search-btn" style="display: none; margin-top: 20px; background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Search</button>
+        </form>
+    </div>
+
+
+
     <script>
         function searchFormValidate() {
             var username = document.getElementById("search_username").value;
@@ -76,7 +68,37 @@ $result_last = $conn->query($sql_last);
             }
         }
     </script>
-    <table id="data-table">
+
+
+    <style>
+        #data-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #data-table td, #data-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #data-table tr:hover {
+            background-color: #ddd;
+        }
+
+        #data-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+
+    <table id="data-table" style="margin-top: 20px;">
         <thead>
             <tr>
                 <th>Username</th>
@@ -88,14 +110,14 @@ $result_last = $conn->query($sql_last);
         <tbody>
             <?php
             $where = [];
-            if (isset($_POST['search_username']) && $_POST['search_username'] != '') {
-                $where[] = "username LIKE '%".$_POST['search_username']."%'";
+            if (isset($_REQUEST['search_username']) && $_REQUEST['search_username'] != '') {
+                $where[] = "username LIKE '%".$_REQUEST['search_username']."%'";
             }
-            if (isset($_POST['search_start']) && $_POST['search_start'] != '') {
-                $where[] = "datetime >= '".$_POST['search_start']."'";
+            if (isset($_REQUEST['search_start']) && $_REQUEST['search_start'] != '') {
+                $where[] = "datetime >= '".$_REQUEST['search_start']."'";
             }
-            if (isset($_POST['search_end']) && $_POST['search_end'] != '') {
-                $where[] = "datetime <= '".$_POST['search_end']."'";
+            if (isset($_REQUEST['search_end']) && $_REQUEST['search_end'] != '') {
+                $where[] = "datetime <= '".$_REQUEST['search_end']."'";
             }
             $sql = "SELECT * FROM map_data ";
             if (!empty($where)) {
@@ -112,6 +134,22 @@ $result_last = $conn->query($sql_last);
             <?php endwhile; ?>
         </tbody>
     </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -123,8 +161,8 @@ $result_last = $conn->query($sql_last);
        
         function mapf() {
             var map1 = L.map('map1').setView([23.8103, 90.4125], 6);
-            var map2 = L.map('map2').setView([23.8103, 90.4125], 6);
-            var map3 = L.map('map3').setView([23.8103, 90.4125], 7);
+            var map2 = L.map('map2').setView([23.8103, 90.4125], 7);
+          
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '  OpenStreetMap contributors'
@@ -135,12 +173,13 @@ $result_last = $conn->query($sql_last);
             }).addTo(map2);
 
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '  OpenStreetMap contributors'
-            }).addTo(map3);
+     
 
             var userPaths = {};
-            var colors = ['red', 'blue', 'green'];
+            var colors = [];
+            for (var i = 0; i < 360; i += 60) {
+                colors.push('hsl(' + i + ', 100%, 50%)');
+            }
             var lastMarkers = {};
 
             $('#data-table tbody tr').each(function() {
@@ -161,61 +200,38 @@ $result_last = $conn->query($sql_last);
                 userPaths[username].path = userPaths[username].path || [];
                 userPaths[username].path.push([latitude, longitude]);
 
-                row.css('background-color', userPaths[username].color);
+                var fontColor = userPaths[username].color === 'white' ? 'black' : 'white';
+                row.css({
+                    'background-color': userPaths[username].color,
+                    'color': fontColor
+                });
 
                 if (lastMarkers[username]) {
                     lastMarkers[username].remove();
                 }
 
-                var icon = L.icon({
-                    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + userPaths[username].color + '.png',
-                    iconSize: [25, 41],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
+
+
+
+                var box = L.divIcon({
+                    className: 'user-box',
+                    html: `<div style="
+                        background-color: ${userPaths[username].color}; 
+                        width: 10px; height: 10px; 
+                        border: 1px solid black;
+                    "><a href="locationview.php?search_username=${username}">${username}: ${datetime}</a></div>`,
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5],
+                    popupAnchor: [0, -5],
                     className: 'user-icon'
                 });
-                lastMarkers[username] = L.marker([latitude, longitude], {icon: icon}).addTo(map1)
+                lastMarkers[username] = L.marker([latitude, longitude], {icon: box}).addTo(map1)
                     .bindPopup(username + "<br>" + latitude + ", " + longitude + "<br>" + datetime);
-
-                L.polyline(userPaths[username].path, {color: userPaths[username].color}).addTo(map2);
-
-                var firstPoint = userPaths[username].path[0];
-                var lastPoint = userPaths[username].path[userPaths[username].path.length - 1];
-
-                userPaths[username].path.forEach(function(point) {
-                    var marker = L.marker(point, {
-                        icon: L.icon({
-                            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + userPaths[username].color + '.png',
-                            iconSize: [25, 41],
-                            iconAnchor: [12, 41],
-                            popupAnchor: [1, -34],
-                            className: 'user-icon'
-                        })
-                    }).addTo(map2);
-                    marker.bindPopup(username + "<br>" + latitude + ", " + longitude + "<br>" + datetime);
+                var bounds = L.latLngBounds();
+                $.each(userPaths, function(username, pathInfo) {
+                    bounds.extend(L.latLngBounds(pathInfo.path));
                 });
-
-                L.marker(firstPoint, {
-                    icon: L.icon({
-                        iconUrl: 'https://www.iconpacks.net/icons/2/free-location-map-icon-2956-thumb.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34],
-                        className: 'user-icon'
-                    }),
-                    title: username + " Start"
-                }).addTo(map2).bindPopup(username + "<br>Start: " + firstPoint[0] + ", " + firstPoint[1] + "<br>" + datetime);
-
-                L.marker(lastPoint, {
-                    icon: L.icon({
-                        iconUrl: 'https://cdn-icons-png.flaticon.com/512/9356/9356230.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12, 41],
-                        popupAnchor: [1, -34],
-                        className: 'user-icon'
-                    }),
-                    title: username + " End"
-                }).addTo(map2).bindPopup(username + "<br>End: " + lastPoint[0] + ", " + lastPoint[1] + "<br>" + datetime);
+                map1.fitBounds(bounds, {maxZoom: 30});
 
 
 
@@ -226,56 +242,80 @@ $result_last = $conn->query($sql_last);
 
 
 
-// Function to draw the polyline slowly
-function drawPolylineSlowly(latlngs, color, map) {
-    let index = 0;
-    let polyline = L.polyline([], { color: color }).addTo(map);
 
-    function addNextSegment() {
-        if (index < latlngs.length) {
-            polyline.addLatLng(latlngs[index]);
-            index++;
-            setTimeout(addNextSegment, 500); // Adjust the delay as needed
-        } else {
-            // Zoom the map to the polyline once drawing is complete
-            map.fitBounds(polyline.getBounds());
-        }
-    }
 
-    addNextSegment();
-}
 
 // Draw markers and polyline
 userPaths[username].path.forEach(function(point, index) {
     setTimeout(function() {
-        var k = L.marker(point, {
-            icon: L.icon({
-                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + userPaths[username].color + '.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                className: 'user-icon'
-            })
-        }).addTo(map3);
+        var k;
+        if (index === 0) {
+
+            map2.fitBounds(L.latLngBounds(userPaths[username].path), {maxZoom: 25});
+            k = L.marker(point, {
+                icon: L.divIcon({
+                    html: `<div style="
+                        background-color: ${userPaths[username].color}; 
+                        width: 12px; height: 12px; 
+                        border: 1px solid black;
+                    ">${username}: ${datetime}</div>`,
+                    className: 'user-icon'
+                })
+            });
+        } else if (index === userPaths[username].path.length - 1) {
+            k = L.marker(point, {
+                icon: L.divIcon({
+                    html: `<div style="
+                        background-color: ${userPaths[username].color}; 
+                        width: 17px; height: 17px; 
+                        border: 1px solid black;
+                    ">${username}: ${datetime}</div>`,
+                    className: 'user-icon'
+                })
+            });
+           
+        } else {
+            k = L.marker(point, {
+                icon: L.divIcon({
+                    html: `<div style="
+                        background-color: ${userPaths[username].color}; 
+                        width: 2px; height: 2px; 
+                        border: 1px solid black;
+                    ">${datetime.substr(11)}</div>`,
+                    className: 'user-icon'
+                })
+            });
+        }
+
+        if (userPaths[username].path.length > 1) {
+            var polyline = L.polyline([], {
+                color: userPaths[username].color,
+                weight: 2,
+                opacity: 0.5
+            }).addTo(map2);
+            var points = [];
+            for (var i = 0; i <= index; i++) {
+                points.push(userPaths[username].path[i]);
+            }
+            polyline.setLatLngs(points);
+            polyline.setStyle({
+                dashArray: '5, 5',
+                dashOffset: index * 50
+            });
+            polyline.on('add', function() {
+                polyline.setStyle({
+                    dashOffset: 0
+                });
+            });
+        }
+
+
+
+        
+        k.addTo(map2);
         k.bindPopup(`${index + 1}. ${username}`);
-    }, index * 1000);
+    }, index * 500);
 });
-
-// Slowly draw the polyline
-drawPolylineSlowly(userPaths[username].path, userPaths[username].color, map3);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -297,6 +337,4 @@ drawPolylineSlowly(userPaths[username].path, userPaths[username].color, map3);
         mapf();
       
     </script>
-</body>
-</html>
 
