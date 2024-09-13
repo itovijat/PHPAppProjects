@@ -20,54 +20,7 @@
 
    
 
-    $(document).ready(function() {
-        const table = $('#myTablegraph').DataTable({
-            autoWidth: true,
-            paging: false,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'print'
-            ]
-        });
-
-        const barCtx = document.getElementById('barChart').getContext('2d');
-        const barChart = new Chart(barCtx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Quantity',
-                    data: [],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        function updateChart() {
-            const data = table.rows().data().toArray();
-            const labels = [...new Set(data.map(row => row[1]))];
-            const quantities = labels.map(label => data.filter(row => row[1] === label).reduce((sum, row) =>
-                sum + parseInt(row[2]), 0));
-
-            barChart.data.labels = labels;
-            barChart.data.datasets[0].data = quantities;
-            barChart.update();
-        }
-
-        table.on('draw', updateChart);
-        updateChart();
-
-
-    });
+   
     </script>
 </body>
 

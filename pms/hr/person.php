@@ -654,22 +654,7 @@ if(isset($_POST['updatePhotobtn'])){
         
 
 
-    <script>
-
-    $(document).ready(function() {
-        const table = $('#myTable').DataTable({
-            autoWidth: true,
-            paging: false,
-            responsive:true,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'print'
-            ]
-        });
-    });
-
- 
-    </script>
+   
 
 
     <script>

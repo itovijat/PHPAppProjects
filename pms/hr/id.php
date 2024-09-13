@@ -150,19 +150,20 @@ button:active {
   </div>
 </div>
 
-<div id="mycard" style=" ">
+<div id="mycard" style="">
+  <div style=""><br></div>
   <div style="margin-left: 50px; width:638px; height:1013px; border: 1px solid black; border-radius: 20px; float:left;  display: flex;
             flex-direction: column; justifiy-content: center; align-items: center; background: white;
             "> 
   
         
-             <div style="height: 50px; width: 100%; background: black; border-top-left-radius: 20px; border-top-right-radius: 20px;"></div>
+             <div style="height: 50px; width: 100%; background: #ea2227; border-top-left-radius: 20px; border-top-right-radius: 20px;"></div>
 
-             <div style="height: 5px; width: 100%; background: orange;"></div>
+             <div style="height: 5px; width: 100%; background: #8bc936;"></div>
 
 
              <img id="logo" src="../assets/img/logo.png" style="width: auto; height: 120px; margin:20px;">
-            <img id="pp" src="../assets/person/<?php echo $photo; ?>" style="width: auto; height: 300px; border: 3px solid black;">
+            <img id="pp" src="../assets/person/<?php echo $photo; ?>" style="width: auto; height: 222px; border: 3px solid black; border-radius: 5%;">
             <h2 style="text-align: center; font-size: 40px; margin-top:10px;"><?php echo $name; ?></h2>
        
             <p style="text-align: center; font-size: 30px; margin-top:-20px;" class="post"><b><?php echo $post; ?><br>( <?php echo $dept; ?> )</b></p>
@@ -170,6 +171,7 @@ button:active {
             <p style="text-align: center; font-size: 30px; margin-top:0px;"><?php echo $email; ?></p>
             <p style="text-align: center; font-size: 30px; margin-top:-20px;"><?php echo $phone; ?></p>
 
+            <h2 style="text-align: center; font-size: 30px; margin-top:10px;">Ovijat Food & Beverage Industries Ltd.</h2>
 
             <div style=" height: 170px; width: 100%; background: black; color: white;">
             <p style="text-align: center; font-size: 40px; margin-top: 10px;">info@ovijatfood.com</p>
@@ -177,9 +179,9 @@ button:active {
             <p style="text-align: center; font-size: 40px; margin-top: -40px;">+88 02 951 3985</p>
 
             </div>
-            <div style="  height: 5px; width: 100%; background: orange;"></div>
+            <div style="  height: 5px; width: 100%; background: #8bc936;"></div>
 
-            <div style=" bottom: 0; height: 50px; width: 100%; background: red; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"></div>
+            <div style=" bottom: 0; height: 50px; width: 100%; background: #ea2227; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"></div>
 
      
 
@@ -192,33 +194,37 @@ button:active {
             flex-direction: column; justifiy-content: center; align-items: center; background: white;"> 
   
 
-  <div style="height: 50px; width: 100%; background: black; border-top-left-radius: 20px; border-top-right-radius: 20px;"></div>
+  <div style="height: 50px; width: 100%; background: #ea2227; border-top-left-radius: 20px; border-top-right-radius: 20px;"></div>
 
-<div style="height: 5px; width: 100%; background: orange;"></div>
+<div style="height: 5px; width: 100%; background: #8bc936;"></div>
 
-<h2 style="text-align: center; font-size: 40px; margin-top:20px;">Ovijat Group</h2>
-<img id="logo" src="../assets/img/logo.png" style="width: auto; height: 50px; margin-top:-20px; margin-bottom: 20px;">
-<img id="pp" src="../assets/img/qr.png" style="width: auto; height: 300px; border: 3px solid black;">
-<p style="text-align: center; font-size: 20px; margin-top:0px;">This ID card is online generated.<br>To Verify scan this QR code or visit: <i>www.ovijatfood.com/id</i></p>
+
+<img id="logo" src="../assets/img/logo.png" style="width: auto; height: 50px; margin-top:20px; margin-bottom: 20px;">
+<img id="pp" src="../assets/img/qr.png" style="width: auto; height: 250px; border: 3px solid black;">
+<p style="text-align: center; font-size: 25px; margin-top:0px;">This ID card is online generated.<br>Scan this QR or Visit: <b>www.ovijatfood.com/id</b></p>
 
 <p style="text-align: center; font-size: 30px; margin-top:20px;" class="post"><b><?php echo $name; ?><br>Employee ID: <?php echo $pid; ?></b></p>
 
-<p style="text-align: center; font-size: 30px; margin-top:0px;">Blood Group: <?php echo $bg; ?></p>
+<p style="text-align: center; font-size: 30px; margin-top:-12px;">Blood Group: <?php echo $bg; ?></p>
 <p style="text-align: center; font-size: 30px; margin-top:-20px;">Issue Date: <?php echo $issuedate; ?></p>
 
-
+<div style="  height: 90px; width: 100%; background: #8bc936;">
+<p style="text-align: center; font-size: 25px; margin-top: 15px; color: white;">Always carry this Card & it is non-transferable.<br>If found, please post it to the given address.</p>
+</div>
 <div style=" height: 170px; width: 100%; background: black; color: white;">
-<p style="text-align: center; font-size: 35px; margin-top: 10px;">Ovijat Food & Beverage Industries Ltd.</p>
-<p style="text-align: center; font-size: 25px; margin-top: -30px;">Sadharan Bima Bhaban 2, 139, Motijheel C/A, Dhaka-1000</p>
-<p style="text-align: center; font-size: 30px; margin-top: -20px;">Factory: Ramgonj, Nilphamari</p>
+<p style="text-align: center; font-size: 32px; margin-top: 30px;">Ovijat Food & Beverage Industries Ltd.</p>
+<p style="text-align: center; font-size: 23px; margin-top: -20px;">Sadharan Bima Bhaban 2, 139, Motijheel, Dhaka-1000</p>
+<p style="text-align: center; font-size: 28px; margin-top: -20px;">Factory: Ramgonj, Nilphamari</p>
 
 </div>
-<div style="  height: 5px; width: 100%; background: orange;"></div>
+<div style="  height: 5px; width: 100%; background: #8bc936;"></div>
 
-<div style=" bottom: 0; height: 50px; width: 100%; background: red; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"></div>
+<div style=" bottom: 0; height: 50px; width: 100%; background: #ea2227; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"></div>
 
 
   </div>
+
+  <div><br></div>
 </div>
 
     <!-- Optional JavaScript -->
