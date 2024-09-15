@@ -74,8 +74,8 @@
                     ?>
                     <form action="<?php echo basename($_SERVER['PHP_SELF']);?>" method="POST">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<?php echo $_SESSION['email']; ?>" required>
+                            <label for="email">Username</label>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Enter username" value="<?php echo $_SESSION['email']; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="oldpassword">Old Password</label>

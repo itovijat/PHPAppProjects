@@ -3,7 +3,7 @@ include_once "dbconnect.php";
 // create table if not exists
 $sql = "CREATE TABLE IF NOT EXISTS map_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50),
+    username VARCHAR(10),   
     latitude FLOAT(10, 6),
     longitude FLOAT(10, 6),
     datetime DATETIME

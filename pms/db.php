@@ -4,7 +4,7 @@ include "dbconnect.php";
 $sql = "
 CREATE TABLE  IF NOT EXISTS user(
     
-    email VARCHAR(30) NOT NULL PRIMARY KEY,
+    email VARCHAR(10) NOT NULL PRIMARY KEY,
     password VARCHAR(32) NOT NULL,
     role VARCHAR(10) NOT NULL,
     company VARCHAR(10) NOT NULL,
