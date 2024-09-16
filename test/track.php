@@ -1,5 +1,17 @@
 <?php
 include_once 'head.php';
+  
+
+    if (isset($_POST['submit'])) {
+      
+      
+        $_SESSION['refference'] = $_POST['refference'];
+    
+        echo "  <script>location.replace('trackpassport.php')</script>";
+        die();
+        
+    }
+
 ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -15,7 +27,7 @@ include_once 'head.php';
     <div style="display: flex; justify-content: center; align-items: center; margin-top: 100px; margin:20px;">
         <div style="width: 500px; background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">
             <h2 style="text-align: center; color: #666; font-weight: bold; margin-bottom: 20px;">Track Application</h2>
-            <form action="trackpassport.php" method="post" style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" style="display: flex; flex-direction: column; align-items: center; margin-right: 20px;">
                 <div class="form-group" style="width: 100%; margin-bottom: 20px;">
                     <label style="color: #666; display: block; text-align: center; margin-bottom: 10px;" for="refference">Refference Number:</label>
                     <input style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; width: 100%;" type="text" class="form-control" id="refference" name="refference" required>
@@ -64,7 +76,7 @@ include_once 'head.php';
 
 
                 <div style="display: flex; justify-content: center; align-items: center;" class="form-group">
-                    <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" type="submit" class="btn btn-primary">Track</button>
+                    <button name="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" type="submit" class="btn btn-primary">Track</button>
                 </div>
             </form>
         </div>

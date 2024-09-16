@@ -9,6 +9,9 @@ include_once 'head.php';
  
     </div>
     <div class="content" style=" ">
+    <a href="apply.php" class="btn btn-primary" style=" font-size: 20px; color: white; background-color: #103b5e; width: 200px; margin: 20px auto; text-decoration: none; display: block; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">Apply for VISA</a>
+    </div>
+    <div class="content" style=" ">
     <a href="track.php" class="btn btn-primary" style=" font-size: 20px; color: white; background-color: #103b5e; width: 200px; margin: 20px auto; text-decoration: none; display: block; text-align: center; padding: 10px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">Track your application</a>
     </div>
     <div class="content" style=" ">

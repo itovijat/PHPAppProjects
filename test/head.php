@@ -1,9 +1,14 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Demo Page</title>
+    <title>VFS Global</title>
+    <link rel="shortcut icon" href="logo2.png" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -181,8 +186,8 @@
         
         <a style=" margin-left: 10%;"></a>
        
-        <a href="dashboard.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Home</a>
-        <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Apply for a Visa</a>
+        <a href="index.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Home</a>
+        <a href="apply.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Apply for a Visa</a>
         <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Premium Services</a>
         <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Attend a centre</a>
         <a href="track.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Track your application</a>
@@ -202,7 +207,7 @@
         <a style=" margin-left: 10%;"></a>
        
        <a href="index.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Home</a>
-       <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Apply for a Visa</a>
+       <a href="apply.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Apply for a Visa</a>
        <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Premium Services</a>
        <a href="#" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Attend a centre</a>
        <a href="track.php" style="text-decoration: none; transition: all 0.2s ease-in-out;" onmouseover="this.style.textDecoration='underline'; this.style.textDecorationColor='#103b5e'; this.style.textDecorationThickness='5px'; this.style.textUnderlineOffset='5px'" onmouseout="this.style.textDecoration='none'">Track your application</a>
