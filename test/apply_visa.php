@@ -6,6 +6,12 @@ if(!isset($_SESSION['username'])){
 }
 include_once "db.php";
 
+
+
+
+
+
+
 ?>
 
 
@@ -51,12 +57,14 @@ include_once "db.php";
     }
 </style>
 <nav style="display: flex; justify-content: space-around; align-items: center; background-color: #333; color: white; padding: 10px; margin-bottom: 20px;">
-    <a style="color: white; text-decoration: none; font-size: 20px;" href="admin.php">Home</a>
-    
-    <a style="color: white; text-decoration: none; font-size: 20px;" href="apply_visa.php">Apply Visa</a>
+<a style="color: white; text-decoration: none; font-size: 20px;" href="admin.php">Home</a>
+<a style="color: white; text-decoration: none; font-size: 20px;" href="apply_visa.php">Apply Visa</a>
+    <a style="color: white; text-decoration: none; font-size: 20px;" href="user_apply.php">User Apply</a>
     <a style="color: white; text-decoration: none; font-size: 20px;" href="profile_list.php">Profile List</a>
     <a style="color: white; text-decoration: none; font-size: 20px;" href="add_profile.php">Add New Profile</a>
     <a style="color: white; text-decoration: none; font-size: 20px;" href="user_file.php">User File</a>
+    <a style="color: white; text-decoration: none; font-size: 20px;" href="doc.php">Doc</a>
+    <a style="color: white; text-decoration: none; font-size: 20px;" href="photo.php">Photo</a>
 </nav>
  
 

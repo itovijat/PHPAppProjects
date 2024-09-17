@@ -12,6 +12,70 @@ if(!isset($_SESSION['refference'])){
 include_once "db.php";
 
 
+
+$sql = "SELECT * FROM profile WHERE refference = '" . $_SESSION['refference'] . "'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        $refference = $row["refference"];
+        $password = $row["password"];
+        $officelogo = $row["officelogo"];
+        $officename = $row["officename"];
+        $countryflag = $row["countryflag"];
+        $photo = $row["photo"];
+        $name = $row["name"];
+        $passport = $row["passport"];
+        $nationality = $row["nationality"];
+        $msg = $row["msg"];
+        $PrimaryApplication = $row["PrimaryApplication"];
+        $Sponsor = $row["Sponsor"];
+        $Biometric = $row["Biometric"];
+        $PoliceClearance = $row["PoliceClearance"];
+        $MedicalTest = $row["MedicalTest"];
+        $EVisaOnline = $row["EVisaOnline"];
+        $AOthers = $row["AOthers"];
+        $ApplicationForm = $row["ApplicationForm"];
+        $ApprovalLetter = $row["ApprovalLetter"];
+        $SponsorLetter = $row["SponsorLetter"];
+        $BiometricAppointmentLetter = $row["BiometricAppointmentLetter"];
+        $PoliceClearanceCertificate = $row["PoliceClearanceCertificate"];
+        $MedicalTestCertificate = $row["MedicalTestCertificate"];
+        $EVisaOnlineCopy = $row["EVisaOnlineCopy"];
+        $ArrivalEAirTicket = $row["ArrivalEAirTicket"];
+        $DOthers = $row["DOthers"];
+        $ApplicationFee = $row["ApplicationFee"];
+        $GovernmentVAT = $row["GovernmentVAT"];
+        $VisaFee = $row["VisaFee"];
+        $BiometricFee = $row["BiometricFee"];
+        $TicketCost = $row["TicketCost"];
+        $Otherscost = $row["Otherscost"];
+        $td1 = $row["td1"];
+        $tn1 = $row["tn1"];
+        $ts1 = $row["ts1"];
+        $td2 = $row["td2"];
+        $tn2 = $row["tn2"];
+        $ts2 = $row["ts2"];
+        $td3 = $row["td3"];
+        $tn3 = $row["tn3"];
+        $ts3 = $row["ts3"];
+        $td4 = $row["td4"];
+        $tn4 = $row["tn4"];
+        $ts4 = $row["ts4"];
+        $td5 = $row["td5"];
+        $tn5 = $row["tn5"];
+        $ts5 = $row["ts5"];
+        $td6 = $row["td6"];
+        $tn6 = $row["tn6"];
+        $ts6 = $row["ts6"];
+
+    }
+} else {
+  echo "<script>alert('connection error');</script>";
+}
+
+
 $sql = "CREATE TABLE IF NOT EXISTS reffile (
   id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   refference VARCHAR(30) NOT NULL,
@@ -38,7 +102,6 @@ if(isset($_POST['submit2'])){
   // Check if image file is a actual image or fake image
   $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
   if($check !== false) {
-      echo "File is an image - " . $check["mime"] . ".";
       $uploadOk = 1;
   } 
 
@@ -67,8 +130,7 @@ if(isset($_POST['submit2'])){
   // if everything is ok, try to upload file
   } else {
       if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-          echo "<script>alert('The file ". htmlspecialchars( basename( $target_file)). " has been uploaded.');</script>";
-          echo "<script>alert('Refference Number: $refference');</script>";
+        
       
           
          
@@ -114,17 +176,32 @@ width: 80%;
 }
 </style>
 <header style="display: flex; justify-content: center; align-items: center; background: #333; color: white; padding: 10px;">
-  <img src="https://www.homeaffairs.gov.au/AssetLibrary/dist/assets/images/logo.png" style="height: 50px;">
-  <h1 style="margin: 0 10px; font-size: clamp(1.25rem, 5vw, 20px);">Immigration and Citizenship, Australia fhdfh dfhdf dfghdf fgdf</h1>
+  <?php if (strtolower(substr($officelogo, -2)) == 'na') { ?>
+    <span style="height: 100px;  display: flex; justify-content: center; align-items: center;  margin: 0;"></span>
+  <?php } else { ?>
+    <img src="<?php echo $officelogo; ?>" style="height: 100px; ;  margin: 0;">
+  <?php } ?>
+
+  
+  <?php if (strtolower(substr($officename, -2)) == 'na') { ?>
+    <span style="height: 100px;  display: flex; justify-content: center; align-items: center;  margin: 0;"></span>
+  <?php } else { ?>
+    <h1 style="margin: 0 10px; font-size: clamp(1.25rem, 5vw, 30px);"><?php echo $officename; ?></h1>
+  <?php } ?>
 </header>
 
 <div id="zoom">
 <?php $flag = "au"; $country = "Department of Home Affairs, Australia"; ?>
 <div class="content" style="display: flex; justify-content: space-between; align-items: center;  background: #f0f0f0; padding: 10px; border: 1px solid #ccc; ">
+  <a href="index.php" style="text-decoration:none; color:black"><i class="fas fa-home" style="font-size:24px; margin-right:10px;"></i></a>
   <h2 style="margin: 0; font-size: 24px;">Reference No: <?php echo $_SESSION['refference']; ?></h2>
 
 
-  <img src="https://flagcdn.com/<?php echo strtolower($flag); ?>.svg" style="height: 34px; width: 56px; border: 1px solid #ccc; margin: 0;">
+  <?php if (strtolower(substr($countryflag, -2)) == 'na') { ?>
+    <span style="height: 34px; width: 56px; display: flex; justify-content: center; align-items: center;  margin: 0;"></span>
+  <?php } else { ?>
+    <img src="<?php echo $countryflag; ?>" style="height: 34px; width: 56px; border: 1px solid #ccc; margin: 0;">
+  <?php } ?>
 
 </div>
 
@@ -132,15 +209,19 @@ width: 80%;
 
   <div style="text-align: center; font-size: 20px; margin-top: 20px; color: #666; font-weight: bold;">Application Details of</div>
   <div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 20px auto;">
-    <img src="https://i.pravatar.cc/150?u=<?php echo rand(); ?>" style="width: 100%; height: 100%; object-fit: cover; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">
+    <?php if (strtolower(substr($photo, -2)) == 'na') { ?>
+      <span style="height: 150px; width: 150px; display: flex; justify-content: center; align-items: center;  margin: 0;"></span>
+    <?php } else { ?>
+      <img src="<?php echo $photo; ?>" style="width: 100%; height: 100%; object-fit: cover; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">
+    <?php } ?>
   </div>
-  <div style="text-align: center; font-size: 40px; margin-top: 20px; color: #666; font-weight: bold;">Hasan Ali Sarker</div>
-  <div style="text-align: center; font-size: 25px; margin-top: 10px; color: #666; font-weight: bold;">Passport No: <?php echo $_SESSION['refference']; ?></div>
-  <div style="text-align: center; font-size: 25px; margin-top: 10px; color: #666; font-weight: bold;">Nationality: <?php echo $_SESSION['refference']; ?></div>
+  <div style="text-align: center; font-size: 40px; margin-top: 20px; color: #666; font-weight: bold;"><?php echo $name; ?></div>
+  <div style="text-align: center; font-size: 25px; margin-top: 10px; color: #666; font-weight: bold;">Passport No: <?php echo $passport; ?></div>
+  <div style="text-align: center; font-size: 25px; margin-top: 10px; color: #666; font-weight: bold;">Nationality: <?php echo $nationality; ?></div>
 
   <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
     <button style="background-color: #4CAF50; font-size: 40px; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);"
-     type="button" >Msg Shown here</button>
+     type="button" ><?php echo $msg; ?></button>
   </div>
 
 </div>
@@ -157,32 +238,32 @@ width: 80%;
     <ul style="list-style: none; padding: 0; margin: 0; font-size: 35px;">
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style="font-weight: bold;">Primary Application</span>
-        <span>Submitted</span>
+        <span><?php echo $PrimaryApplication; ?></span>
       </li>
      
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Sponsor (Work Permit/LMI)</span>
-        <span>Approved</span>
+        <span><?php echo $Sponsor; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Biometric</span>
-        <span>Rejected</span>
+        <span><?php echo $Biometric; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Police Clearance</span>
-        <span>Received</span>
+        <span><?php echo $PoliceClearance; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Medical Test</span>
-        <span>-</span>
+        <span><?php echo $MedicalTest; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">E-Visa Online Copy</span>
-        <span>-</span>
+        <span><?php echo $EVisaOnline; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Others</span>
-        <span>-</span>
+        <span><?php echo $AOthers; ?></span>
       </li>
     </ul>
   </div>
@@ -192,44 +273,100 @@ width: 80%;
     <ul style="list-style: none; padding: 0; margin: 0; font-size: 35px;">
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style="font-weight: bold;">Application Form</span>
-        <span>Download</span>
+        <span>
+          <?php
+            if(strtolower(substr($ApplicationForm,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$ApplicationForm."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?>
+        </span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Approval Letter</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($ApprovalLetter,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$ApprovalLetter."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Sponsor/LMI Letter</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($SponsorLetter,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$SponsorLetter."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Biometric Appointment Letter</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($BiometricAppointmentLetter,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$BiometricAppointmentLetter."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Police Clearance Certificate</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($PoliceClearanceCertificate,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$PoliceClearanceCertificate."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Medical Test Certificate</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($MedicalTestCertificate,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$MedicalTestCertificate."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">E-Visa Online Copy</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($EVisaOnlineCopy,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$EVisaOnlineCopy."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Arrival/ E-Air Ticket</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($ArrivalEAirTicket,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$ArrivalEAirTicket."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Others</span>
-        <span>Pending</span>
+        <span>     <?php
+            if(strtolower(substr($DOthers,-2)) == 'na') {
+              echo "Pending";
+            } else {
+              echo "<a href='".$DOthers."' style=' text-decoration: none; color: #4CAF50' download><i class='fa fa-download'></i> Download</a>";
+            }
+          ?></span>
       </li>
      <br>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Forwarded to</span>
-        <span>Gmail</span>
+        <span>Your Email</span>
       </li>
     </ul>
     <button id="show_button" style="display: block; margin: 0 auto; font-size: 30px; background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;" onclick="show_div()">Submitions</button>
@@ -275,27 +412,27 @@ width: 80%;
     <ul style="list-style: none; padding: 0; margin: 0; font-size: 35px;">
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style="font-weight: bold;">Application Fee</span>
-        <span>Paid</span>
+        <span><?php echo $ApplicationFee; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Government VAT </span>
-        <span>Due</span>
+        <span><?php echo $GovernmentVAT; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Visa Fee</span>
-        <span>Due</span>
+        <span><?php echo $VisaFee; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Biometric Fee</span>
-        <span>-</span>
+        <span><?php echo $BiometricFee; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Ticket Cost</span>
-        <span>Due</span>
+        <span><?php echo $TicketCost; ?></span>
       </li>
       <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style=" font-weight: bold;">Others cost</span>
-        <span>Due</span>
+        <span><?php echo $Otherscost; ?></span>
       </li>
     </ul>
   </div>
@@ -391,56 +528,64 @@ width: 80%;
 </style>
 
 <div class="timeline">
-  <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
+
+  <?php if (strtolower(substr($td1, -2)) != 'na') { ?>
+<div class="timeline-item">
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td1); ?></div>
     <div class="timeline-content">  
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn1); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts1); ?></p>
     </div>
   </div>
 
+  <?php } ?>
+  <?php if (strtolower(substr($td2, -2)) != 'na') { ?>
   <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
-    <div class="timeline-content">
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td2); ?></div>
+    <div class="timeline-content">  
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn2); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts2); ?></p>
     </div>
   </div>
+  <?php } ?>
+  <?php if (strtolower(substr($td3, -2)) != 'na') { ?>
+  <div class="timeline-item">
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td3); ?></div>
+    <div class="timeline-content">  
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn3); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts3); ?></p>
+    </div>
+  </div>
+  <?php } ?>
+  <?php if (strtolower(substr($td4, -2)) != 'na') { ?>
+  <div class="timeline-item">
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td4); ?></div>
+    <div class="timeline-content">  
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn4); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts4); ?></p>
+    </div>
+  </div>
+  <?php } ?>
+  <?php if (strtolower(substr($td5, -2)) != 'na') { ?>
+  <div class="timeline-item">
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td5); ?></div>
+    <div class="timeline-content">  
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn5); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts5); ?></p>
+    </div>
+  </div>
+  <?php } ?>
+  <?php if (strtolower(substr($td6, -2)) != 'na') { ?>
+  <div class="timeline-item">
+    <div class="timeline-icon"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $td6); ?></div>
+    <div class="timeline-content">  
+      <p class="timeline-title"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $tn6); ?></p>
+      <p class="timeline-desc"><?php echo (strtolower(substr($td1, -2)) == 'na' ? '' : $ts6); ?></p>
+    </div>
+  </div>
+  <?php } ?>
 
-  
-  <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
-    <div class="timeline-content">
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
-    </div>
-  </div>
 
-  
-  <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
-    <div class="timeline-content">
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
-    <div class="timeline-content">
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
-    </div>
-  </div>
-
-  
-  <div class="timeline-item">
-    <div class="timeline-icon">28 Jul 2024</div>
-    <div class="timeline-content">
-      <p class="timeline-title">Application Submission</p>
-      <p class="timeline-desc">Approved</p>
-    </div>
-  </div>
 
   
 </div>

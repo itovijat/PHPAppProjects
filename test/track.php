@@ -1,14 +1,31 @@
 <?php
 include_once 'head.php';
   
-
+include_once "db.php";
     if (isset($_POST['submit'])) {
       
-      
-        $_SESSION['refference'] = $_POST['refference'];
+
+        $refference = $_POST['refference'];
+        $password= $_POST['password'];
+
+
+        $sql = "SELECT * FROM profile WHERE refference = '$refference' AND password = '$password'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // output data of each row
+            $_SESSION['refference'] = $_POST['refference'];
     
-        echo "  <script>location.replace('trackpassport.php')</script>";
-        die();
+            echo "  <script>location.replace('trackpassport.php')</script>";
+            die();
+        }
+        else {
+
+            echo "<script>alert('Error: Invalid refference or password');</script>";
+            
+        }
+      
+      
         
     }
 

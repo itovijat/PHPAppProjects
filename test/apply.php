@@ -14,6 +14,10 @@ include_once 'head.php';
         $msg = $row['msg'];
         $bank = $row['bank'];
     }
+
+
+
+
 ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -45,50 +49,113 @@ include_once 'head.php';
                     box-sizing: border-box;
                 }
             </style>
-            <?php if ( isset($_REQUEST['familyName'])): ?>
+           
+            <?php
+            if(isset($_POST['submit'])){
+                $visacountry = $_POST['visacountry'];
+                $title = $_POST['title'];
+                $familyName = $_POST['familyName'];
+                $givenName = $_POST['givenName'];
+                $mobilePhone = $_POST['mobilePhone'];
+                $dateOfBirth = $_POST['dateOfBirth'];
+                $sex = $_POST['sex'];
+                $maritalStatus = $_POST['maritalStatus'];
+                $email = $_POST['email'];
+                $confirmEmail = $_POST['confirmEmail'];
+                $passportNo = $_POST['passportNo'];
+                $passportIssueDate = $_POST['passportIssueDate'];
+                $passportCountry = $_POST['passportCountry'];
+                $passportExpireDate = $_POST['passportExpireDate'];
+                $address = $_POST['address'];
+                $suburbTown = $_POST['suburbTown'];
+                $country = $_POST['country'];
+               
 
-            <div id="popup" style="
-                display: <?php  ?>;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.5);
-                z-index: 1;
-            ">
-                <div style="
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background-color: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-                ">
-                    <p style="font-size: 20px; color: black;"><?php 
-                    
-                    
-                    
-                    
-                    echo $msg; ?></p>
-                    <button style="
-                        display: block;
-                        margin: 0 auto;
-                        background-color: #4CAF50;
-                        color: white;
-                        padding: 10px 20px;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-                    " onclick="document.getElementById('popup').style.display='none'">Close</button>
-                </div>
-            </div>
-            <?php endif; ?>
+                $datetime = date('YmdHis');
+                $target_dir = "apply/";
+                $target_file = $target_dir . $datetime . '.' . strtolower(pathinfo($_FILES["photo"]["name"],PATHINFO_EXTENSION));
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                // Check if image file is a actual image or fake image
+                $check = getimagesize($_FILES["photo"]["tmp_name"]);
+                if($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                    $uploadOk = 1;
+                } else {
+                    echo "File is not an image.";
+                    $uploadOk = 0;
+                }
+                // Check if file already exists
+                if (file_exists($target_file)) {
+                    echo "Sorry, file already exists.";
+                    $uploadOk = 0;
+                }
+                // Check file size
+                if ($_FILES["photo"]["size"] > 500000) {
+                    echo "Sorry, your file is too large.";
+                    $uploadOk = 0;
+                }
+                // Allow certain file formats
+                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif" ) {
+                    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                    $uploadOk = 0;
+                }
+                // Check if $uploadOk is set to 0 by an error
+                if ($uploadOk == 0) {
+                    echo "Sorry, your file was not uploaded.";
+                // if everything is ok, try to upload file
+                } else {
+                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+                        echo "The file ". htmlspecialchars( basename( $_FILES["photo"]["name"])). " has been uploaded.";
+                    } else {
+                        echo "Sorry, there was an error uploading your file.";
+                    }
+                }
+               
+
+                $sql = "CREATE TABLE IF NOT EXISTS application (
+                    visacountry VARCHAR(255) NOT NULL,
+                    title VARCHAR(255) NOT NULL,
+                    familyName VARCHAR(255) NOT NULL,
+                    givenName VARCHAR(255) NOT NULL,
+                    mobilePhone VARCHAR(20) NOT NULL,
+                    dateOfBirth DATE NOT NULL,
+                    sex VARCHAR(255) NOT NULL,
+                    maritalStatus VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL,
+                    confirmEmail VARCHAR(255) NOT NULL,
+                    passportNo VARCHAR(255) NOT NULL,
+                    passportIssueDate DATE NOT NULL,
+                    passportCountry VARCHAR(255) NOT NULL,
+                    passportExpireDate DATE NOT NULL,
+                    address VARCHAR(255) NOT NULL,
+                    suburbTown VARCHAR(255) NOT NULL,
+                    country VARCHAR(255) NOT NULL,
+                    file VARCHAR(255) NOT NULL
+                )";
+                if ($conn->query($sql) === TRUE) {
+                                 } else {
+                    echo "<script>alert('t e');</script>";
+                }
+
+
+
+
+                $sql = "INSERT INTO application (visacountry, title, familyName, givenName, mobilePhone, dateOfBirth, sex, maritalStatus, email, confirmEmail, passportNo, passportIssueDate, passportCountry, passportExpireDate, address, suburbTown, country, file) VALUES ('$visacountry', '$title', '$familyName', '$givenName', '$mobilePhone', '$dateOfBirth', '$sex', '$maritalStatus', '$email', '$confirmEmail', '$passportNo', '$passportIssueDate', '$passportCountry', '$passportExpireDate', '$address', '$suburbTown', '$country', '$target_file')";
+                if ($conn->query($sql) === TRUE) {
+                    echo "<script>alert('".$msg." ');</script>";                 } 
+                    else {
+                        echo "<script>alert('d e');</script>";                }
+                
+
+            }
+            ?>
+                      
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"
+             style="width: 100%; box-sizing: border-box; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+          
             
-            <form action="apply.php" method="post" style="width: 100%; box-sizing: border-box; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
                 <h2 style="text-align: center; color: #666; font-weight: bold; margin-bottom: 20px;">Application Form</h2>
                 <p style="text-align: center; color: #666;">Apply for a visa or citizenship (including sponsorship and nomination)</p>
                 <p style="text-align: center; color: #666;">Note: Please fill all required field</p>
@@ -215,7 +282,7 @@ include_once 'head.php';
 
                 <div>
                     <label for="photo">Photo</label>
-                    <input type="file" name="photo" id="photo" required>
+                    <input type="file" name="photo" id="photo" accept="image/*" required>
                 </div>
 
                 <h2 style="text-align: center; color: #666; font-weight: bold; margin-bottom: 20px;">Payment Details</h2>
@@ -225,7 +292,7 @@ include_once 'head.php';
                 <p style="text-align: center; color: #666;">Pay to <?php echo $bank; ?></p>
 
                 <div style="display: flex; justify-content: center; align-items: center;">
-                    <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+                    <button name="submit" type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
                 </div>
             </form>
         </div>
