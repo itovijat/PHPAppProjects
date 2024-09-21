@@ -12,6 +12,13 @@ else
     $username = "ovijattt_adminush";
     $password = "IGQyDmcP!gi1";
     $dbname = "ovijattt_pms";
+
+
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "pms";
 }
 
 
