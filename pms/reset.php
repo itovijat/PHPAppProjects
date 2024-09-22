@@ -1,6 +1,26 @@
 <?php
 include "dbconnect.php";
 
+
+if (isset($_POST['password']) && $_POST['password'] == '5877') {
+
+
+    $sql = "SET FOREIGN_KEY_CHECKS = 0";
+    mysqli_query($conn, $sql);
+    $tables = array();
+    $result = mysqli_query($conn, "SHOW TABLES");
+    while($row = mysqli_fetch_row($result)) {
+        $tables[] = $row[0];
+    }
+    foreach($tables as $table) {
+        $sql = "DROP TABLE $table";
+        mysqli_query($conn, $sql);
+    }
+    $sql = "SET FOREIGN_KEY_CHECKS = 1";
+    mysqli_query($conn, $sql);
+
+  
+
 $sql = "
 CREATE TABLE  IF NOT EXISTS user(
     
@@ -17,11 +37,15 @@ mysqli_query($conn, $sql);
 $pss=md5('5877');
 $sql = "
 INSERT INTO user (email, password, role,company)
-SELECT 'it.ovijat@gmail.com', '$pss','admin','ovijat'
+SELECT 'it.ovijat', '$pss','admin','ovijat'
 WHERE NOT EXISTS (
     SELECT 1
     FROM user
-    WHERE email = 'it.ovijat@gmail.com'
+    WHERE email = 'it.ovijat'
+) AND NOT EXISTS (
+    SELECT 1
+    FROM user
+    WHERE email = 'it.ovijat'
 );
 ";
 mysqli_query($conn, $sql);
@@ -66,7 +90,7 @@ if ($conn->query($sql) === TRUE) {
 
 
 $sql="
- TABLE IF NOT EXISTS persons  (
+ CREATE TABLE IF NOT EXISTS persons  (
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(50) NOT NULL,
   company VARCHAR(10) NOT NULL
@@ -82,13 +106,14 @@ $sql="
 CREATE TABLE IF NOT EXISTS inventory   (
  id INT AUTO_INCREMENT PRIMARY KEY,
  product_name VARCHAR(50) NOT NULL,
- in_quantity INT,
- out_quantity INT,
+ in_quantity float,
+ out_quantity float,
+  value float,
  entry_date DATE,
  person_name VARCHAR(50),
  expiry_date DATE,
  remark TEXT,
-  company VARCHAR(10) NOT NULL
+company VARCHAR(10) NOT NULL
 )";
 
 if ($conn->query($sql) === TRUE) {
@@ -136,13 +161,24 @@ CREATE TABLE IF NOT EXISTS kpl (
 
 
 
+echo "<script>alert('Done');</script>";
 
 
-
-
- 
-//close sql connection
-mysql_close($conn);
+}
 
 ?>
 
+<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
+        <h2 style="text-align: center;">Reset Database</h2>
+        <label for="password">Password</label>
+        <input type="password" name="password" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
+        <input type="submit" value="Submit" style="width: 100%; background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+    </form>
+ 
+
+    
+</div>
+<div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+        <a href="index.php" style="background-color: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">Go to Index</a>
+    </div>

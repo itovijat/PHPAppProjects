@@ -112,7 +112,9 @@ include_once "head1.php";
         border-bottom: 1px solid #555;
 
     }
-
+     table {
+        overflow-x: auto;
+    }
     .sidebar ul li a {
 
         color: white;
@@ -156,7 +158,13 @@ include_once "head1.php";
             <li><a href="profile.php"><i class="fas fa-user-secret"></i> Profile</li>
          
             <li><a href="item.php"><i class="fas fa-box"></i> Item</li>
+            <li><a href="itemstock.php"><i class="fas fa-box"></i>Item Stock</li>
+            <li><a href="itemin.php?pdname=&ed1=<?php echo date('Y-m-d'); ?>&ed2=<?php echo date('Y-m-d'); ?>&submit="><i class="fas fa-box"></i>Item In</li>
+            <li><a href="itemout.php?pdname=&ed1=<?php echo date('Y-m-d'); ?>&ed2=<?php echo date('Y-m-d'); ?>&submit="><i class="fas fa-box"></i>Item Out</li>
             <li><a href="itemsearch.php"><i class="fas fa-box"></i>Item List</li>
+
+            <li><a href="itemreq.php"><i class="fas fa-box"></i>Item Requisition</li>
+            <li><a href="itemreqlist.php"><i class="fas fa-box"></i>Item Req list</li>
 
             <li><a href="kpl.php"><i class="fas fa-car"></i>KPL</li>
             <li><a href="kpllist.php"><i class="fas fa-car"></i>KPL List</li>

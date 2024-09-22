@@ -126,7 +126,10 @@
               <th>Product Name</th>
               <th>In Quantity</th>
               <th>Out Quantity</th>
+
               <th>Entry Date</th>
+              <th>Value</th>
+
               <th>Person Name</th>
               <th>Expiry Date</th>
               <th>Remark</th>
@@ -146,7 +149,10 @@
                 echo "<td>".$row['product_name']."</td>";
                 echo "<td>".$row['in_quantity']."</td>";
                 echo "<td>".$row['out_quantity']."</td>";
+
                 echo "<td>".date('Y-m-d', strtotime($row['entry_date']))."</td>";
+                echo "<td>".$row['value']."</td>";
+
                 echo "<td>".$row['person_name']."</td>";
                 echo "<td>".date('Y-m-d', strtotime($row['expiry_date']))."</td>";
                 echo "<td>".$row['remark']."</td>";
@@ -163,32 +169,44 @@
               <th></th>
               <th class="hideonprint"></th>
               <th id="totalproduct"><?php
-              $sql = "SELECT COUNT(DISTINCT product_name) FROM inventory";
+              $sql = "SELECT COUNT(DISTINCT product_name) FROM inventory WHERE company = '".$_SESSION['company']."'";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
               echo $row['COUNT(DISTINCT product_name)']." Items";
               ?></th>
               <th id="totalin"><?php
-              $sql = "SELECT SUM(in_quantity) FROM inventory";
+              $sql = "SELECT SUM(in_quantity) FROM inventory WHERE company = '".$_SESSION['company']."'";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
               echo $row['SUM(in_quantity)'];
               ?></th>
               <th id="totalout"><?php
-              $sql = "SELECT SUM(out_quantity) FROM inventory";
+              $sql = "SELECT SUM(out_quantity) FROM inventory WHERE company = '".$_SESSION['company']."'";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
-              echo $row['SUM(out_quantity)'];
+              echo ' - '.$row['SUM(out_quantity)'];
               ?></th>
               <th id="totalbalance"><?php
-              $sql = "SELECT SUM(in_quantity - out_quantity) FROM inventory";
+              $sql = "SELECT SUM(in_quantity - out_quantity) FROM inventory WHERE company = '".$_SESSION['company']."'";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
               echo "= ". $row['SUM(in_quantity - out_quantity)'];
               ?></th>
-             
+              <th id="totalvalue"><?php
+              $sql = "SELECT SUM(value) AS total_value FROM inventory WHERE in_quantity  > 0 AND company = '".$_SESSION['company']."'";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_assoc($result);
+              $total_in = $row['total_value'];
+              
+              $sql = "SELECT SUM(value) AS total_value FROM inventory WHERE out_quantity  > 0 AND company = '".$_SESSION['company']."'";
+              $result = mysqli_query($conn, $sql);
+              $row = mysqli_fetch_assoc($result);
+              $total_out = $row['total_value'];
+              
+              echo "= ". number_format($total_in - $total_out, 2);
+              ?></th>
               <th id="totalperson"><?php
-              $sql = "SELECT COUNT(DISTINCT person_name) FROM inventory";
+              $sql = "SELECT COUNT(DISTINCT person_name) FROM inventory WHERE company = '".$_SESSION['company']."'";
               $result = mysqli_query($conn, $sql);
               $row = mysqli_fetch_assoc($result);
               echo $row['COUNT(DISTINCT person_name)']." Persons";

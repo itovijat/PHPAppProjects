@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     $person_name = $_POST['person_name'];
     $expiry_date = $_POST['expiry_date'];
     $remark = $_POST['remark'];
+    $value = $_POST['value'];
 
     // Check if the product exists
     $product_check = $conn->query("SELECT id FROM products WHERE name='$product_name' AND company='$company' ");
@@ -28,12 +29,21 @@ if (isset($_POST['submit'])) {
          $conn->query("INSERT INTO persons (name, company) VALUES ('$person_name', '$company')");
      }
 
-    $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, entry_date, person_name, expiry_date, remark, company)
-            VALUES ('$product_name', '$in_quantity', '$out_quantity', '$entry_date', '$person_name', '$expiry_date', '$remark', '$company' )";
+    $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, entry_date, person_name, expiry_date, remark, value, company)
+            VALUES ('$product_name', '$in_quantity', '$out_quantity', '$entry_date', '$person_name', '$expiry_date', '$remark', '$value', '$company' )";
 
     if ($conn->query($sql) === TRUE) {
+
+
+
+
+
        //alert
         echo "<script>alert('Record added successfully');</script>";
+
+      // data to google sheet
+    
+
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -61,7 +71,7 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
 
             inQuantity.addEventListener('input', function() {
                 if (this.value) {
-                    outQuantity.value = 0;
+                    outQuantity.value = 0.0;
                     outQuantity.readOnly = true;
                 } else {
                     outQuantity.readOnly = false;
@@ -70,7 +80,7 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
 
             outQuantity.addEventListener('input', function() {
                 if (this.value) {
-                    inQuantity.value = 0;
+                    inQuantity.value = 0.0;
                     inQuantity.readOnly = true;
                 } else {
                     inQuantity.readOnly = false;
@@ -100,6 +110,49 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
         <div class="row">
             <div class="col">
                 <div class="form-container">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-4 d-flex justify-content-center">
+                            <button type="button" class="btn btn-outline-primary" style="height: 100%;" onclick="stock()">Show Stock</button>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center align-items-center">
+                            <div class="input-group mb-3 align-items-center justify-content-cente">
+                              
+                                <input type="text" class="form-control" placeholder="Stock" id="stock" style="height: 100%; font-size: calc(1em + 0.5vw);" aria-label="Username" aria-describedby="basic-addon1" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-4 d-flex justify-content-center align-items-center">
+                            <button type="button" class="btn btn-outline-primary" style="height: 100%;" onclick="req()">+ Requisition</button>
+                        </div>
+                       
+                    </div>
+                    <br>
+                  
+                    <script>
+                        function stock() {
+
+                            var product_name = document.getElementById('product_name').value;
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', 'istock.php?product_name='+product_name, true);
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    document.getElementById('stock').value = xhr.responseText;
+                                }
+                            }
+                            xhr.send();
+                        }
+
+                        function req() {
+
+                            var product_name = document.getElementById('product_name').value;
+                          
+                            window.location.href = 'itemreq.php?product_name='+product_name;
+                           
+                        }
+                    </script>
+
+                   
+                   
                     <form method="post" action="">
                         <div class="card">
                             <div class="card-header">
@@ -115,16 +168,23 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
                                     </select>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="in_quantity" class="control-label">In Quantity</label>
-                                            <input type="number" id="in_quantity" name="in_quantity" class="form-control" required>
+                                            <input type="number" step="0.01" id="in_quantity" name="in_quantity" class="form-control" required>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="out_quantity" class="control-label">Out Quantity</label>
-                                            <input type="number" id="out_quantity" name="out_quantity" class="form-control" required>
+                                            <input type="number" step="0.01" id="out_quantity" name="out_quantity" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="value" class="control-label">Value</label>
+                                            <input type="number" step="0.01" id="value" name="value" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -172,6 +232,8 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
                                     <th>Product Name</th>
                                     <th>In Quantity</th>
                                     <th>Out Quantity</th>
+
+                                    <th>Value</th>
                                     <th>Entry Date</th>
                                     <th>Person Name</th>
                                     <th>Expiry Date</th>
@@ -185,6 +247,8 @@ $inventory_result = $conn->query("SELECT * FROM inventory WHERE company='$compan
                                     <td><?php echo $row['product_name']; ?></td>
                                     <td><?php echo $row['in_quantity']; ?></td>
                                     <td><?php echo $row['out_quantity']; ?></td>
+
+                                    <td><?php echo $row['value']; ?></td>
                                     <td><?php echo $row['entry_date']; ?></td>
                                     <td><?php echo $row['person_name']; ?></td>
                                     <td><?php echo $row['expiry_date']; ?></td>
