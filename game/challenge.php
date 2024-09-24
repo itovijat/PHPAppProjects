@@ -15,10 +15,11 @@ if ($challenger_id_result->num_rows > 0 && $challenged_id_result->num_rows > 0) 
     $challenged_id = $challenged_id_result->fetch_assoc()['id'];
 
     // Check if there is already a pending challenge
-    $sql = "SELECT * FROM challenges WHERE ((challenger_id = $challenger_id AND challenged_id = $challenged_id) OR (challenger_id = $challenged_id AND challenged_id = $challenger_id)) AND status = 'pending'";
+    $sql = "SELECT * FROM challenges WHERE (((challenger_id = $challenger_id AND challenged_id = $challenged_id) OR (challenger_id = $challenged_id AND challenged_id = $challenger_id)) AND status = 'pending') 
+    OR (challenger_id=$challenger_id AND status='pending')";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        echo "Challenge already set".$result->num_rows;
+        echo "Challenge already set";
     } else {
         // Insert challenge
         $sql = "INSERT INTO challenges (challenger_id, challenged_id) VALUES ($challenger_id, $challenged_id)";

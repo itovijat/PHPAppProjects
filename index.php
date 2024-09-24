@@ -1,3 +1,3 @@
 <script>
-    window.location.replace('pms');
+    window.location.replace('game');
 </script>
