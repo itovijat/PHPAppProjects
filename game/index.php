@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiparu</title>
+    <link rel="shortcut icon" href="tip2.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #1a1a1a;
@@ -14,12 +16,8 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            
-    
-                background-color: #1a1a1a;
-                font-family: 'Press Start 2P', cursive;
-                color: #fff;
-        
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
+            font-weight: bold;
         }
         
         .description {
@@ -54,27 +52,25 @@
     </style>
 </head>
 <body>
-<h1 style="font-size: 77px;"> <span class="coinlogo"style="display: inline-block; width: 100px; height: 100px; background-color: #ff9900; margin-left: -100px; border-radius: 50%; line-height: 90px; text-align: center;">tiparu</span> </h1>
-
-
-
+    <h1 style="font-size: 95px;">
+        <span class="coinlogo" style="display: inline-block; width: 100px; height: 100px; background-color: #ff9900; margin-left: -100px; border-radius: 50%; line-height: 100px; text-align: center;">tiparu</span>
+    </h1>
     <div class="description">Play and Earn Money with your Tap</div>
     <div class="coming-soon">Coming Soon</div>
-
-    <a href="login.php"><button style="
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 40px 2px;
-        cursor: pointer;
-        border-radius: 8px;
-    ">Play Beta Version</button></a>
- 
-
-
+    <a href="login.php">
+        <button style="
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 40px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        ">Play Beta Version</button>
+    </a>
+</body>
 </html>

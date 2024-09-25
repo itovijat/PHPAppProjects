@@ -6,84 +6,57 @@ include_once 'ih.php';
         <style>
          
 
-            #challenges, #players {
-                display: block;
-                width: 90%;
-                margin: 0 auto;
-                font-size: 18px;
-            }
+         
 
-            #challenges {
-                border: 2px solid #333;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #444;
-                margin-bottom: 10px;
-            }
-
-            #players {
-                border: 2px solid #333;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #333;
-            }
-
-            #challenges h2, #players h2 {
-                margin-top: 0;
-            }
-
-            #challenges ul, #players ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            #challenges li, #players li {
-                padding: 10px;
-                border-bottom: 1px solid #666;
-                display: flex;
-                align-items: center;
-            }
-
-            #challenges li:last-child, #players li:last-child {
-                border-bottom: none;
-            }
-
-            #challenges button, #players button {
-                background-color: #4CAF50;
-                color: #fff;
-                padding: 10px 20px;
-                border: none;
-                cursor: pointer;
-                margin-left: 10px;
-            }
-
-            #challenges button:hover, #players button:hover {
-                background-color: #45a049;
-            }
         </style>
-     
-        <div id="players"></div>
-    
+
+<br>
+
+
+
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+                         <button type="button" class="btn btn-outline-success" style="background-color: green; color: white;" onclick="location.reload()">Refresh</button>
+                         <input type="text" id="search_username" name="search_username" placeholder="Username" style="margin: 0 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                         <button type="button" class="btn btn-outline-success" style="background-color: green; color: white;" onclick="searchFormValidate()">Search</button>
+        </div>
+        
+        
+        <br>
+        <div id="players" style="text-align: center;">Getting Players</div>
 
 
     <script>
+var sname="";
+        function searchFormValidate() {
+            sname = document.getElementById("search_username").value;
+            if (sname) {
+                alert(sname);
+            }
+        }
         function updatePlayers() {
 
 
 
-            fetch('update_players.php?username=<?php echo $username; ?>')
+            fetch('update_players.php?sname='+sname)
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('players').innerHTML = data;
+                    if(data) {
+                   
+
+                        document.getElementById('players').innerHTML = data;
+
+                    }
                 });
         }
-
 
 
     
 
         function challenge(challenged) {
+
+
+
             fetch('challenge.php?challenger=<?php echo $username; ?>&challenged=' + challenged)
                 .then(response => response.text())
                 .then(data => {
@@ -112,7 +85,7 @@ include_once 'ih.php';
 
 
 
-        setInterval(updatePlayers, 2000);
+        setInterval(updatePlayers, 1000);
       
     </script>
 

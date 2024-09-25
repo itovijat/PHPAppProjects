@@ -62,6 +62,7 @@ include_once 'ih.php';
                 background-color: #45a049;
             }
         </style>
+        <br>
         <div id="challenges"></div>
        
     

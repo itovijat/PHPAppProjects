@@ -79,13 +79,15 @@ $user_id = $user_id_row['id'];
 </div>
 
 
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 
 
 <style>
         body {
             background-color: #1a1a1a;
             color: #fff;
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
+            font-weight: bold;
          
         
         }

@@ -75,63 +75,82 @@ if(isset($_SESSION['username'])){
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <style>
-    * {
-        margin: 0;
-        box-sizing: border-box;
-    }
-    body {
-        background-color: #1a1a1a;
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: 'Press Start 2P', cursive;
-    }
-    
-   
-   
-    .coming-soon {
-        margin-bottom:5%;
+    <link rel="shortcut icon" href="tip2.png" type="image/x-icon">
 
-        font-size: 2.5em;
-        text-align: center;
-        animation: blink 1s infinite;
-    }
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    input {
-        padding: 20px;
-        font-size: 2em;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 500px;
-    }
-    button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 20px 40px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 2em;
-        max-width: 500px;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
+
+</head>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+             background-color: #1a1a1a;
+             color: #fff;
+        font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
+        font-weight: bold;
+        }
+        .coming-soon {
+            margin-bottom:5%;
+
+            font-size: 2.5em;
+            text-align: center;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            padding: 20px;
+            font-size: 2em;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 2em;
+            max-width: 500px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            input {
+                font-size: 1.5em;
+            }
+            button {
+                font-size: 1.5em;
+            }
+            .coming-soon {
+            margin-bottom:5%;
+
+            font-size: 1em;
+            text-align: center;
+            animation: blink 1s infinite;
+        }
+        }
     </style>
 </head>
 <body>
+
     <div style="display: flex; flex-direction: column; align-items: center;">
 
-    <h1 style="font-size: 77px;"> <span class="coinlogo"style="display: inline-block; width: 100px; height: 100px; background-color: #ff9900; margin-left: -100px; border-radius: 50%; line-height: 90px; text-align: center;">tiparu</span> </h1>
+    <h1 style="font-size: 95px;"> <span class="coinlogo"style="display: inline-block; width: 100px; height: 100px; background-color: #ff9900; margin-left: -100px; border-radius: 50%; line-height: 100px; text-align: center;">tiparu</span> </h1>
 
 <div class="coming-soon">Play and Earn Money with your Tap</div>
 
@@ -143,4 +162,5 @@ if(isset($_SESSION['username'])){
         </form>
     </div>
 </body>
+
 </html>

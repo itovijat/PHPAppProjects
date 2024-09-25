@@ -58,4 +58,6 @@ $sql = "CREATE TABLE IF NOT EXISTS challenges (
 $conn->query($sql);
 
 session_start();
+
+
 ?>
