@@ -59,6 +59,31 @@
     <div class="coming-soon">Coming Soon</div>
     <a href="login.php">
         <button style="
+            background-color: red;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 40px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+            animation: blink 3s ease-in-out infinite;
+        ">Play Beta Version</button>
+    </a>
+    <style>
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+
+
+
+    <a href="tiparu.apk" download>
+        <button style="
             background-color: #4CAF50;
             border: none;
             color: white;
@@ -70,7 +95,16 @@
             margin: 40px 2px;
             cursor: pointer;
             border-radius: 8px;
-        ">Play Beta Version</button>
+        ">Download Android APK</button>
     </a>
+    <script>
+        const androidButton = document.querySelector('a[href="tiparu.apk"]');
+        androidButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (confirm('This will download the Tiparu APK file. Please make sure you are on a secure network and have enabled "unknown sources" in your settings.')) {
+                window.location.href = 'tiparu.apk';
+            }
+        });
+    </script>
 </body>
 </html>

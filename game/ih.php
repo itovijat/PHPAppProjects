@@ -186,7 +186,7 @@ margin-right: 2px;
             .logo h1:last-child {
                 display: flex;
                 align-items: center;
-                font-size: 15px;
+                font-size: 12px;
             }
             .logo h1:last-child span {
                 width: 25px;

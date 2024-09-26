@@ -14,10 +14,8 @@ include_once 'ih.php';
             }
 
             #challenges {
-                border: 2px solid #333;
-                border-radius: 10px;
+           
                 padding: 10px;
-                background-color: #444;
                 margin-bottom: 10px;
             }
 
@@ -63,7 +61,7 @@ include_once 'ih.php';
             }
         </style>
         <br>
-        <div id="challenges"></div>
+        <div id="challenges" style="text-align: center; overflow-y: scroll; height: 500px;"></div>
        
     
    

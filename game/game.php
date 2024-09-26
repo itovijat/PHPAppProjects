@@ -3,7 +3,17 @@
 include 'db.php';
 
 
+?>
 
+<head>
+    <title>Tap & Earn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="tip2.png" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+</head>
+<?php
 $user_name = $_SESSION['username'];
 
 $user_id_sql = "SELECT id FROM users WHERE username='$user_name'";
@@ -44,10 +54,10 @@ $result = $conn->query($sql);
 $row = $result->fetch_assoc();
 $opponentn = $row['username'];
 
-echo "<div style='display: flex; justify-content: center; align-items: center; width: 100%; font-size: 2em; '>
-    <div style='width: 45%; text-align: center; background-color: green; color:white;'>".$user_name."</div>
-    <div style='width: 10%; text-align: center; background-color: yellow;'><img src='img/f.png' style='height: 50px; width: 50px;'></div>
-    <div style='width: 45%; text-align: center; background-color: red; color:white;'>".$opponentn."</div>
+echo "<div class='top'>
+    <div>".$user_name."</div>
+    <div><img src='img/f.png'></div>
+    <div>".$opponentn."</div>
 </div>";
 
 // Update challenge status
@@ -76,26 +86,82 @@ $user_id = $user_id_row['id'];
 
     <div id="etime" style="width: 45%; text-align: center;"><?php echo date("h:i:s A", $start_time);?></div>
 
+<style>
+ 
+</style>
 </div>
 
 
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 
-
 <style>
-        body {
-            background-color: #1a1a1a;
-            color: #fff;
-            font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
-            font-weight: bold;
-         
-        
-        }
+    body {
+        background-color: #1a1a1a;
+        color: #fff;
+        font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
+        font-weight: bold;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        zoom: 1;
+        -moz-transform: scale(1);
+        -moz-transform-origin: 0 0;
+    }
 
-        </style>
+    .game-header{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 95%;
+        font-size: 2em;
+    }
+    .game-header > div{
+        width: 42%;
+        text-align: center;
+    }
+    .game-header > div:first-child{
+        background-color: green;
+        color:white;
+    }
+    .game-header > div:nth-child(2){
+        width: 10%;
+        background-color: yellow;
+    }
+    .game-header > div:last-child{
+        background-color: red;
+        color:white;
+    }
 
+    .top{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 10%;
+        font-size: 2em;
+       
+    }
+    .top > div{
+        width: 45%;
+        text-align: center;
+        margin-top:10%;
+    }
+    .top > div:first-child{
+        background-color: green;
+        color:white;
+    }
+    .top > div:nth-child(2){
+        width: 10%;
+        background-color: yellow;
+    }
+    .top > div:nth-child(2) > img{
+        width: 10vw;
+    }
+    .top > div:last-child{
+        background-color: red;
+        color:white;
+    }
 
-<style>
     #tapButton {
         position: absolute;
         width: 200px;
@@ -112,6 +178,7 @@ $user_id = $user_id_row['id'];
     #tapButton:hover {
         transform: scale(1.1);
     }
+
     #tapButton.animate {
         animation: burst 0.2s ease-in-out;
     }
@@ -126,9 +193,26 @@ $user_id = $user_id_row['id'];
             transform: scale(1);
         }
     }
+
+    #etime {
+        width: 45%;
+        text-align: center;
+    }
+    @media only screen and (max-width: 600px) {
+        body {
+            font-size: 0.5em;
+        }
+        #tapButton {
+            width: 100px;
+            height: 100px;
+            font-size: 20px;
+            line-height: 40px;
+
+        }
+    }
 </style>
 
-<div id="tapButton" >Tiparu <p style="margin-top:-30px;" id="tapCountText">Tap</p></div>
+<div id="tapButton" >Tiparu <p style="margin-top: 10px;" id="tapCountText">Tap</p></div>
 
 
 <script>
@@ -142,10 +226,10 @@ var tapped = false;
 var button = document.getElementById('tapButton');
 button.style.display = "none";
 
-var left1 = 500;
-        var top1 =  200;
-        button.style.left = left1 + 'px';
-        button.style.top = top1 + 'px';
+var left1 = 30;
+        var top1 =  30;
+        button.style.left = left1 + '%';
+        button.style.top = top1 + '%';
    
    
 
@@ -221,8 +305,8 @@ document.getElementById("etime").innerHTML = Math.round((start_time - d)/1000) +
                 }
                 
                 
-                left2 = Math.floor(Math.random() * (70 - 10 + 1) + 10);
-                top2 =  Math.floor(Math.random() * (60 - 10 + 1) + 10);
+                left2 = Math.floor(Math.random() * (70 - 30 + 1) + 30);
+                top2 =  Math.floor(Math.random() * (60 - 30 + 1) + 30);
                 button.style.left = left2 + '%';
                 button.style.top = top2 + '%';
                 document.getElementById('tapCountText').innerHTML = tapCount;
@@ -266,21 +350,22 @@ document.getElementById("etime").innerHTML = Math.round((start_time - d)/1000) +
             resultDiv.style.fontFamily = "'Press Start 2P', cursive";
            
            
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'get_challenge.php?challenge_id=<?php echo $challenge_id; ?>&user_id=<?php echo $user_id; ?>&opponent_id=<?php echo $opponent; ?>', true);
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    resultDiv.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-                        <h1 style="font-size: 50px;">` + xhr.responseText + `</h1>
-                        <button style="background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;" onclick="window.location.href='lobby.php?username=<?php echo $user_name; ?>';">Back to lobby</button>
-                    </div>`;
-                    resultDiv.onclick = function(){
-                        window.location.href = "lobby.php?username=" + '<?php echo $user_name; ?>';
+            if(!resultDiv.innerHTML){
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'get_challenge.php?challenge_id=<?php echo $challenge_id; ?>&user_id=<?php echo $user_id; ?>&opponent_id=<?php echo $opponent; ?>', true);
+                xhr.send();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        resultDiv.innerHTML = `<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                            <h1 style="font-size: 50px;">` + xhr.responseText + `</h1>
+                            <button style="background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;" onclick="window.location.href='lobby.php?username=<?php echo $user_name; ?>';">Back to lobby</button>
+                        </div>`;
+                        resultDiv.onclick = function(){
+                            window.location.href = "lobby.php?username=" + '<?php echo $user_name; ?>';
+                        }
                     }
                 }
             }
-
 
             document.body.appendChild(resultDiv);
         }, 15000);
@@ -292,4 +377,16 @@ document.getElementById("etime").innerHTML = Math.round((start_time - d)/1000) +
   
 </script>
 
-  
+<script>
+    function updateLastSeen() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // console.log(this.responseText);
+            }
+        };
+        xhttp.open("GET", "update_last_seen.php", true);
+        xhttp.send();
+    }
+    setInterval(updateLastSeen, 5000);
+</script>

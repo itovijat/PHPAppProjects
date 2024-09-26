@@ -22,7 +22,7 @@ if ($challenger_id_result->num_rows > 0 && $challenged_id_result->num_rows > 0) 
         echo "Challenge already set";
     } else {
         // Insert challenge
-        $sql = "INSERT INTO challenges (challenger_id, challenged_id) VALUES ($challenger_id, $challenged_id)";
+        $sql = "INSERT INTO challenges (challenger_id, challenged_id, created_at) VALUES ($challenger_id, $challenged_id, NOW())";
         if ($conn->query($sql) === TRUE) {
             echo "Challenge set successfully";
         } else {

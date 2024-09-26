@@ -12,28 +12,95 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows == 0) {
         // Create new user
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+        $password = rand(111111, 999999);       
+        
+        
+        
+        
+        $sql = "INSERT INTO users (username, password) VALUES ('$username', MD5('$password'))";
         $conn->query($sql);
-        $_SESSION['username'] = $username;
+      
         echo '<div class="popup" style="z-index: 9999; background-color: rgba(0, 0, 0, 0.7); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; ">
                 <div class="popup-content" style="margin-top: 10%; display: flex; justify-content: center;">
-                    <h2 style="text-align: center;">User created successfully</h2>
+                    <h2 style="text-align: center;">User created successfully<br>Check Your Email<br>Password is in Mailbox</h2>
                 </div>
             </div>
             <script>
                 function closePopup() {
                     document.querySelector(".popup").remove();
                 }
-                setTimeout(closePopup, 2000);
-                window.location.href = "lobby.php";
+                setTimeout(closePopup, 10000);
                 
             </script>';
+
+
+        if ($_SERVER['SERVER_NAME'] != 'localhost') {
+            $to = $username;
+            $subject = "Tiparu New ID Login Password";
+           $txt = "
+            <html>
+            <head>
+              <title>Welcome to Tiparu!</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  color: #333;
+                  padding: 20px;
+                }
+                .container {
+                  background-color: #fff;
+                  padding: 20px;
+                  border-radius: 10px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                  font-size: 24px;
+                  font-weight: bold;
+                  color: #4CAF50;
+                }
+                .content {
+                  margin-top: 20px;
+                  font-size: 16px;
+                }
+                .footer {
+                  margin-top: 30px;
+                  font-size: 14px;
+                  color: #777;
+                }
+              </style>
+            </head>
+            <body>
+              <div class='container'>
+              
+                <div class='header'>Welcome to Tiparu!</div>
+                <div class='content'>
+                  <p>Dear $username,</p>
+                  <p>Thank you for joining Tiparu. We are excited to have you on board!</p>
+                  <p>Your login password is: <strong>$password</strong></p>
+                  <p>Please keep this information secure and do not share it with anyone.</p>
+                </div>
+                <div class='footer'>
+                  <p>Best regards,</p>
+                  <p>The Tiparu Team</p>
+                  <p><a href='mailto:tiparu.com@gmail.com'>tiparu.com@gmail.com</a></p>
+                </div>
+              </div>
+            </body>
+            </html>
+            ";
+            
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= "From: <tiparu.com@gmail.com>" . "\r\n";
+            mail($to,$subject,$txt,$headers);
+        }
 
     }
     else {
      
         $user = $result->fetch_assoc();
-        if ($password== $user['password']) {
+        if (md5($password) == $user['password']) {
             $_SESSION['username'] = $username;
             echo '<div class="popup" style="z-index: 9999; background-color: rgba(0, 0, 0, 0.7); position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; ">
                     <div class="popup-content" style="margin-top: 10%;display: flex; justify-content: center;">
@@ -156,7 +223,7 @@ if(isset($_SESSION['username'])){
 
         <form method="post">
             <h1>Login/Register</h1>
-            <input type="text" maxlength="20" name="username" placeholder="Username" required><br>
+            <input type="email" maxlength="50" name="username" placeholder="Email" required><br>
             <input type="password" maxlength="20" name="password" placeholder="Password" required><br>
             <button type="submit">Enter Lobby</button>
         </form>
