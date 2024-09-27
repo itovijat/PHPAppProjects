@@ -25,11 +25,11 @@ include_once 'head.php';
     <div style="width:100%; height:250px; background-color: #103b5e;"></div>
     <div class="content" style="margin-top:-280px; color: white;">
         <h1 >Apply For a VISA</h1>
-        <p >VFS Global is the exclusive service provider for the Government of many countries, authorized to provide administrative support services to visa applicants.</p>
+        <p >Unavailable for now</p>
  
     </div>
     
-
+<!-- 
     <div style="display: flex; justify-content: center; align-items: center; margin-top: 100px; margin:20px;">
         <div style="width: 80%; background-color: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);">
            
@@ -51,105 +51,105 @@ include_once 'head.php';
             </style>
            
             <?php
-            if(isset($_POST['submit'])){
-                $visacountry = $_POST['visacountry'];
-                $title = $_POST['title'];
-                $familyName = $_POST['familyName'];
-                $givenName = $_POST['givenName'];
-                $mobilePhone = $_POST['mobilePhone'];
-                $dateOfBirth = $_POST['dateOfBirth'];
-                $sex = $_POST['sex'];
-                $maritalStatus = $_POST['maritalStatus'];
-                $email = $_POST['email'];
-                $confirmEmail = $_POST['confirmEmail'];
-                $passportNo = $_POST['passportNo'];
-                $passportIssueDate = $_POST['passportIssueDate'];
-                $passportCountry = $_POST['passportCountry'];
-                $passportExpireDate = $_POST['passportExpireDate'];
-                $address = $_POST['address'];
-                $suburbTown = $_POST['suburbTown'];
-                $country = $_POST['country'];
+            // if(isset($_POST['submit'])){
+            //     $visacountry = $_POST['visacountry'];
+            //     $title = $_POST['title'];
+            //     $familyName = $_POST['familyName'];
+            //     $givenName = $_POST['givenName'];
+            //     $mobilePhone = $_POST['mobilePhone'];
+            //     $dateOfBirth = $_POST['dateOfBirth'];
+            //     $sex = $_POST['sex'];
+            //     $maritalStatus = $_POST['maritalStatus'];
+            //     $email = $_POST['email'];
+            //     $confirmEmail = $_POST['confirmEmail'];
+            //     $passportNo = $_POST['passportNo'];
+            //     $passportIssueDate = $_POST['passportIssueDate'];
+            //     $passportCountry = $_POST['passportCountry'];
+            //     $passportExpireDate = $_POST['passportExpireDate'];
+            //     $address = $_POST['address'];
+            //     $suburbTown = $_POST['suburbTown'];
+            //     $country = $_POST['country'];
                
 
-                $datetime = date('YmdHis');
-                $target_dir = "apply/";
-                $target_file = $target_dir . $datetime . '.' . strtolower(pathinfo($_FILES["photo"]["name"],PATHINFO_EXTENSION));
-                $uploadOk = 1;
-                $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                // Check if image file is a actual image or fake image
-                $check = getimagesize($_FILES["photo"]["tmp_name"]);
-                if($check !== false) {
-                    echo "File is an image - " . $check["mime"] . ".";
-                    $uploadOk = 1;
-                } else {
-                    echo "File is not an image.";
-                    $uploadOk = 0;
-                }
-                // Check if file already exists
-                if (file_exists($target_file)) {
-                    echo "Sorry, file already exists.";
-                    $uploadOk = 0;
-                }
-                // Check file size
-                if ($_FILES["photo"]["size"] > 500000) {
-                    echo "Sorry, your file is too large.";
-                    $uploadOk = 0;
-                }
-                // Allow certain file formats
-                if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif" ) {
-                    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                    $uploadOk = 0;
-                }
-                // Check if $uploadOk is set to 0 by an error
-                if ($uploadOk == 0) {
-                    echo "Sorry, your file was not uploaded.";
-                // if everything is ok, try to upload file
-                } else {
-                    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-                        echo "The file ". htmlspecialchars( basename( $_FILES["photo"]["name"])). " has been uploaded.";
-                    } else {
-                        echo "Sorry, there was an error uploading your file.";
-                    }
-                }
+            //     $datetime = date('YmdHis');
+            //     $target_dir = "apply/";
+            //     $target_file = $target_dir . $datetime . '.' . strtolower(pathinfo($_FILES["photo"]["name"],PATHINFO_EXTENSION));
+            //     $uploadOk = 1;
+            //     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+            //     // Check if image file is a actual image or fake image
+            //     $check = getimagesize($_FILES["photo"]["tmp_name"]);
+            //     if($check !== false) {
+            //         echo "File is an image - " . $check["mime"] . ".";
+            //         $uploadOk = 1;
+            //     } else {
+            //         echo "File is not an image.";
+            //         $uploadOk = 0;
+            //     }
+            //     // Check if file already exists
+            //     if (file_exists($target_file)) {
+            //         echo "Sorry, file already exists.";
+            //         $uploadOk = 0;
+            //     }
+            //     // Check file size
+            //     if ($_FILES["photo"]["size"] > 500000) {
+            //         echo "Sorry, your file is too large.";
+            //         $uploadOk = 0;
+            //     }
+            //     // Allow certain file formats
+            //     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            //     && $imageFileType != "gif" ) {
+            //         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            //         $uploadOk = 0;
+            //     }
+            //     // Check if $uploadOk is set to 0 by an error
+            //     if ($uploadOk == 0) {
+            //         echo "Sorry, your file was not uploaded.";
+            //     // if everything is ok, try to upload file
+            //     } else {
+            //         if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
+            //             echo "The file ". htmlspecialchars( basename( $_FILES["photo"]["name"])). " has been uploaded.";
+            //         } else {
+            //             echo "Sorry, there was an error uploading your file.";
+            //         }
+            //     }
                
 
-                $sql = "CREATE TABLE IF NOT EXISTS application (
-                    visacountry VARCHAR(255) NOT NULL,
-                    title VARCHAR(255) NOT NULL,
-                    familyName VARCHAR(255) NOT NULL,
-                    givenName VARCHAR(255) NOT NULL,
-                    mobilePhone VARCHAR(20) NOT NULL,
-                    dateOfBirth DATE NOT NULL,
-                    sex VARCHAR(255) NOT NULL,
-                    maritalStatus VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) NOT NULL,
-                    confirmEmail VARCHAR(255) NOT NULL,
-                    passportNo VARCHAR(255) NOT NULL,
-                    passportIssueDate DATE NOT NULL,
-                    passportCountry VARCHAR(255) NOT NULL,
-                    passportExpireDate DATE NOT NULL,
-                    address VARCHAR(255) NOT NULL,
-                    suburbTown VARCHAR(255) NOT NULL,
-                    country VARCHAR(255) NOT NULL,
-                    file VARCHAR(255) NOT NULL
-                )";
-                if ($conn->query($sql) === TRUE) {
-                                 } else {
-                    echo "<script>alert('t e');</script>";
-                }
+            //     $sql = "CREATE TABLE IF NOT EXISTS application (
+            //         visacountry VARCHAR(255) NOT NULL,
+            //         title VARCHAR(255) NOT NULL,
+            //         familyName VARCHAR(255) NOT NULL,
+            //         givenName VARCHAR(255) NOT NULL,
+            //         mobilePhone VARCHAR(20) NOT NULL,
+            //         dateOfBirth DATE NOT NULL,
+            //         sex VARCHAR(255) NOT NULL,
+            //         maritalStatus VARCHAR(255) NOT NULL,
+            //         email VARCHAR(255) NOT NULL,
+            //         confirmEmail VARCHAR(255) NOT NULL,
+            //         passportNo VARCHAR(255) NOT NULL,
+            //         passportIssueDate DATE NOT NULL,
+            //         passportCountry VARCHAR(255) NOT NULL,
+            //         passportExpireDate DATE NOT NULL,
+            //         address VARCHAR(255) NOT NULL,
+            //         suburbTown VARCHAR(255) NOT NULL,
+            //         country VARCHAR(255) NOT NULL,
+            //         file VARCHAR(255) NOT NULL
+            //     )";
+            //     if ($conn->query($sql) === TRUE) {
+            //                      } else {
+            //         echo "<script>alert('t e');</script>";
+            //     }
 
 
 
 
-                $sql = "INSERT INTO application (visacountry, title, familyName, givenName, mobilePhone, dateOfBirth, sex, maritalStatus, email, confirmEmail, passportNo, passportIssueDate, passportCountry, passportExpireDate, address, suburbTown, country, file) VALUES ('$visacountry', '$title', '$familyName', '$givenName', '$mobilePhone', '$dateOfBirth', '$sex', '$maritalStatus', '$email', '$confirmEmail', '$passportNo', '$passportIssueDate', '$passportCountry', '$passportExpireDate', '$address', '$suburbTown', '$country', '$target_file')";
-                if ($conn->query($sql) === TRUE) {
-                    echo "<script>alert('".$msg." ');</script>";                 } 
-                    else {
-                        echo "<script>alert('d e');</script>";                }
+            //     $sql = "INSERT INTO application (visacountry, title, familyName, givenName, mobilePhone, dateOfBirth, sex, maritalStatus, email, confirmEmail, passportNo, passportIssueDate, passportCountry, passportExpireDate, address, suburbTown, country, file) VALUES ('$visacountry', '$title', '$familyName', '$givenName', '$mobilePhone', '$dateOfBirth', '$sex', '$maritalStatus', '$email', '$confirmEmail', '$passportNo', '$passportIssueDate', '$passportCountry', '$passportExpireDate', '$address', '$suburbTown', '$country', '$target_file')";
+            //     if ($conn->query($sql) === TRUE) {
+            //         echo "<script>alert('".$msg." ');</script>";                 } 
+            //         else {
+            //             echo "<script>alert('d e');</script>";                }
                 
 
-            }
+            // }
             ?>
                       
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" enctype="multipart/form-data"
@@ -163,10 +163,10 @@ include_once 'head.php';
                     <label for="country">Visa Country</label>
                     <select name="visacountry" id="visacountry" required>
                     <?php
-                        $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
-                        foreach($countries as $country){
-                            echo '<option value="'.$country.'">'.$country.'</option>';
-                        }
+                        // $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
+                        // foreach($countries as $country){
+                        //     echo '<option value="'.$country.'">'.$country.'</option>';
+                        // }
                         ?>
                     </select>
                 </div>
@@ -241,10 +241,10 @@ include_once 'head.php';
                     <label for="passportCountry">Passport Country</label>
                     <select name="passportCountry" id="passportCountry" required>
                     <?php
-                        $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
-                        foreach($countries as $country){
-                            echo '<option value="'.$country.'">'.$country.'</option>';
-                        }
+                        // $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
+                        // foreach($countries as $country){
+                        //     echo '<option value="'.$country.'">'.$country.'</option>';
+                        // }
                         ?>
             </select>
                 </div>
@@ -270,10 +270,10 @@ include_once 'head.php';
                     <label for="country">Country</label>
                     <select name="country" id="country" required>
                     <?php
-                        $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
-                        foreach($countries as $country){
-                            echo '<option value="'.$country.'">'.$country.'</option>';
-                        }
+                        // $countries = array("Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","C te d'Ivoire","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","North Korea","South Korea","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe");
+                        // foreach($countries as $country){
+                        //     echo '<option value="'.$country.'">'.$country.'</option>';
+                        // }
                         ?>
                     </select>
                 </div>
@@ -296,7 +296,7 @@ include_once 'head.php';
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
 
    <?php
