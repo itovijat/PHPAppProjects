@@ -57,7 +57,7 @@ if (isset($_POST['submit'])) {
        
         
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                     <div class="form-group">
                         <label for="product_name">Product Name</label>
@@ -97,7 +97,7 @@ if (isset($_POST['submit'])) {
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
@@ -111,17 +111,13 @@ if (isset($_POST['submit'])) {
                             <th>Deadline</th>
                             <th>Remark</th>
                             <th>Status</th>
-                            <th>Admin Remark</th>
-                            <th>Purchaser</th>
-                            <th>Purchased Value</th>
-                            <th>Purchased Quantity</th>
-                            <th>Purchaser Remark</th>
+                       
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $sql = "SELECT * FROM requisition WHERE company = '$company' ORDER BY id DESC";
+                        $sql = "SELECT * FROM requisition WHERE company = '$company' ORDER BY id DESC limit 10";
                         $result = mysqli_query($conn, $sql);
                         $sl = 1;
                         while ($row = mysqli_fetch_assoc($result)) {
@@ -136,11 +132,7 @@ if (isset($_POST['submit'])) {
                             echo "<td>".date('Y-m-d', strtotime($row['deadline']))."</td>";
                             echo "<td>".$row['req_remark']."</td>";
                             echo "<td>".$row['status']."</td>";
-                            echo "<td>".$row['admin_remark']."</td>";
-                            echo "<td>".$row['purchaser']."</td>";
-                            echo "<td>".$row['purchased_value']."</td>";
-                            echo "<td>".$row['purchased_quantity']."</td>";
-                            echo "<td>".$row['purchaser_remark']."</td>";
+                           
                             if ($sl <= 5) {
                                 echo "<td><a href='delete.php?id=".$row['id']."' class='btn btn-danger'>Delete</a></td>";
                             }

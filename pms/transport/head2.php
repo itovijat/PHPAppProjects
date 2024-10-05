@@ -42,7 +42,8 @@ include_once "head1.php";
     }
 
     .topbar {
-        position: sticky;
+        position: fixed;
+        top: 0;
         width: 100%;
         height: 80px;
         background-color: #333;
@@ -90,7 +91,7 @@ include_once "head1.php";
         height: calc(100% - 0px);
         background-color: #444;
         color: white;
-        overflow-y: auto;
+        overflow-y: scroll;
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         z-index: 999;
@@ -165,10 +166,17 @@ include_once "head1.php";
 
             <li><a href="itemreq.php"><i class="fas fa-box"></i>Item Requisition</li>
             <li><a href="itemreqlist.php"><i class="fas fa-box"></i>Item Req list</li>
-
+            <li><a href="itemreqsum.php"><i class="fas fa-box"></i>Item Req Sum</li>
+<hr>
+          
             <li><a href="kpl.php"><i class="fas fa-car"></i>KPL</li>
             <li><a href="kpllist.php"><i class="fas fa-car"></i>KPL List</li>
             <li><a href="kplsum.php"><i class="fas fa-car"></i>KPL Sum</li>
+
+          
+
+
+
         </ul></a></li>
     </div>
  
