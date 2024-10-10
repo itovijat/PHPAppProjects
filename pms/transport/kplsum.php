@@ -7,7 +7,7 @@
         
 
 
-<div id="up">
+    <div id="up">
         <div class="d-flex justify-content-between align-items-center">
         <h2>KPL Data Summary</h2> 
             <div>
@@ -23,7 +23,7 @@
         <p id="searchvalues" style="display: none; text-align: center;"></p>
 
 
-</div>
+    </div>
         <div class="d-flex justify-content-center align-items-center flex-wrap hideonprint">
             <div class="input-group mb-3 mr-3 hideonprint">
                 <div class="input-group-prepend">
@@ -66,9 +66,9 @@
                             echo "<tr>";
                             echo "<td>".$serial_number."</td>";
                             echo "<td>".$row['vehicle_name']."</td>";
-                            echo "<td>".$row['oil_quantity']."</td>";
-                            echo "<td>".$row['oil_price']."</td>";
-                            echo "<td>".$row['distance']."</td>";
+                            echo "<td>".number_format($row['oil_quantity'], 2)."</td>";
+                            echo "<td>".number_format($row['oil_price'], 2)."</td>";
+                            echo "<td>".number_format($row['distance'], 2)."</td>";
                             echo "<td>".number_format($avg_oil_km, 2)."</td>";
                             echo "<td>".number_format($avg_price_km, 2)."</td>";
                             echo "</tr>";
@@ -86,6 +86,8 @@
     </div>
 
 
+
+
     <script>
         function searchfilter(){
             var vname = document.getElementById("vname").value;
@@ -95,7 +97,7 @@
             
             for (i = 0; i < tr.length; i++) {
                 var td = tr[i].getElementsByTagName("td");
-                var vnamefilter = td[1].innerHTML.includes(vname);
+                var vnamefilter = td[1].innerHTML.toLowerCase().includes(vname.toLowerCase());
                 if (vnamefilter) {
                     tr[i].style.display = "";
                 } else {

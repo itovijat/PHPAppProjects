@@ -156,11 +156,11 @@
           
           for (i = 0; i < tr.length; i++) {
             var td = tr[i].getElementsByTagName("td");
-            var vnamefilter = td[2].innerHTML.includes(vname);
-            var dnamefilter = td[3].innerHTML.includes(dname);
+            var vnamefilter = td[2].innerHTML.toLowerCase().includes(vname.toLowerCase());
+            var dnamefilter = td[3].innerHTML.toLowerCase().includes(dname.toLowerCase());
             var ed1filter = (ed1 == '') ? true : (new Date(td[4].innerHTML) >= new Date(ed1));
             var ed2filter = (ed2 == '') ? true : (new Date(td[4].innerHTML) <= new Date(ed2));
-            var remarkfilter = td[5].innerHTML.includes(remark);
+            var remarkfilter = td[8].innerHTML.toLowerCase().includes(remark.toLowerCase());
             if (vnamefilter && dnamefilter && ed1filter && ed2filter && remarkfilter) {
               tr[i].style.display = "";
             } else {

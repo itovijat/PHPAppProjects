@@ -15,10 +15,7 @@ else
 
 
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "pms";
+  
 }
 
 

@@ -173,7 +173,7 @@ include_once "head1.php";
             <li><a href="kpllist.php"><i class="fas fa-car"></i>KPL List</li>
             <li><a href="kplsum.php"><i class="fas fa-car"></i>KPL Sum</li>
 
-          
+            <hr><hr><hr><hr><hr>
 
 
 
