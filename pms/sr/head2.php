@@ -144,7 +144,8 @@ include_once "head1.php";
         <ul>
             <!-- Generate 50 demo menu items -->
             <li><a href="index.php"><i class="fas fa-tv"></i> Dashboard</li>
-            <li><a href="order.php"><i class="fas fa-user-secret"></i> Order</li>
+            <li><a href="visit.php"><i class="fas fa-user-secret"></i> Visit</li>
+            <li><a href="visitlist.php"><i class="fas fa-user-secret"></i> Visit List</li>
 
             <li><a href="profile.php"><i class="fas fa-user-secret"></i> Profile</li>
         </ul></a></li>
