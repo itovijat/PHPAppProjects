@@ -27,6 +27,34 @@ if(isset($_POST['route'])){
     } else {
         echo "Error updating record: " . mysqli_error($conn);
     }
+
+    $route = $_POST['route'];
+    $shop = $_POST['shop'];
+    $phone = $_POST['phone'];
+    $company = $_SESSION['company'];
+
+    $sql = "INSERT INTO route (name, company) SELECT '$route', '$company' FROM dual WHERE NOT EXISTS (SELECT 1 FROM route WHERE name='$route' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $sql = "INSERT INTO phone (name, company) SELECT '$phone', '$company' FROM 
+    dual WHERE NOT EXISTS (SELECT 1 FROM phone WHERE name='$phone' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $sql = "INSERT INTO shop (name, company) SELECT '$shop', '$company' FROM 
+    dual WHERE NOT EXISTS (SELECT 1 FROM shop WHERE name='$shop' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
 }
 
 
@@ -41,21 +69,61 @@ if(!isset($_GET['visitedit'])){
                             ?>
                             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
                           
-                            <div class="form-group">
-                                <label for="route">Route:</label>
-                                <input type="text" class="form-control" id="route" name="route" value="<?php echo $row['route']; ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="shop">Shop:</label>
-                                <input type="text" class="form-control" id="shop" name="shop" value="<?php echo $row['shop']; ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone:</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $row['phone']; ?>" required>
-                            </div>
+                             <div class="form-group">
+        <label for="route">Route:</label>
+        <select class="form-control select2" id="route" name="route" required>
+
+        
+            <?php
+
+echo "<option value='" . $row['route'] . "'>" . $row['route']  . "</option>";
+
+            $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+            $routeResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($routeResult) > 0) {
+                while ($routeRow = mysqli_fetch_assoc($routeResult)) {
+                    echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="shop">Shop:</label>
+        <select class="form-control select2" id="shop" name="shop" required>
+            <?php
+
+echo "<option value='" . $row['shop'] . "'>" . $row['shop']  . "</option>";
+
+                                    $sql = "SELECT name FROM shop WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+
+            $shopResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($shopResult) > 0) {
+                while ($shopRow = mysqli_fetch_assoc($shopResult)) {
+                    echo "<option value='" . $shopRow['name'] . "'>" . $shopRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>    </div>
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <select class="form-control select2" id="phone" name="phone" required>
+            <?php
+            echo "<option value='" . $row['phone'] . "'>" . $row['phone']  . "</option>";
+
+            $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+            $phoneResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($phoneResult) > 0) {
+                while ($phoneRow = mysqli_fetch_assoc($phoneResult)) {
+                    echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>    </div>
                             <div class="form-group">
                                 <label for="memo">Memo:</label>
-                                <input type="number" class="form-control" id="memo" name="memo" value="<?php echo $row['memo']; ?>" required>
+                                <input type="text" class="form-control" id="memo" name="memo" value="<?php echo $row['memo']; ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="reason">Reason:</label>
@@ -83,5 +151,18 @@ if(!isset($_GET['visitedit'])){
         </div>
         
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+       $(document).ready(function() {
+           
 
+            // Initialize select2 for dynamic select fields
+            $('#route, #shop, #phone').select2({
+                tags: true,
+                placeholder: 'Select or add an option',
+                allowClear: true
+            });
+        });
+    </script>
 <?php include_once "foot.php"; ?>

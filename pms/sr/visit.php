@@ -2,6 +2,42 @@
 
 
 <?php
+
+$sql = "CREATE TABLE IF NOT EXISTS route (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS shop (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS phone (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
 $sql = "CREATE TABLE IF NOT EXISTS visit (
     SN INT AUTO_INCREMENT PRIMARY KEY,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -12,11 +48,11 @@ $sql = "CREATE TABLE IF NOT EXISTS visit (
     latitude DECIMAL(10,8),
     longitude DECIMAL(11,8),
     reason VARCHAR(5),
-    memo VARCHAR(10), 
+    memo VARCHAR(20), 
     company VARCHAR(10),
     odate DATE,
     ddate DATE,
-    comment VARCHAR(20),
+    comment VARCHAR(50),
     
     status SMALLINT(1) DEFAULT 0
     )";
@@ -48,6 +84,30 @@ if (isset($_POST['mo'])) {
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
+
+
+    $sql = "INSERT INTO route (name, company) SELECT '$route', '$company' FROM dual WHERE NOT EXISTS (SELECT 1 FROM route WHERE name='$route' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $sql = "INSERT INTO phone (name, company) SELECT '$phone', '$company' FROM 
+    dual WHERE NOT EXISTS (SELECT 1 FROM phone WHERE name='$phone' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    $sql = "INSERT INTO shop (name, company) SELECT '$shop', '$company' FROM 
+    dual WHERE NOT EXISTS (SELECT 1 FROM shop WHERE name='$shop' AND company='$company')";
+    if (mysqli_query($conn, $sql)) {
+        // echo "New route created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
 }
 
 
@@ -74,16 +134,53 @@ if (isset($_POST['mo'])) {
     </div>
     <div class="form-group">
         <label for="route">Route:</label>
-        <input type="text" class="form-control" id="route" name="route" placeholder="Enter Route" required>
+        <select class="form-control select2" id="route" name="route" required>
+        <option value="" selected>Select</option>
+
+            <?php
+            $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+            $routeResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($routeResult) > 0) {
+                while ($routeRow = mysqli_fetch_assoc($routeResult)) {
+                    echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>
     </div>
+
     <div class="form-group">
         <label for="shop">Shop:</label>
-        <input type="text" class="form-control" id="shop" name="shop" placeholder="Enter Shop Name" required>
-    </div>
+        <select class="form-control select2" id="shop" name="shop" required>
+        <option value="" selected>Select</option>
+
+            <?php
+                        $sql = "SELECT name FROM shop WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+
+            $shopResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($shopResult) > 0) {
+                while ($shopRow = mysqli_fetch_assoc($shopResult)) {
+                    echo "<option value='" . $shopRow['name'] . "'>" . $shopRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>    </div>
     <div class="form-group">
         <label for="phone">Phone:</label>
-        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" required>
-    </div>
+        <select class="form-control select2" id="phone" name="phone" required>
+            <option value="" selected>Select</option>
+            <?php
+            $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+            $phoneResult = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($phoneResult) > 0) {
+                while ($phoneRow = mysqli_fetch_assoc($phoneResult)) {
+                    echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
+                }
+            }
+            ?>
+        </select>    </div>
+
+
     <div class="form-group" style="display:none;">
         <label for="latitude">Latitude:</label>
         <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter Latitude" required>
@@ -124,7 +221,37 @@ if (isset($_POST['mo'])) {
     </div>
     <div class="form-group">
         <label for="memo">Memo:</label>
-        <input type="number" class="form-control" id="memo" name="memo" value="<?php echo time(); ?>" required>
+        <input type="text" class="form-control" id="memo"  name="memo"  value="<?php 
+        
+        
+        $t = time();
+
+        
+        function stringToInt($str) {
+            $result = 0;
+            
+            for ($i = 0; $i < strlen($str); $i++) {
+                $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
+             
+            }
+            return $result;
+        }
+        
+
+        function intToAlphanumeric($num) {
+            return strtoupper(base_convert($num, 10, 36)); // Converts a base-10 integer to a base-36 string and makes it uppercase
+        }
+        
+        // Example usage:
+        $t = intToAlphanumeric($t);
+       
+        
+
+
+        $converted_value = intToAlphanumeric(stringToInt('Mehedi12Soft'));
+        echo ($converted_value ."-". $t);
+                
+        ?>" maxlength="10" required>
     </div>
     <div class="form-group">
         <label for="comment">Comment:</label>
@@ -142,5 +269,18 @@ if (isset($_POST['mo'])) {
         </div>
         
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script>
+       $(document).ready(function() {
+           
 
+            // Initialize select2 for dynamic select fields
+            $('#route, #shop, #phone').select2({
+                tags: true,
+                placeholder: 'Select or add an option',
+                allowClear: true
+            });
+        });
+    </script>
 <?php include_once "foot.php"; ?>

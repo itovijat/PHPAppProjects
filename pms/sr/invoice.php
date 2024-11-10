@@ -1,77 +1,14 @@
-<?php include_once "head2.php"; ?>
+<?php include_once "head2.php"; 
 
 
-<?php
-$sql = "CREATE TABLE IF NOT EXISTS orders (
-    SN INT AUTO_INCREMENT PRIMARY KEY,
-    snvisit VARCHAR(10),
-    pn VARCHAR(30),
-    unit FLOAT,
-    rate FLOAT,
-
-    quantity FLOAT
-)";
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
+if(!isset($_GET['order'])){
+    echo "<script>window.location.href='index.php';</script>";
+    exit();
 }
-
-
-if (isset($_GET['orderdel'])) {
-    $sql = "SELECT status FROM visit WHERE SN='".$_GET['order']."'";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        if ($row['status'] == 0) {
-            $sql = "DELETE FROM orders WHERE SN='".$_GET['orderdel']."'";
-            if (mysqli_query($conn, $sql)) {
-                echo "<script>alert('Record deleted successfully');window.location.href='order.php?order=".$_GET['order']."#productform';</script>";
-            } else {
-                echo "Error deleting record: " . mysqli_error($conn);
-            }
-        } else {
-            echo "<script>alert('Order already accepted or canceled. Can't delete.');</script>";
-        }
-    } else {
-        echo "<script>alert('Order already accepted or canceled. Can't delete.');</script>";
-    }
-}
-if (isset($_POST['pn'])) {
-    $snvisit = $_POST['snvisit'];
-    $pn = $_POST['pn'];
-    $unit = $_POST['unit'];
-    $rate = $_POST['rate'];
-    $quantity = $_POST['quantity'];
-    $sql = "INSERT INTO orders (snvisit, pn, unit, rate, quantity) VALUES ('$snvisit', '$pn', '$unit', '$rate', '$quantity')";
-    if (mysqli_query($conn, $sql)) {
-        echo "New record created successfully";
-        echo "<script>window.location.href='order.php?order=".$snvisit."#productform';</script>";
-        
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
-
-    $sql = "UPDATE visit SET reason='order' WHERE SN='".$_POST['snvisit']."'";
-    if (mysqli_query($conn, $sql)) {
-        // echo "Record updated successfully";
-    } else {
-        echo "Error updating record: " . mysqli_error($conn);
-    }
-
-$company = $_SESSION['company'];
-    $sql = "INSERT INTO products (name, company) SELECT '$pn', '$company' FROM 
-    dual WHERE NOT EXISTS (SELECT 1 FROM products WHERE name='$pn' AND company='$company')";
-    if (mysqli_query($conn, $sql)) {
-        // echo "New route created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
-
-}
-
 
 ?>
+
+
 
 
 <div class="content">
@@ -81,7 +18,7 @@ $company = $_SESSION['company'];
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h2>Order Add</h2>
+                    <h2 style="text-align: center; color: green;">Ovijat E-Invoice</h2>
                 </div>
                 <div class="card-body">
 
@@ -91,146 +28,54 @@ $company = $_SESSION['company'];
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
-                            echo "<div class='row justify-content-center'>";
-                            echo "<div class=' col-12 text-center'>".$row['reason']." ";
+                            echo "<div style='text-align: center; color: red;'>";
+                            echo $_SESSION['company']." ".strtoupper($row['reason'])." ID: ".$row['memo']."<br>";
+                            echo $_SESSION['email']." @ ".$row['date']."<br>";
+                            
+                            echo "Order: ".$row['odate']." Delivery: ".$row['ddate']."<br>";
 
-                            echo "".$row['SN']." @ ";
-
-                            echo "".$row['date']."</div>";
-                            echo "<div class=' col-12 text-center'>".$row['shop']." ";
-                           
-                            echo "".$row['phone']." ";
-                            echo "".$row['route']." MarketingOfficer_".$row['mo']."</div>";
+                            echo "<span style='font-size:1.2em;'>".$row['shop']."</span> ";
+                            echo "<span style='font-size:1.2em;'>".$row['phone']."</span> ";
+                            echo "<span style='font-size:1.2em;'>".$row['route']."</span><br><br>";
+                          
+                            echo "<div style='text-align: center; border: 1px solid grey; color: green; max-width: 80%; margin: 0 auto;'>" . $row['comment'] . "</div>";
                             echo "</div>";
                            
-                            $order = $_GET['order'];
-                            if($row['status'] != 0){
-                                echo "Memo: ".$row['memo'];
-                                echo " ODate: ".date('Y.m.d', strtotime($row['odate']));
-                                echo " DDate: ".date('Y.m.d', strtotime($row['ddate']));
-                                echo " Comment: ".$row['comment'];
-                            } else {
-                                echo "<form style='background-color: #f1f1f1' action='order.php?order=".$order."' method='POST' class='d-flex flex-wrap p-2 border'>";
-                                echo "<div class='d-flex flex-wrap'>";
-                                echo "<div class='col-12 col-md-3 p-2'><div class='d-flex flex-row'><div><label>Memo:</label></div><div><input type='text' name='memo' value='".$row['memo']."' required class='form-control'></div></div></div>";
-                                echo "<div class='col-6 col-md-3 p-2'><div class='d-flex flex-row'><div><label>O</label></div><div><input type='text' name='odate' value='".date('Y.m.d', strtotime($row['odate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-                                echo "<div class='col-6 col-md-3 p-2'><div class='d-flex flex-row'><div><label>D</label></div><div><input type='text' name='ddate' value='".date('Y.m.d', strtotime($row['ddate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-                                echo "<div class='col-12 col-md-3 p-2'><div class='d-flex flex-row'><div><label>Note:</label></div><div><input type='text' name='comment' value='".$row['comment']."' maxlength='50' class='form-control'></div></div></div>";
-                                echo "</div>";
-                                echo "<div class='text-center mx-auto my-auto'><input type='submit' value='Update' class='btn btn-primary'></div>";
-                                echo "</form>";
-                            }
+                            
                             echo "<br>";
                             
                         }
                     }
 
-                    if (isset($_POST['memo'])) {
-                        $sql = "UPDATE visit SET memo='".$_POST['memo']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE SN='".$_GET['order']."'";
-                        if (mysqli_query($conn, $sql)) {
-                            echo "Record updated successfully";
-                            echo "<script>window.location.href='order.php?order=".$_GET['order']."';</script>";
-                        } else {
-                            echo "Error updating record: " . mysqli_error($conn);
-                        }
-                    }
+                 
 
 
-
-
-                
-                    $sql = "SELECT status FROM visit WHERE SN='".$_GET['order']."'";
+                    $sql = "SELECT * FROM orders WHERE snvisit='".$_GET['order']."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
-                        $row = mysqli_fetch_assoc($result);
-                        if($row['status']=="0"){
-                    ?>
-                    <form id="productform" style='background-color: #f1f1f1' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                        <div class="form-group" style="display:none;">
-                            <label for="snvisit">SN Visit:</label>
-                            <input type="text" class="form-control" id="snvisit" name="snvisit" value="<?php echo $_GET['order']; ?>" required>
-                        </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-5">
-                            <label for="pn">Product: (Ovijat Miniket)</label>
-                            <select class="form-control" id="pn" name="pn" required>
-                                <option value="">Select Product</option>
-                            <?php
-                            $sql = "SELECT name FROM products WHERE company='".$_SESSION['company']."'";
-                            $result2 = mysqli_query($conn, $sql);
-                            if (mysqli_num_rows($result2) > 0) {
-                                while($row2 = mysqli_fetch_assoc($result2)) {
-                                    echo "<option value='".$row2['name']."'>".$row2['name']."</option>";
-                                }
-                            }
-                            ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-3 col-md-2">
-                            <label for="unit">Per Unit:</label>
-                            <input type="number" class="form-control" id="unit" name="unit" step="0.01" required>
-                        </div>
-                        <div class="form-group col-4 col-md-2">
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" step="0.01" required>
-                        </div>
-                        <div class="form-group col-5 col-md-2">
-                            <label for="rate">Rate:</label>
-                            <input type="number" class="form-control" id="rate" name="rate" step="0.01" required>
-                        </div>
-                      
-                        <div class="form-group col-md-12 text-center col-12" style=" float: center;">
-                        <button type="submit" class="btn btn-primary" style="height: 100%; width: 100%;">+Add This Product</button>
-
-                        </div>
-                    </div>
-                    </form>
-                    <?php
-                        }
-
-                        if($row['status']=="1"){
-                            echo "<h3>Order Accepted</h3>";
-                        }elseif($row['status']=="2"){
-                            echo "<h3>Order Canceled</h3>";
-                        }
-                        
-                    }
-                   
-
-
-
-
-
-
-
-                    $sql = "SELECT * FROM orders WHERE snvisit='".$_GET['order']."' ORDER BY SN DESC";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                        echo "<table style='background-color:  green; color: white'  class='table'>";
+                        echo "<table class='table' style=' word-wrap: break-word;'>";
                         echo "<thead>";
-                        echo "<tr>";
+                        echo "<tr style='text-align:center; font-size:1em;'>";
                       
-                        echo "<th>Products</th>";
+                        echo "<th>Product</th>";
                         
                         
-                        echo "<th></th>";
+                        echo "<th>RateXQuantity</th>";
+                       
                         echo "</tr>";
                         echo "</thead>";
-                        echo "<tbody>";
+                        echo "<tbody style='text-align:center; font-size:1.2em;'>";
                         $tq=0;
                         $tp=0;
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
+                      
+                            echo "<td>".$row['pn']." (".$row['unit'].")</td>";
+                            echo "<td>".$row['rate']."X".$row['quantity']."=";
                             $tq+=$row['quantity'];
                             $tp+=($row['rate']*$row['quantity']);
-                            echo "<td>".$row['pn']." ";
-                            echo " (".$row['unit'].") ";
-                            echo " ".$row['rate']."X";
-                            echo "".$row['quantity']."=";
+                            echo ($row['rate']*$row['quantity'])."</td>";
                             
-                            echo "".($row['rate']*$row['quantity'])."/=</td>";
-                            
-                            echo "<td><a href='order.php?orderdel=".$row['SN']."&order=".$_GET['order']."' class='btn btn-danger'>X</a></td>";
                             
                             echo "</tr>";
                         }
@@ -367,14 +212,13 @@ $company = $_SESSION['company'];
                          $decimalWords = numberToWords($decimalPart);                       
                         echo" 
                        <tr>
-                      
-                       <td colspan='2' style='text-align: center'>=".$tq." =".number_format($tp, 2, '.', ',')."/=</td>
-                      
+                       
+                       <td>=".$tq."</td>
+                       <td>=".number_format($tp, 2, '.', ',')."/=</td>
                        </tr>
-                    <tr><td colspan='2'>".$integerWords . " TAKA " . $decimalWords." PAISA</td></tr>
+                    <tr style='text-align:center; font-size:0.8em;'><td colspan='2'>".$integerWords . " TAKA " . $decimalWords." PAISA</td></tr>
                      </tr>
-                    <tr><td colspan='2'>".numberToWordsBangla($integerPart) . " <b>টাকা</b> " .
-                     numberToWordsBangla($decimalPart)." <b>পয়সা</b></td></tr>
+                    <tr style='text-align:center; font-size:0.65em;'><td colspan='2'>".numberToWordsBangla($integerPart) . " টাকা " . numberToWordsBangla($decimalPart)." পয়সা</td></tr>
                        
                        ";
                         echo "</tbody>";
@@ -385,21 +229,18 @@ $company = $_SESSION['company'];
                         echo "No orders found";
 
 
-                        $sql = "UPDATE visit SET reason='visit' WHERE SN='".$_GET['order']."'";
-                        if (mysqli_query($conn, $sql)) {
-                            // echo "Record updated successfully";
-                        } else {
-                            echo "Error updating record: " . mysqli_error($conn);
-                        }
+                       
                     }
                     ?>
                 
-                <div style="text-align: center;">
-                    <a href="visitlist.php?ordercancel=<?php echo $_GET['order']; ?>" class="btn btn-danger">Cancel</a>
-                    &nbsp;&nbsp;
-                    <a href="invoice.php?order=<?php echo $_GET['order']; ?>" class="btn btn-primary">Invoice</a>
-                </div>
+       
                     
+               
+                    <div style="display:flex; justify-content:space-between; font-size:0.5em; opacity:0.8;">
+                        <div style="width:30%; height:50px; padding:10px; border:1px solid #000; text-align:center; margin-right:2px;">Prepared By</div>
+                        <div style="width:30%; padding:10px; border:1px solid #000; text-align:center; margin-right:2px;">Authorized By</div>
+                        <div style="width:30%; padding:10px; border:1px solid #000; text-align:center;">Received By</div>
+                    </div>
                     
             
 
@@ -408,18 +249,5 @@ $company = $_SESSION['company'];
         </div>
         
     </div>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script>
-       $(document).ready(function() {
-           
-
-            // Initialize select2 for dynamic select fields
-            $('#pn').select2({
-                tags: true,
-                placeholder: 'Select or add an option',
-                allowClear: true
-            });
-        });
-    </script>
+   
 <?php include_once "foot.php"; ?>

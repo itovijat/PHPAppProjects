@@ -51,16 +51,17 @@ if (mysqli_num_rows($result) > 0) {
             echo "<td></td>";
         }
 
-        echo "<td><a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+        echo "<td><a href='invoice.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
 
         echo "<td>".$row['shop']." ".$row['phone']."</td>";
 
 echo "<td>";
         $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
         $orderResult = mysqli_query($conn, $orderSql);
+
         if (mysqli_num_rows($orderResult) > 0) {
             while ($orderRow = mysqli_fetch_assoc($orderResult)) {
-                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " " . $orderRow['unit'] ." ". $orderRow['quantity'] . "@" . $orderRow['rate'] . "=" . ($orderRow['rate'] * $orderRow['quantity'])."</div>";
+                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " " . $orderRow['unit'] ." ". $orderRow['quantity'] . "@" . $orderRow['rate'] . "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
             }
             } else {
             echo "No orders found";
