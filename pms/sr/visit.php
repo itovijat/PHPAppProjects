@@ -13,6 +13,11 @@ $sql = "CREATE TABLE IF NOT EXISTS visit (
     longitude DECIMAL(11,8),
     reason VARCHAR(5),
     memo VARCHAR(10), 
+    company VARCHAR(10),
+    odate DATE,
+    ddate DATE,
+    comment VARCHAR(20),
+    
     status SMALLINT(1) DEFAULT 0
     )";
 if (mysqli_query($conn, $sql)) {
@@ -31,7 +36,12 @@ if (isset($_POST['mo'])) {
     $longitude = $_POST['longitude'];
     $reason = $_POST['reason'];
     $memo = $_POST['memo'];
-    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$memo')";
+    $company = $_SESSION['company'];
+    $odate = date('Y.m.d');
+    $ddate = date('Y.m.d', strtotime("+1 days"));
+    $comment = $_POST['comment'];
+    
+    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$memo', '$company', '$odate', '$ddate', '$comment')";
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully";
         echo "<script>alert('New record created successfully');window.location.href='visitlist.php';</script>";
@@ -116,6 +126,11 @@ if (isset($_POST['mo'])) {
         <label for="memo">Memo:</label>
         <input type="number" class="form-control" id="memo" name="memo" value="<?php echo time(); ?>" required>
     </div>
+    <div class="form-group">
+        <label for="comment">Comment:</label>
+        <input type="text" class="form-control" id="comment" name="comment" placeholder="Enter comment">
+    </div>
+    
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 

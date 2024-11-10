@@ -53,10 +53,13 @@ if (isset($_GET['ordercancel'])) {
                             if($row['status'] == 0){
                                 echo "<td><a href='visitedit.php?visitedit=".$row['SN']."' class='btn btn-primary'>Edit</a> <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>Order</a></td>";
                             }
-                            if($row['status'] == 1){
+                            else if($row['status'] == 1){
                                 echo "<td>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else if($row['status'] == 2){
                                 echo "<td>Canceled <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                            }
+                            else if($row['status'] == 3){
+                                echo "<td>Delivered <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else {
                                 echo "<td></td>";
                             }

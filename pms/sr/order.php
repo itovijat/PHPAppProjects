@@ -89,8 +89,37 @@ if (isset($_POST['pn'])) {
                             echo "Latitude: ".$row['latitude']."<br>";
                             echo "Longitude: ".$row['longitude']."<br>";
                             echo "Reason: ".$row['reason']."<br>";
-                            echo "Memo: ".$row['memo']."<br>";
+                           
+                            $order = $_GET['order'];
+                            if($row['status'] != 0){
+                                echo "<form action='order.php?order=".$order."' method='POST'>";
+                                echo "Memo: <input type='number' name='memo' value='".$row['memo']."' required readonly>";
+                                echo " ODate: <input type='text' name='odate' value='".date('Y.m.d', strtotime($row['odate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' readonly>";
+                                echo " DDate: <input type='text' name='ddate' value='".date('Y.m.d', strtotime($row['ddate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' readonly>";
+                                echo " Comment: <input type='text' name='comment' value='".$row['comment']."' maxlength='20' readonly>";
+                                echo "<input type='submit' value='Cant Update' disabled>";
+                                echo "</form>";
+                            } else {
+                                echo "<form action='order.php?order=".$order."' method='POST'>";
+                                echo "Memo: <input type='number' name='memo' value='".$row['memo']."' required>";
+                                echo " ODate: <input type='text' name='odate' value='".date('Y.m.d', strtotime($row['odate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day'>";
+                                echo " DDate: <input type='text' name='ddate' value='".date('Y.m.d', strtotime($row['ddate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day'>";
+                                echo " Comment: <input type='text' name='comment' value='".$row['comment']."' maxlength='20' >";
+                                echo "<input type='submit' value='Update'>";
+                                echo "</form>";
+                            }
+                            echo "<br>";
                             
+                        }
+                    }
+
+                    if (isset($_POST['memo'])) {
+                        $sql = "UPDATE visit SET memo='".$_POST['memo']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE SN='".$_GET['order']."'";
+                        if (mysqli_query($conn, $sql)) {
+                            echo "Record updated successfully";
+                            echo "<script>window.location.href='order.php?order=".$_GET['order']."';</script>";
+                        } else {
+                            echo "Error updating record: " . mysqli_error($conn);
                         }
                     }
 

@@ -8,11 +8,14 @@ if($_SERVER['SERVER_NAME'] == "localhost")
 }
 else
 {
+    // $servername = "localhost";
+    // $username = "ovijattt_adminush";
+    // $password = "IGQyDmcP!gi1";
+    // $dbname = "ovijattt_pms";
     $servername = "localhost";
-    $username = "ovijattt_adminush";
-    $password = "IGQyDmcP!gi1";
-    $dbname = "ovijattt_pms";
-
+    $username = "root";
+    $password = "";
+    $dbname = "pms";
 
 
   
