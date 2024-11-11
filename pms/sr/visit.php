@@ -17,7 +17,7 @@ if (mysqli_query($conn, $sql)) {
 
 $sql = "CREATE TABLE IF NOT EXISTS shop (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
+    name VARCHAR(50),
     company VARCHAR(20)
 )";
 
@@ -120,7 +120,7 @@ if (isset($_POST['mo'])) {
     <!-- Main content goes here -->
 
     <div class="row">
-        <div class="col-12 col-md-12">
+        <div class="col-12 col-md-12" style="text-align: center;">
             <div class="card">
                 <div class="card-header">
                     <h2>Visit Details</h2>
@@ -128,29 +128,64 @@ if (isset($_POST['mo'])) {
                 <div class="card-body">
             
 <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
-    <div class="form-group">
-        <label for="mo">MO:</label>
-        <input type="text" class="form-control" id="mo" name="mo" placeholder="Enter MO" value="<?php echo $_SESSION['email']; ?>" readonly required>
-    </div>
-    <div class="form-group">
-        <label for="route">Route:</label>
-        <select class="form-control select2" id="route" name="route" required>
-        <option value="" selected>Select</option>
+    <div class="form-row">
+        <div class="form-group col-md-4 col-2">
+            <label for="mo">MO:</label>
+            <input type="text" class="form-control" id="mo" name="mo" placeholder="Enter MO" value="<?php echo $_SESSION['email']; ?>" readonly required>
+        </div>
+        <div class="form-group col-md-4 col-4">
+            <label for="reason">Reason:</label>
+            <select class="form-control" id="reason" name="reason" required>
+                <option value="visit">visit</option>
+                <option value="order">order</option>
+            </select>
+        </div>
+   
+        <div class="form-group col-md-4 col-6">
+            <label for="memo">Memo:</label>
+            <input type="text" class="form-control" id="memo"  name="memo"  value="<?php 
+            
+            
+            $t = time();
 
-            <?php
-            $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
-            $routeResult = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($routeResult) > 0) {
-                while ($routeRow = mysqli_fetch_assoc($routeResult)) {
-                    echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
+            
+            function stringToInt($str) {
+                $result = 0;
+                
+                for ($i = 0; $i < strlen($str); $i++) {
+                    $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
+                 
                 }
+                return $result;
             }
-            ?>
-        </select>
+            
+
+            function intToAlphanumeric($num) {
+                return strtoupper(base_convert($num, 10, 36)); // Converts a base-10 integer to a base-36 string and makes it uppercase
+            }
+            
+
+            // Example usage:
+            $t = intToAlphanumeric($t);
+           
+            
+
+
+            $converted_value = intToAlphanumeric(stringToInt('Mehedi12Soft'));
+            echo ($converted_value ."-". $t);
+                    
+            ?>" maxlength="10" required>
+        </div>
     </div>
 
+
+
+
+
+    
+
     <div class="form-group">
-        <label for="shop">Shop:</label>
+        <label for="shop">Shop with Address:</label>
         <select class="form-control select2" id="shop" name="shop" required>
         <option value="" selected>Select</option>
 
@@ -164,21 +199,42 @@ if (isset($_POST['mo'])) {
                 }
             }
             ?>
-        </select>    </div>
-    <div class="form-group">
-        <label for="phone">Phone:</label>
-        <select class="form-control select2" id="phone" name="phone" required>
+        </select>    
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6 col-6">
+            <label for="route">Route:</label>
+            <select class="form-control select2" id="route" name="route" required>
             <option value="" selected>Select</option>
-            <?php
-            $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
-            $phoneResult = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($phoneResult) > 0) {
-                while ($phoneRow = mysqli_fetch_assoc($phoneResult)) {
-                    echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
+
+                <?php
+                $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+                $routeResult = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($routeResult) > 0) {
+                    while ($routeRow = mysqli_fetch_assoc($routeResult)) {
+                        echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
+                    }
                 }
-            }
-            ?>
-        </select>    </div>
+                ?>
+            </select>
+        </div>
+        <div class="form-group col-md-6 col-6">
+            <label for="phone">Phone:</label>
+            <select class="form-control select2" id="phone" name="phone" required>
+            <option value="" selected>Select</option>
+                <?php
+                $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+                $phoneResult = mysqli_query($conn, $sql);
+                if (mysqli_num_rows($phoneResult) > 0) {
+                    while ($phoneRow = mysqli_fetch_assoc($phoneResult)) {
+                        echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
+                    }
+                }
+                ?>
+            </select>    
+        </div>
+    </div>
 
 
     <div class="form-group" style="display:none;">
@@ -212,47 +268,7 @@ if (isset($_POST['mo'])) {
             
         }
     </script>
-    <div class="form-group">
-        <label for="reason">Reason:</label>
-        <select class="form-control" id="reason" name="reason" required>
-            <option value="visit">visit</option>
-            <option value="order">order</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="memo">Memo:</label>
-        <input type="text" class="form-control" id="memo"  name="memo"  value="<?php 
-        
-        
-        $t = time();
-
-        
-        function stringToInt($str) {
-            $result = 0;
-            
-            for ($i = 0; $i < strlen($str); $i++) {
-                $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
-             
-            }
-            return $result;
-        }
-        
-
-        function intToAlphanumeric($num) {
-            return strtoupper(base_convert($num, 10, 36)); // Converts a base-10 integer to a base-36 string and makes it uppercase
-        }
-        
-        // Example usage:
-        $t = intToAlphanumeric($t);
-       
-        
-
-
-        $converted_value = intToAlphanumeric(stringToInt('Mehedi12Soft'));
-        echo ($converted_value ."-". $t);
-                
-        ?>" maxlength="10" required>
-    </div>
+   
     <div class="form-group">
         <label for="comment">Comment:</label>
         <input type="text" class="form-control" id="comment" name="comment" placeholder="Enter comment">

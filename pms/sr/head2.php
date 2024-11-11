@@ -123,7 +123,8 @@ include_once "head1.php";
 
         .topbar,
         .sidebar,
-        .footer {
+        .footer,
+        .noPrint {
             display: none;
         }
     }

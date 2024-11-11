@@ -36,13 +36,14 @@ if (isset($_GET['ordercancel'])) {
                         echo "<tr>";
                         echo "<th>Action</th>";
 
-                        echo "<th>SN</th>";
-                        echo "<th>Date</th>";
+                       
                         echo "<th>Route</th>";
                         echo "<th>Shop</th>";
                         echo "<th>Phone</th>";
                         echo "<th>Reason</th>";
                         echo "<th>Memo</th>";
+                        echo "<th>SN</th>";
+                        echo "<th>Date</th>";
                         echo "<th>Action</th>";
 
                         echo "</tr>";
@@ -51,7 +52,7 @@ if (isset($_GET['ordercancel'])) {
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
                             if($row['status'] == 0){
-                                echo "<td><a href='visitedit.php?visitedit=".$row['SN']."' class='btn btn-primary'>Edit</a> <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>Order</a></td>";
+                                echo "<td><a style='margin-bottom: 10px;' href='visitedit.php?visitedit=".$row['SN']."' class='btn btn-primary'>Edit</a> <a style='margin-bottom: 10px;' href='order.php?order=".$row['SN']."' class='btn btn-success'>Order</a></td>";
                             }
                             else if($row['status'] == 1){
                                 echo "<td>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
@@ -63,16 +64,17 @@ if (isset($_GET['ordercancel'])) {
                             } else {
                                 echo "<td></td>";
                             }
-                            echo "<td>".$row['SN']."</td>";
-                            echo "<td>".$row['date']."</td>";
+
                             echo "<td>".$row['route']."</td>";
                             echo "<td>".$row['shop']."</td>";
                             echo "<td>".$row['phone']."</td>";
                             echo "<td>".$row['reason']."</td>";
                             echo "<td>".$row['memo']."</td>";
+                            echo "<td>".$row['SN']."</td>";
+                            echo "<td>".$row['date']."</td>";
                            
                             if($row['status'] == 0){
-                                echo "<td> <a href='visitlist.php?ordercancel=".$row['SN']."' class='btn btn-primary'>Cancel</a></td>";
+                                echo "<td> <a href='visitlist.php?ordercancel=".$row['SN']."' class='btn btn-danger'>Cancel</a></td>";
                             }
                              else {
                                 echo "<td></td>";

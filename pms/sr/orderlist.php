@@ -18,65 +18,67 @@ if (mysqli_num_rows($result) > 0) {
     echo "<table class='table'>";
     echo "<thead>";
     echo "<tr>";
-    echo "<th>Status</th>";
+    echo "<th class='noPrint'>Action</th>";
 
-    echo "<th>Invoice</th>";
-    echo "<th>Shop</th>";
+  
+    echo "<th>Details</th>";
     echo "<th>Orders</th>";
 
 
-    echo "<th>ODate</th>";
-    echo "<th>DDate</th>";
 
-    echo "<th>Route</th>";
-    echo "<th>Memo</th>";
+    
+
+   
     echo "<th>Comment</th>";
-    echo "<th>SN</th>";
+    echo "<th class='noPrint'>SN</th>";
 
     echo "</tr>";
     echo "</thead>";
     echo "<tbody>";
-
+$count=1;
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         if($row['status'] == 0){
-            echo "<td><a href='order.php?order=".$row['SN']."' class='btn btn-primary'>Order</a></td>";
+            echo "<td  class='noPrint'><a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']."' class='btn btn-success'><i class='fas fa-box-open'></i></a>";
         } else if($row['status'] == 1){
-            echo "<td>Accepted</td>";
+            echo "<td  class='noPrint'>Accepted";
         } else if($row['status'] == 2){
-            echo "<td>Canceled</td>";
+            echo "<td  class='noPrint'>Canceled";
         } else if($row['status'] == 3){
-            echo "<td>Delivered</td>";
+            echo "<td  class='noPrint'>Delivered";
         } else {
-            echo "<td></td>";
+            echo "<td  class='noPrint'>";
         }
 
-        echo "<td><a href='invoice.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
-
-        echo "<td>".$row['shop']." ".$row['phone']."</td>";
+        echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+        echo "<td>".$count.". Memo: ".$row['memo']." Route: ".$row['route']."<br>Shop: ".$row['shop']." ".$row['phone'].
+        "<br>".$row['mo']."@".$row['odate']." Delivery: ".$row['ddate']." ";
+        echo "</td>"; $count++;
 
 echo "<td>";
         $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
         $orderResult = mysqli_query($conn, $orderSql);
 
         if (mysqli_num_rows($orderResult) > 0) {
+            $total=0.0;
             while ($orderRow = mysqli_fetch_assoc($orderResult)) {
-                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " " . $orderRow['unit'] ." ". $orderRow['quantity'] . "@" . $orderRow['rate'] . "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
+                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " "
+                 . $orderRow['unit'] ." ". $orderRow['quantity'] . "@" . $orderRow['rate'] .
+                  "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
+
+                $total += $orderRow['rate'] * $orderRow['quantity'];
             }
             } else {
             echo "No orders found";
         }
+        echo "<div>Total: " . number_format($total, 2) . "/=</div>";
 
         echo "</td>";
 
-        echo "<td>".$row['odate']."</td>";
-
-        echo "<td>".$row['ddate']."</td>";
-        echo "<td>".$row['route']."</td>";
-        echo "<td>".$row['memo']."</td>";
+      
         echo "<td>".$row['comment']."</td>";
 
-        echo "<td>".$row['SN']."</td>";
+        echo "<td class='noPrint'>".$row['SN']."</td>";
         echo "</tr>";
     }
 

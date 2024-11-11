@@ -395,7 +395,7 @@ $company = $_SESSION['company'];
                     ?>
                 
                 <div style="text-align: center;">
-                    <a href="visitlist.php?ordercancel=<?php echo $_GET['order']; ?>" class="btn btn-danger">Cancel</a>
+                    <a href="orderlist.php" class="btn btn-danger">Finish</a>
                     &nbsp;&nbsp;
                     <a href="invoice.php?order=<?php echo $_GET['order']; ?>" class="btn btn-primary">Invoice</a>
                 </div>
