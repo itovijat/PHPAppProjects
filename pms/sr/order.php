@@ -105,10 +105,12 @@ $company = $_SESSION['company'];
                            
                             $order = $_GET['order'];
                             if($row['status'] != 0){
-                                echo "Memo: ".$row['memo'];
-                                echo " ODate: ".date('Y.m.d', strtotime($row['odate']));
-                                echo " DDate: ".date('Y.m.d', strtotime($row['ddate']));
-                                echo " Comment: ".$row['comment'];
+                                echo "<div class='text-center'>";
+                                echo "Memo: ".$row['memo']." ";
+                                echo "ODate: ".date('Y.m.d', strtotime($row['odate']))." ";
+                                echo "DDate: ".date('Y.m.d', strtotime($row['ddate']))." ";
+                                echo "<i>".$row['comment']. "</i>";
+                                echo "</div>";
                             } else {
                                 echo "<form style='background-color: #f1f1f1' action='order.php?order=".$order."' method='POST' class='d-flex flex-wrap p-2 border'>";
                                 echo "<div class='d-flex flex-wrap'>";
@@ -382,7 +384,7 @@ $company = $_SESSION['company'];
 
                         
                     } else {
-                        echo "No orders found";
+                        echo "<p style='text-align: center; font-size: 2em; color: red'>0 results</p>";
 
 
                         $sql = "UPDATE visit SET reason='visit' WHERE SN='".$_GET['order']."'";

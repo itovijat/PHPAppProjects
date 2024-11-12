@@ -22,19 +22,65 @@ if (isset($_GET['ordercancel'])) {
     <div class="row">
         <div class="col-12 col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <h2>Visit List</h2>
+            <div class="card-header noPrint">
+                <div class="row">
+                    <div class="col-12 col-md-6"> <h1 >Visits' List Range:</h1></div>
+                    <form class="form-inline">
+                    <div class="col-5 col-md-3">
+                    <input type="text" class="form-control " id="fromdate" name="fromdate" 
+                    pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['fromdate']) )
+                      {echo $_GET['fromdate'];}
+                       else {echo date('Y.m.d');} 
+                       ?>" required>
+                    </div>
+                    <div class="col-5 col-md-3">
+                        <input type="text" class="form-control" id="todate" name="todate"
+                         pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['todate']) )
+                      {echo $_GET['todate'];}
+                       else {echo date('Y.m.d');} 
+                       ?>" required>
+                    </div>
+                    <div class="col-2 col-md-2">                            <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                    </form>
+
+                </div>
+
+               
+                  
+                        
+                            
+                           
+                        
+                            
+                            
+                     
+                       
                 </div>
                 <div class="card-body">
        
                     <?php
-                    $sql = "SELECT * FROM visit WHERE mo='".$_SESSION['email']."' ORDER BY SN DESC";
+
+
+if (isset($_GET['fromdate']) && isset($_GET['todate'])) {
+    $fromdate = $_GET['fromdate'];
+    $todate = $_GET['todate'];
+   
+} else {
+    $fromdate = date('Y.m.d');
+    $todate = date('Y.m.d');
+}
+
+echo "<p style='text-align: center;'>Visit List From: <b>".$fromdate."</b> To: <b>".
+$todate."</b> For : ".$_SESSION['email']."</p>";
+                    $sql = "SELECT * FROM visit WHERE mo='".$_SESSION['email']."' AND odate BETWEEN '".
+$fromdate."' AND '".$todate."' ORDER BY SN DESC";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         echo "<table class='table' id='myTable'>";
                         echo "<thead>";
                         echo "<tr>";
-                        echo "<th>Action</th>";
+                        echo "<th class='noPrint'>Action</th>";
 
                        
                         echo "<th>Route</th>";
@@ -44,7 +90,7 @@ if (isset($_GET['ordercancel'])) {
                         echo "<th>Memo</th>";
                         echo "<th>SN</th>";
                         echo "<th>Date</th>";
-                        echo "<th>Action</th>";
+                        echo "<th class='noPrint'>Action</th>";
 
                         echo "</tr>";
                         echo "</thead>";
@@ -52,17 +98,17 @@ if (isset($_GET['ordercancel'])) {
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
                             if($row['status'] == 0){
-                                echo "<td><a style='margin-bottom: 10px;' href='visitedit.php?visitedit=".$row['SN']."' class='btn btn-primary'>Edit</a> <a style='margin-bottom: 10px;' href='order.php?order=".$row['SN']."' class='btn btn-success'>Order</a></td>";
+                                echo "<td class='noPrint'><a style='margin-bottom: 10px;' href='visitedit.php?visitedit=".$row['SN']."' class='btn btn-primary'>Edit</a> <a style='margin-bottom: 10px;' href='order.php?order=".$row['SN']."' class='btn btn-success'>Order</a></td>";
                             }
                             else if($row['status'] == 1){
-                                echo "<td>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                                echo "<td class='noPrint'>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else if($row['status'] == 2){
-                                echo "<td>Canceled <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                                echo "<td class='noPrint'>Canceled <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             }
                             else if($row['status'] == 3){
-                                echo "<td>Delivered <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                                echo "<td class='noPrint'>Delivered <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else {
-                                echo "<td></td>";
+                                echo "<td class='noPrint'></td>";
                             }
 
                             echo "<td>".$row['route']."</td>";
@@ -74,7 +120,7 @@ if (isset($_GET['ordercancel'])) {
                             echo "<td>".$row['date']."</td>";
                            
                             if($row['status'] == 0){
-                                echo "<td> <a href='visitlist.php?ordercancel=".$row['SN']."' class='btn btn-danger'>Cancel</a></td>";
+                                echo "<td class='noPrint'> <a href='visitlist.php?ordercancel=".$row['SN']."' class='btn btn-danger'>Cancel</a></td>";
                             }
                              else {
                                 echo "<td></td>";
@@ -84,7 +130,7 @@ if (isset($_GET['ordercancel'])) {
                         echo "</tbody>";
                         echo "</table>";
                     } else {
-                        echo "0 results";
+                        echo "<p style='text-align: center; font-size: 2em; color: red'>0 results</p>";
                     }
                     ?>
 
