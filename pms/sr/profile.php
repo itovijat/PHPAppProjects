@@ -18,7 +18,11 @@
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<p>Role: ".$row['role']."</p>";
                             
-                            echo "<p>Status: ".$row['status']."</p>";
+                            if($row['status'] == 0){
+                                echo "<p>Status: Active</p>";
+                            } else {
+                                echo "<p>Status: Blocked</p>";
+                            }
                             
                             echo "<p>Company: ".$row['company']."</p>";
                            
