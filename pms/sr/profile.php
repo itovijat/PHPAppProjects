@@ -86,11 +86,11 @@
                         </div>
                         <div class="form-group">
                             <label for="password">New Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter new password" required>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter new password" pattern="(?=.*\d)[A-Za-z\d]{8,}" title="Must contain at least 8 characters, including letters and numbers" required>
                         </div>
                         <div class="form-group">
                             <label for="confirmpassword">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Enter confirm password" required>
+                            <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" placeholder="Enter confirm password" pattern="(?=.*\d)[A-Za-z\d]{8,}" title="Must contain at least 8 characters, including letters and numbers" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
