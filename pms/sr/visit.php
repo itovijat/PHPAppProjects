@@ -53,6 +53,7 @@ $sql = "CREATE TABLE IF NOT EXISTS visit (
     odate DATE,
     ddate DATE,
     comment VARCHAR(50),
+     serial INT default 0,
     
     status SMALLINT(1) DEFAULT 0
     )";

@@ -104,9 +104,12 @@ $fromdate."' AND '".$todate."' ORDER BY SN DESC";
                                 echo "<td class='noPrint'>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else if($row['status'] == 2){
                                 echo "<td class='noPrint'>Canceled <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
-                            }
-                            else if($row['status'] == 3){
+                            } else if($row['status'] == 3){
                                 echo "<td class='noPrint'>Delivered <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                            } else if($row['status'] == 4){
+                                echo "<td class='noPrint'>Rejected <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
+                            } else if($row['status'] == 5){
+                                echo "<td class='noPrint'>Returned <a href='order.php?order=".$row['SN']."' class='btn btn-primary'>View</a></td>";
                             } else {
                                 echo "<td class='noPrint'></td>";
                             }

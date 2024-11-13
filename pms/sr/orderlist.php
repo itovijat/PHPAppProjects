@@ -158,7 +158,16 @@ $sql .= " ORDER BY SN DESC";
 
 
 $result = mysqli_query($conn, $sql);
-
+$count=1;
+$totalpending=0.0;
+$totalaccepted=0.0;
+$totalrejected=0.0;
+$totalreturned=0.0;
+$totaldelivered=0.0;
+$totalamount=0.0;
+$units = array();
+$totalQuantity = array();
+$productQuantities = array();
 if (mysqli_num_rows($result) > 0) {
     echo "<table class='table'>";
     echo "<thead>";
@@ -169,32 +178,57 @@ if (mysqli_num_rows($result) > 0) {
     echo "</tr>";
     echo "</thead>";
     echo "<tbody>";
-$count=1;
-$totalpending=0.0;
-$totalaccepted=0.0;
-$totalrejected=0.0;
-$totalreturned=0.0;
-$totaldelivered=0.0;
-$totalamount=0.0;
+
+
+
+
     while ($row = mysqli_fetch_assoc($result)) {
-        echo "<tr>";
+        echo "<tr><td  class='noPrint' style='font-size:10px;'>";
         if($row['status'] == 0){
-            echo "<td  class='noPrint'><a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']."' class='btn btn-success'><i class='fas fa-box-open'></i></a>";
+            echo "<a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']."' class='btn btn-success'><i class='fas fa-box-open'></i></a>";
         } else if($row['status'] == 1){
-            echo "<td  class='noPrint'>Accepted";
+            echo "Accepted ";
+            
         } else if($row['status'] == 2){
-            echo "<td  class='noPrint'>Canceled";
+            echo "Canceled ";
         } else if($row['status'] == 3){
-            echo "<td  class='noPrint'>Delivered";
-        } else {
-            echo "<td  class='noPrint'>";
+            echo "Delivered ";
+        }else if($row['status'] == 4){
+            echo "Rejected ";
+        }else if($row['status'] == 5){
+            echo "Returned ";
+        }
+         else {
+            echo "";
         }
 
         echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=".
-        $row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".$row['SN']."</td>";
+        $row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
+        $row['SN']." @".$row['date']."</td>";
+       
+       
         echo "<td>".$count.". Memo: ".$row['memo']." Route: ".$row['route']."<br>Shop: ".$row['shop']." ".$row['phone'].
-        "<br>".$row['mo']."@".$row['odate']." Delivery: ".$row['ddate']." ";
-        echo "</td>"; $count++;
+        "<br>".$row['mo']."@".$row['odate']." Delivery: ".$row['ddate']." <i>";
+switch ($row['status']) {
+    case 0:
+        echo "Pending";
+        break;
+    case 1:
+        echo "Accepted";
+        break;
+    case 3:
+        echo "Delivered";
+        break;
+    case 4:
+        echo "Rejected";
+        break;
+    case 5:
+        echo "Returned";
+        break;
+    default:
+        echo "Unknown";
+}
+        echo "<i></td>"; $count++;
 
 echo "<td>";
         $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
@@ -203,27 +237,45 @@ echo "<td>";
             $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "' AND pn LIKE '%".$_GET['product']."%'";
         }
         $orderResult = mysqli_query($conn, $orderSql);
-
+        $total=0.0;
         if (mysqli_num_rows($orderResult) > 0) {
            
 
-            $total=0.0;
+           
+
+
+
+
+           
             while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+                $productKey = $orderRow['pn'] . ' (' . $orderRow['unit'].")";
+                
+                if (!isset($units[$orderRow['unit']])) {
+                    $units[$orderRow['unit']] = 1;
+                    $totalQuantity[$orderRow['unit']] = $orderRow['quantity'];
+                } else {
+                    $units[$orderRow['unit']]++;
+                    $totalQuantity[$orderRow['unit']] += $orderRow['quantity'];
+                }
+                
+                if (!isset($productQuantities[$productKey])) {
+                    $productQuantities[$productKey] = $orderRow['quantity'];
+                } else {
+                    $productQuantities[$productKey] += $orderRow['quantity'];
+                }
+                
                 echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " (<i>"
                  . $orderRow['unit'] ."</i>) ". $orderRow['quantity'] . "@" . $orderRow['rate'] .
                   "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
-
-
-
-
-
-
-
                 $total += $orderRow['rate'] * $orderRow['quantity'];
             }
+
+
+
+
             } else {
-            echo "No orders found";
-        }
+                         echo "No orders found";
+                    }
         echo "<div>Total: " . number_format($total, 2) . "/= <i style='font-size: 12px'>".$row['comment']."</i></div>";
         $totalamount=$totalamount+$total;
 
@@ -261,13 +313,54 @@ echo "<td>";
 }
 ?>
 
-<p>Total Pending Amount=<?= $totalpending?>/=</p>
-<p>Total Accepted Amount=<?= $totalaccepted?>/=</p>
-<p>Total Delivered Amount=<?= $totaldelivered?>/=</p>
-<p>Total Delivered Amount=<?= $totalrejected?>/=</p>
-<p>Total Returned Amount=<?= $totalreturned?>/=</p>
+    <div style="display: flex; flex-direction: row; width: 100%; ">
+        <div style="flex: 1; margin-right: 10px;">
 
-<p>Total Amount=<?= $totalamount?>/=</p>
+        <?php if (isset($_GET['status']) && $_GET['status'] == '0'): ?>
+            <p>Pending =<?= number_format($totalpending, 2)?>/=</p>
+        <?php elseif (isset($_GET['status']) && $_GET['status'] == '1'): ?>
+            <p>Accepted =<?= number_format($totalaccepted, 2)?>/=</p>
+        <?php elseif (isset($_GET['status']) && $_GET['status'] == '3'): ?>
+            <p>Delivered =<?= number_format($totaldelivered, 2)?>/=</p>
+        <?php elseif (isset($_GET['status']) && $_GET['status'] == '4'): ?>
+            <p>Rejected =<?= number_format($totalrejected, 2)?>/=</p>
+        <?php elseif (isset($_GET['status']) && $_GET['status'] == '5'): ?>
+            <p>Returned =<?= number_format($totalreturned, 2)?>/=</p>
+        <?php else: ?>
+            <p>Pending =<?= number_format($totalpending, 2)?>/=</p>
+            <p>Accepted =<?= number_format($totalaccepted, 2)?>/=</p>
+            <p>Delivered =<?= number_format($totaldelivered, 2)?>/=</p>
+            <p>Rejected =<?= number_format($totalrejected, 2)?>/=</p>
+            <p>Returned =<?= number_format($totalreturned, 2)?>/=</p>
+        <?php endif; ?>
+       
+        
+     
+
+        </div>
+        <div style="flex: 1; margin-left: 10px;">
+            <h2>Total =<?= number_format($totalamount, 2)?>/=</h2>
+    
+    
+         <p><?php
+            
+
+    ksort($productQuantities);
+    foreach ($productQuantities as $product => $quantity) {
+        echo "<i>" . $product . " = </i>" . $quantity . " <br>";
+    }
+
+    echo "</p><h5>";
+    foreach ($units as $unit => $count) {
+        echo "<i>Unit ". $unit . " = </i>" . $totalQuantity[$unit] ." Bag <br>";
+     }
+            ?>
+         </h5>
+        </div>
+
+
+    </div>
+   
 
 
 

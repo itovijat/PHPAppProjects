@@ -191,9 +191,15 @@ $company = $_SESSION['company'];
                         }
 
                         if($row['status']=="1"){
-                            echo "<h3>Order Accepted</h3>";
+                            echo "<h3 style='text-align: center;'>Order Accepted</h3>";
                         }elseif($row['status']=="2"){
-                            echo "<h3>Order Canceled</h3>";
+                            echo "<h3 style='text-align: center;'>Order Canceled</h3>";
+                        }elseif($row['status']=="3"){
+                            echo "<h3 style='text-align: center;'>Order Delivered</h3>";
+                        }elseif($row['status']=="4"){
+                            echo "<h3 style='text-align: center;'>Order Rejected</h3>";
+                        }elseif($row['status']=="5"){
+                            echo "<h3 style='text-align: center;'>Order Returned</h3>";
                         }
                         
                     }

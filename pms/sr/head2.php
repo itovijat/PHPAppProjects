@@ -150,6 +150,8 @@ include_once "head1.php";
 
             <li><a href="orderlist.php"><i class="fas fa-list"></i> Order List</a></li>
 
+            <li><a href="orderserial.php"><i class="fas fa-list-ol"></i> Order Serial</a></li>
+
             <li><a href="profile.php"><i class="fas fa-user-secret"></i> Profile</li>
         </ul></a></li>
     </div>
