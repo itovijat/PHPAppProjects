@@ -115,7 +115,7 @@ if (isset($_GET['todate'])) {
     $todate = date('Y.m.d', strtotime("+1 day"));
 }
 echo "<p style='text-align: center;'>Order Serial for Delivery @ <b>".
-$todate."</b> For : ".$_SESSION['email']."</p>";
+$todate."</b> For : ".$_SESSION['company']."</p>";
 $sql = "SELECT * FROM visit WHERE mo='" . $_SESSION['email'] .
 "' AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND ddate = '".$todate."'";
 
@@ -183,12 +183,25 @@ if (mysqli_num_rows($result) > 0) {
         echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=".
         $row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
         $row['SN'];
+            if (isset($_GET['todate']) && $_GET['todate'] != null)
+                $todate=$_GET['todate'];
+            else
+                $todate=date('Y.m.d', strtotime("+1 day"));
+            if (isset($_GET['mo']) && $_GET['mo'] != null)
+                $mo=$_GET['mo'];
+            else
+                $mo= $_SESSION['email'];
+            if (isset($_GET['route']) && $_GET['route'] != null)
+                $route=$_GET['route'];
+            else
+                $route="";
+            
         
         echo "<form action='orderserial.php' method='get'>
         <input type='hidden' name='sn' value='".$row['SN']."'>
-         <input type='hidden' name='todate' value='".$_GET['todate']."'>
-         <input type='hidden' name='mo' value='".$_GET['mo']."'>
-         <input type='hidden' name='route' value='".$_GET['route']."'>
+         <input type='hidden' name='todate' value='".$todate."'>
+         <input type='hidden' name='mo' value='".$mo."'>
+         <input type='hidden' name='route' value='".$route."'>
       
         <input type='number' name='serial' placeholder='".$row['serial']."' style='width: 50px;' >
         <button type='submit' class='btn btn-primary'><i class='fas fa-arrow-alt-circle-down'></i></button>

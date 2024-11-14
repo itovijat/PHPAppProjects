@@ -187,7 +187,8 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr><td  class='noPrint' style='font-size:10px;'>";
         if($row['status'] == 0){
-            echo "<a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']."' class='btn btn-success'><i class='fas fa-box-open'></i></a>";
+            echo "<a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']
+            ."' class='btn btn-success'><i class='fas fa-shopping-cart'></i></a>";
         } else if($row['status'] == 1){
             echo "Accepted ";
             
