@@ -15,8 +15,9 @@ if (isset($_GET['ordercancel'])) {
 
 
 
-
-<div class="content">
+<div class="content noPrint">
+</div>
+<div class="content2">
     <!-- Main content goes here -->
 
     <div class="row">

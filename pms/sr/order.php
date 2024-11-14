@@ -4,7 +4,7 @@
 <?php
 $sql = "CREATE TABLE IF NOT EXISTS orders (
     SN INT AUTO_INCREMENT PRIMARY KEY,
-    snvisit VARCHAR(10),
+    snvisit INT,
     pn VARCHAR(30),
     unit FLOAT,
     rate FLOAT,

@@ -1,4 +1,6 @@
 <?php
+
+date_default_timezone_set('Asia/Dhaka');
 if($_SERVER['SERVER_NAME'] == "localhost")
 {
     $servername = "localhost";

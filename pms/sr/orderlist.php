@@ -1,5 +1,7 @@
 <?php include_once "head2.php"; ?>
-<div class="content">
+<div class="content noPrint">
+</div>
+<div class="content2">
     <!-- Main content goes here -->
 
     <div class="row">
@@ -117,8 +119,8 @@ if (isset($_GET['fromdate']) && isset($_GET['todate'])) {
     $fromdate = date('Y.m.d');
     $todate = date('Y.m.d');
 }
-echo "<p style='text-align: center;'>Order List From: <b>".$fromdate."</b> To: <b>".
-$todate."</b> For : ".$_SESSION['email']."</p>";
+echo "<p id='up' style='text-align: center;'>Order List From: <b>".$fromdate."</b> To: <b>".
+$todate."</b> For : ".$_SESSION['company']."</p>";
 $sql = "SELECT * FROM visit WHERE mo='" . $_SESSION['email'] .
 "' AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate BETWEEN '".
 $fromdate."' AND '".$todate."'";
@@ -169,7 +171,7 @@ $units = array();
 $totalQuantity = array();
 $productQuantities = array();
 if (mysqli_num_rows($result) > 0) {
-    echo "<table class='table'>";
+    echo "<table class='table' id='orderTable'>";
     echo "<thead>";
     echo "<tr>";
     echo "<th class='noPrint'>Action</th>";
@@ -228,7 +230,7 @@ switch ($row['status']) {
     default:
         echo "Unknown";
 }
-        echo "<i></td>"; $count++;
+        echo "</i></td>"; $count++;
 
 echo "<td>";
         $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
@@ -264,10 +266,10 @@ echo "<td>";
                     $productQuantities[$productKey] += $orderRow['quantity'];
                 }
                 
-                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " (<i>"
+                echo " ".$orderRow['pn'] . " (<i>"
                  . $orderRow['unit'] ."</i>) ". $orderRow['quantity'] . "@" . $orderRow['rate'] .
-                  "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
-                $total += $orderRow['rate'] * $orderRow['quantity'];
+                  "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=   <span class='noPrint'><br></span>";
+                $total += $orderRow['rate'] * $orderRow['quantity'];;
             }
 
 
@@ -314,7 +316,7 @@ echo "<td>";
 ?>
 
     <div style="display: flex; flex-direction: row; width: 100%; ">
-        <div style="flex: 1; margin-right: 10px;">
+        <div id="d1" style="flex: 1; margin-right: 10px;">
 
         <?php if (isset($_GET['status']) && $_GET['status'] == '0'): ?>
             <p>Pending =<?= number_format($totalpending, 2)?>/=</p>
@@ -338,7 +340,7 @@ echo "<td>";
      
 
         </div>
-        <div style="flex: 1; margin-left: 10px;">
+        <div id="d2" style="flex: 1; margin-left: 10px;">
             <h2>Total =<?= number_format($totalamount, 2)?>/=</h2>
     
     
@@ -365,6 +367,79 @@ echo "<td>";
 
 
                 </div>
+
+
+        <div class='noPrint' style="text-align: center; margin: 10px;">
+            <button type="button" class="btn btn-primary" onclick="tableToExcel('orderTable', 'OrderList_<?= date('Ymd_His') ?>')"><i class="fas fa-file-excel"></i> Export to Excel</button>
+            <button type="button" class="btn btn-primary" onclick="tableToCSV('orderTable', 'OrderList_<?= date('Ymd_His') ?>.csv')"><i class="fas fa-file-csv"></i> Export to CSV</button>
+        </div>
+
+        <script>
+              function tableToCSV(tableID, filename = ''){
+
+                var csv = [];
+                var rows = document.querySelectorAll('table#' + tableID + ' tr');
+                
+                var up = document.querySelector('#up').innerText;
+                csv.push(up);
+                for (var i = 0; i < rows.length; i++) {
+                    var row = [], cols = rows[i].querySelectorAll('td, th');
+                    
+                    for (var j = 0; j < cols.length; j++) 
+                        row.push(cols[j].innerText.replace(/<br\s*\/?>/g, ''));
+                    
+                    csv.push(row.join(','));        
+                }
+                var d1 = document.querySelector('#d1').innerText;
+                var d2 = document.querySelector('#d2').innerText;
+                csv.push(d1);
+                csv.push(d2);
+                
+                
+                // Download CSV file
+                var csvContent = csv.join('\n');
+                var blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+                var link = document.createElement('a');
+                if (link.download !== undefined) { // feature detection
+                    // Browsers that support HTML5 download attribute
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', filename);
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(function() {
+                        document.body.removeChild(link);
+                    }, 0);
+                }
+            }
+        </script>
+       <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script>
+    function tableToExcel(tableID, filename = '') {
+        var table = document.getElementById(tableID);
+        var ws = XLSX.utils.table_to_sheet(table);
+
+        var Div1 = document.getElementById('d1');
+        var Div2 = document.getElementById('d2');
+        var up = document.getElementById('up');
+
+        // Create a new workbook and a worksheet
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+        // Adding additional content
+        XLSX.utils.sheet_add_aoa(ws, [[up.innerText]], {origin: "A1"});
+        XLSX.utils.sheet_add_aoa(ws, [[Div1.innerText]], {origin: `A${table.rows.length + 2}`});
+        XLSX.utils.sheet_add_aoa(ws, [[Div2.innerText]], {origin: `A${table.rows.length + 4}`});
+
+        // Generate Excel file and trigger download
+        filename = filename ? filename + '.xlsx' : 'Order_Report.xlsx';
+        XLSX.writeFile(wb, filename);
+    }
+</script>
+        
             </div>
         </div>
         

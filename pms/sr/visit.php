@@ -146,8 +146,8 @@ if (isset($_POST['mo'])) {
             <label for="memo">Memo:</label>
             <input type="text" class="form-control" id="memo"  name="memo"  value="<?php 
             
-            
-            $t = time();
+date_default_timezone_set('Asia/Dhaka');
+            $t = time() ;
 
             
             function stringToInt($str) {

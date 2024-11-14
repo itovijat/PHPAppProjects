@@ -1,5 +1,7 @@
 <?php include_once "head2.php"; ?>
-<div class="content">
+<div class="content noPrint">
+</div>
+<div class="content2">
     <!-- Main content goes here -->
 
     <div class="row">
@@ -84,7 +86,22 @@ if (isset($_GET['sn']) && isset($_GET['serial'])) {
 
     $sql = "UPDATE visit SET serial='".$serial."' WHERE SN='".$sn."'";
     if (mysqli_query($conn, $sql)) {
-        echo "<script>window.location.href='orderserial.php';</script>";
+
+
+        $params = [];
+        if (isset($_GET['todate'])) $params['todate'] = $_GET['todate'];
+        if (isset($_GET['mo'])) $params['mo'] = $_GET['mo'];
+        if (isset($_GET['route'])) $params['route'] = $_GET['route'];
+    
+        $query = http_build_query($params);
+        $url = 'orderserial.php' . ($query ? '?' . $query : '');
+    
+        echo "<script>window.location.href='".$url."';</script>";
+        die();
+        
+
+
+
     } else {
         echo "Error updating record: " . mysqli_error($conn);
     }
@@ -129,6 +146,7 @@ $sql .= " ORDER BY serial ";
 
 
 $result = mysqli_query($conn, $sql);
+$snList = [];
 $count=1;
 
 $totalamount=0.0;
@@ -136,6 +154,9 @@ $units = array();
 $totalQuantity = array();
 $productQuantities = array();
 if (mysqli_num_rows($result) > 0) {
+   
+       
+    
     echo "<table class='table'>";
     echo "<thead>";
     echo "<tr>";
@@ -152,7 +173,7 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
 
     
-        
+        $snList[] = $row['SN'];
 
         echo "<tr>";
      
@@ -165,6 +186,9 @@ if (mysqli_num_rows($result) > 0) {
         
         echo "<form action='orderserial.php' method='get'>
         <input type='hidden' name='sn' value='".$row['SN']."'>
+         <input type='hidden' name='todate' value='".$_GET['todate']."'>
+         <input type='hidden' name='mo' value='".$_GET['mo']."'>
+         <input type='hidden' name='route' value='".$_GET['route']."'>
       
         <input type='number' name='serial' placeholder='".$row['serial']."' style='width: 50px;' >
         <button type='submit' class='btn btn-primary'><i class='fas fa-arrow-alt-circle-down'></i></button>
@@ -180,7 +204,7 @@ if (mysqli_num_rows($result) > 0) {
 
 
 
-        echo "<td>".$count.". Memo: ".$row['memo']." Route: ".$row['route']."<br>Shop: ".$row['shop']." ".$row['phone'].
+        echo "<td>".$count.". Memo: ".$row['memo']." Route: ".strtoupper($row['route'])."<br>Shop: ".strtoupper($row['shop'])." ".$row['phone'].
         "<br>".$row['mo']."@".$row['odate']." Delivery: ".$row['ddate']." <i>";
 
         echo "<i></td>"; $count++;
@@ -219,11 +243,11 @@ echo "<td>";
                     $productQuantities[$productKey] += $orderRow['quantity'];
                 }
                 
-                echo "<div style='border: 1px solid #ccc'>".$orderRow['pn'] . " (<i>"
+                echo "".$orderRow['pn'] . " (<i>"
                  . $orderRow['unit'] ."</i>) ". $orderRow['quantity'] ;
-                 echo  "<div class='noPrint'>@". $orderRow['rate'] ;
-                 echo "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</div>";
-                 echo "</div>";
+                 echo  "<span class='noPrint'>@". $orderRow['rate'] ;
+                 echo "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=</span>";
+                 echo " ";
                 $total += $orderRow['rate'] * $orderRow['quantity'];
             }
 
@@ -233,7 +257,7 @@ echo "<td>";
             } else {
                          echo "No orders found";
                     }
-        echo "<div>Total: " . number_format($total, 2) . "/= <i style='font-size: 12px'>".$row['comment']."</i></div>";
+        echo " <b>Total: " . number_format($total, 2) . "/=</b> <i style='font-size: 12px'>".$row['comment']."</i>";
         $totalamount=$totalamount+$total;
 
      
@@ -285,22 +309,37 @@ echo "<td>";
                     ?>
       
         </div>
-        <div style="flex: 1; margin-left: 10px;">
-       
-    
-    
-        <div style="display: flex; flex-direction: row; width: 100%; ">
-            <div style="flex: 1; margin-right: 10px; border: "><p>PreparedBy</p></div>
-            <div style="flex: 1; margin-right: 10px;"><p>AuthorizedBy</p></div>
-            <div style="flex: 1; "><p>Supervisor</p></div>
-        </div>
-    
-      </div>
+      
+
+
+            
      
 
     </div>
-   
 
+    <div class="Print" style="flex: 1; margin-left: 10px;">
+       
+    
+    
+       <div style="display: flex; flex-direction: row; width: 100%; ">
+           <div style="flex: 1; height: 70px; margin-right: 10px; font-size: 12px; border: 1px solid #ccc; text-align: center; opacity: 0.5;"><p>PreparedBy</p></div>
+           <div style="flex: 1; margin-right: 10px;font-size: 12px; border: 1px solid #ccc; text-align: center; opacity: 0.5"><p>AuthorizedBy</p></div>
+           <div style="flex: 1; font-size: 12px; border: 1px solid #ccc; text-align: center; opacity: 0.5"><p>Supervisor</p></div>
+       </div>
+   
+     </div>
+     <div class="noPrint">
+    <div  style="display: flex; justify-content: center; margin-top: 20px;">
+                <button type="button" class="btn btn-success" onclick="gotoInvoice()">Print All Invoices</button>
+                </div></div>
+
+
+            <script>
+                var snList = <?= json_encode($snList) ?>;
+                function gotoInvoice() {
+                    window.location.href = "invoice.php?snList=" + snList.join(",");
+                }
+            </script>
 
 
                 </div>

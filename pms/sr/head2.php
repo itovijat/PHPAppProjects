@@ -23,6 +23,10 @@ include_once "head1.php";
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/site.webmanifest">
     <style>
     body,
     html {
@@ -118,6 +122,10 @@ include_once "head1.php";
         margin-bottom: 0;
         padding: 20px;
     }
+    .Print{
+        display: none;
+
+    }
 
     @media print {
 
@@ -126,6 +134,9 @@ include_once "head1.php";
         .footer,
         .noPrint {
             display: none;
+        }
+        .Print{
+            display: block;
         }
     }
 
