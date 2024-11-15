@@ -168,29 +168,19 @@ width: 100% !important;
 </style>
 
 <?php
-if ((!isset($_GET['order']) && !isset($_GET['snList'])) ) {
-    echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
-    exit();
-}
-if (($_GET['snList'] == '' && !isset($_GET['order'])) ) {
-    echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
-    exit();
-}
-if (($_GET['order'] == '' && !isset($_GET['snList'])) ) {
+
+if (($_GET['order'] == '' && !isset($_GET['order'])) ) {
     echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
     exit();
 }
 
 
-if ((isset($_GET['snList']) && $_GET['snList'] != '') OR (isset($_GET['order']) && $_GET['order'] != '')) {
+if (isset($_GET['order']) && $_GET['order'] != '') {
   
    
-    if(isset($_GET['order']) ) {
+  
         $snList = $_GET['order'];
-    } else {
-        $snList = $_GET['snList'];
-    }
-
+   
     $snListArray = explode(",", $snList);
     foreach ($snListArray as $order) {?>
 

@@ -11,11 +11,16 @@
     <div class="row">
         <div class="col-12 col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-success text-white">
                     <h2 style="text-align: center;">Visit Edit</h2>
                 </div>
                 <div class="card-body">
-       
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;" id="msg">
+                        <strong>Success!</strong> Record updated successfully.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <?php
 
 if(isset($_POST['updatevisit'])){

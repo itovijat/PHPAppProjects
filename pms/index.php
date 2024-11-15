@@ -64,7 +64,6 @@ die();
 
     <title>Ovijat App</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="../custom-scripts.js" defer></script>
   </head>
   <body>
     <section class="wrapper">
@@ -87,7 +86,7 @@ die();
       <div class="form login">
         <header>Login</header>
         <form method="POST">
-          <input type="text" placeholder="Email address" name="email" required />
+          <input type="text" placeholder="Username" name="email" required />
           <input type="password" placeholder="Password" name="pass" required />
    
           <input type="submit" name="loginbtn" value="Enter" />

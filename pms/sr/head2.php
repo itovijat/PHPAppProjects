@@ -6,7 +6,6 @@ include_once "head1.php";
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,110 +17,69 @@ include_once "head1.php";
     <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
     <link rel="manifest" href="img/site.webmanifest">
     <style>
-    body,
-    html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        font-family: Arial, sans-serif;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            z-index: 500;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .menu-icon, .logout-icon {
+            cursor: pointer;
+            width: 30px;
+        }
+        .sidebar {
+            position: fixed;
+            top: 50px;
+            left: -200px;
+            width: 200px;
+            height: 100%;
+            background-color: #444;
+            color: white;
+            padding-top: 20px;
+            transition: left 0.3s;
+            z-index: 1000;
+            font-size: 20px;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar nav ul li {
+            padding: 10px;
+        }
+        .sidebar nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        main {
+            margin:0;
+            padding: 20px;
+        }
 
-    .topbar {
-        position: sticky;
-        width: 100%;
-        height: 80px;
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        z-index: 1000;
-    }
-
-    .topbar {
-        top: 0;
-
-    }
-
-    .footer {
-        bottom: 0;
-    }
-
-    .topbar .menu-icon,
-    .topbar .logout-icon {
-        position: absolute;
-        top: 30px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-    .topbar{
-        position: absolute;
-        font-size: 30px;
- 
-    }
-
-    .topbar .menu-icon {
-        left: 20px;
-    }
-
-    .topbar .logout-icon {
-        right: 20px;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        width: auto;
-        height: calc(100% - 0px);
-        background-color: #444;
-        color: white;
-        overflow-y: auto;
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        z-index: 999;
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .sidebar ul li {
-        margin-left: 20px;
-        margin-right: 20px;
-        padding: 10px;
-        border-bottom: 1px solid #555;
-
-    }
-
-    .sidebar ul li a {
-
-        color: white;
-    }
-
-    .sidebar ul li i {
-        margin-right: 10px;
-    }
-
-    .content {
-        margin-top: 80px;
-        margin-bottom: 0;
-        padding: 20px;
-    }
-    .Print{
+        .Print{
         display: none;
 
     }
 
     @media print {
 
-        .topbar,
-        .sidebar,
-        .footer,
+        header,
+        aside,
         .noPrint {
             display: none;
         }
@@ -129,33 +87,29 @@ include_once "head1.php";
             display: block;
         }
     }
-
-    .modal-content {
-        padding: 2px;
-    }
     </style>
 </head>
-
 <body>
-    <div class="topbar">
-        <i class="fas fa-bars menu-icon" id="menu-icon"></i>
-        <p>EOvijat</p>
-        <i class="fas fa-power-off logout-icon" onclick="window.location.href='logout.php'"></i>
-    </div>
-    <div class="sidebar" id="sidebar">
-        <ul>
-            <!-- Generate 50 demo menu items -->
-            <li><a href="index.php"><i class="fas fa-tv"></i> Dashboard</li>
-            <li><a href="visit.php"><i class="fas fa-map-marker-alt"></i> Visit</li>
-            <li><a href="visitlist.php"><i class="fas fa-map-marked-alt"></i> Visit List</li>
+    <header>
+        <div class="menu-icon">☰</div>
+        <h1>EOvijat</h1>
+        <div class="logout-icon" onclick="window.location.href='logout.php'"><i class="fas fa-power-off"></i></div>
+    </header>
+    <aside class="sidebar">
+        <nav>
+            <ul>
+            <li><a href="index.php"><i style="width: 30px;" class="fas fa-tv"></i> Dashboard</li>
+            <li><a href="visit.php"><i style="width: 30px;" class="fas fa-map-marker-alt"></i> Visit</li>
+            <li><a href="visitlist.php"><i style="width: 30px;" class="fas fa-map-marked-alt"></i> Visit List</li>
 
-            <li><a href="orderlist.php"><i class="fas fa-list"></i> Order List</a></li>
+            <li><a href="orderlist.php"><i style="width: 30px;" class="fas fa-list"></i> Order List</a></li>
 
-            <li><a href="orderserial.php"><i class="fas fa-list-ol"></i> Order Serial</a></li>
+            <li><a href="orderserial.php"><i style="width: 30px;" class="fas fa-truck"></i> Order Serial</a></li>
 
-            <li><a href="profile.php"><i class="fas fa-user-secret"></i> Profile</li>
-        </ul></a></li>
-    </div>
- 
- 
+            <li><a href="profile.php"><i style="width: 30px;" class="fas fa-user-secret"></i> Profile</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <main>
+       
 

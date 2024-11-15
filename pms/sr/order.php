@@ -171,7 +171,7 @@ $company = $_SESSION['company'];
                         $row = mysqli_fetch_assoc($result);
                         if($row['status']=="0"){
                     ?>
-                    <form id="productform" style='background-color: #f1f1f1; padding: 10px;' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                    <form id="productform" class=" bg-success text-white" style=' padding: 10px;' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                         <div class="form-group " style="display:none;">
                             <label for="snvisit">SN Visit:</label>
                             <input type="text" class="form-control" id="snvisit" name="snvisit" value="<?php echo $_GET['order']; ?>" required>
@@ -209,7 +209,7 @@ $company = $_SESSION['company'];
                         </div>
                       
                         <div class="form-group col-md-12 text-center col-12" style=" float: center;">
-                        <button type="submit" class="btn btn-primary" name="addproduct" style="height: 100%; width: 100%;">+Add This Product</button>
+                        <button type="submit" class="btn btn-warning text-white" name="addproduct" style="height: 100%; width: 100%;">+Add This Product</button>
 
                         </div>
                     </div>

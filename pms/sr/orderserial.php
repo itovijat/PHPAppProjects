@@ -2,12 +2,11 @@
 <div class="content noPrint">
 </div>
 <div class="content2">
-    <!-- Main content goes here -->
 
     <div class="row">
         <div class="col-12 col-md-12">
             <div class="card">
-                <div class="card-header noPrint">
+                <div class="card-header noPrint bg-success text-white">
                 <div class="row">
                     <div class="col-12 col-md-6" style="text-align: center;"> <h1 >Order Serial</h1></div>
                     <form class="form-inline">
@@ -15,7 +14,7 @@
                     
                     
                     <div class="col-6 col-md-4">
-                        <input type="text" class="form-control" id="todate" name="todate"
+                        <input type="text" class="form-control w-100" id="todate" name="todate"
                          pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['todate']) )
                       {echo $_GET['todate'];}
                        else {echo date('Y.m.d', strtotime("+1 day"));} 
@@ -24,7 +23,7 @@
 
 
                     <div class="col-0 col-md-0">
-                        <input type="hidden" class="form-control" id="mo" name="mo"
+                        <input type="hidden" class="form-control w-100" id="mo" name="mo"
                          <?php if (isset($_GET['mo']) && $_GET['mo'] != null)
                       {echo "value='".$_GET['mo']."'";}
                        else {echo "placeholder='all mo'";} 
@@ -32,7 +31,7 @@
                     </div>
 
                     <div class="col-6 col-md-4">
-                        <input type="text" class="form-control" id="route" name="route"
+                        <input type="text" class="form-control w-100" id="route" name="route"
                          <?php if (isset($_GET['route']) && $_GET['route'] != null)
                       {echo "value='".$_GET['route']."'";}
                        else {echo "placeholder='all route'";} 
@@ -44,8 +43,8 @@
                     
 
 
-                    <div class="col-12 mx-2 my-2 col-md-1 text-center"> 
-                                                   <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                    <div class="col-12 mx-2 my-2 col-md-1  text-center"> 
+                                                   <button type="submit" class="btn btn-primary "><i class="fas fa-search"></i></button>
                     </div>
                     </form>
 
@@ -354,7 +353,7 @@ echo "<td>";
             <script>
                 var snList = <?= json_encode($snList) ?>;
                 function gotoInvoice() {
-                    window.location.href = "invoice.php?snList=" + snList.join(",");
+                    window.location.href = "invoice.php?order=" + snList.join(",");
                 }
             </script>
 

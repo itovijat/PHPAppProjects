@@ -27,19 +27,19 @@ if (isset($_GET['ordercancel'])) {
     <div class="row">
         <div class="col-12 col-md-12">
             <div class="card">
-            <div class="card-header noPrint">
+            <div class="card-header noPrint bg-success text-white">
                 <div class="row">
                     <div class="col-12 col-md-6" style="text-align: center;"> <h1 >Visit List</h1></div>
                     <form class="form-inline">
-                    <div class="col-5 col-md-3">
-                    <input type="text" class="form-control " id="fromdate" name="fromdate" 
+                    <div class="col-5 col-md-4">
+                    <input type="text" class="form-control w-100" id="fromdate" name="fromdate" 
                     pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['fromdate']) )
                       {echo $_GET['fromdate'];}
                        else {echo date('Y.m.d');} 
                        ?>" required>
                     </div>
-                    <div class="col-5 col-md-3">
-                        <input type="text" class="form-control" id="todate" name="todate"
+                    <div class="col-5 col-md-4">
+                        <input type="text" class="form-control w-100" id="todate" name="todate"
                          pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['todate']) )
                       {echo $_GET['todate'];}
                        else {echo date('Y.m.d');} 

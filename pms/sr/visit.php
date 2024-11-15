@@ -136,7 +136,7 @@ if (isset($_POST['submitvisit'])) {
     <div class="row">
         <div class="col-12 col-md-12" style="text-align: center;">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-success text-white">
                     <h2>Shop Visit Details</h2>
                 </div>
                 <div class="card-body">
