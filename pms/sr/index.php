@@ -44,10 +44,10 @@
                 }
             }, 100);
         </script>
-        <h1 style="text-align: center; color: green;" class="typing"></h1>
+        <h1 style="text-align: center; color: red;" class="typing"></h1>
 
 
-        <div class="row" style="border: 2px solid white; background-color: red ; padding: 20px; color: white; text-align: center">
+        <div class="row" style="border: 2px solid white; background-color: grey ; padding: 20px; color: white; text-align: center">
   
 
         
@@ -77,7 +77,7 @@
       0
   </div>
   <div class="col-12 col-md-12">
-      <a href="" class="btn btn-success" style="width: 100%;">View Details and Achievements</a>
+      <a  class="btn btn-success" style="width: 100%;">View Details and Achievements</a>
   </div>
   
 </div>

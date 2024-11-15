@@ -1,28 +1,29 @@
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</main>
     <script>
-    const menuIcon = document.getElementById('menu-icon');
-    const sidebar = document.getElementById('sidebar');
+        const menuIcon = document.querySelector('.menu-icon');
+        const sidebar = document.querySelector('.sidebar');
 
-    menuIcon.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        menuIcon.classList.toggle('fa-bars');
-        menuIcon.classList.toggle('fa-times');
-    });
+        menuIcon.addEventListener('click', function() {
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                menuIcon.textContent = '☰';
+            } else {
+                sidebar.classList.add('open');
+                menuIcon.textContent = '✖';
+            }
+        });
 
-    document.addEventListener('click', (event) => {
-        if (!sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
-            sidebar.classList.remove('open');
-            menuIcon.classList.add('fa-bars');
-            menuIcon.classList.remove('fa-times');
-        }
-    });
+document.addEventListener('click', (event) => {
+    const header = document.querySelector('header');
+    const main = document.querySelector('main');
 
-   
-
-    
-   
+    if ((header.contains(event.target) || main.contains(event.target)) && !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('open');
+        menuIcon.textContent = '☰';
+    }
+});
     </script>
-</body>
 
+
+</body>
 </html>
