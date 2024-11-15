@@ -5,21 +5,6 @@
 
 
 
-$sql = "CREATE TABLE IF NOT EXISTS orders (
-    SN INT AUTO_INCREMENT PRIMARY KEY,
-    snvisit INT,
-    pn VARCHAR(30),
-    unit FLOAT,
-    rate FLOAT,
-
-    quantity FLOAT
-)";
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-
 
 if (isset($_GET['orderdel'])) {
     $sql = "SELECT status FROM visit WHERE SN='".$_GET['order']."'";

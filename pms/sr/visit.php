@@ -3,66 +3,6 @@
 
 <?php
 
-$sql = "CREATE TABLE IF NOT EXISTS route (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    company VARCHAR(20)
-)";
-
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-
-$sql = "CREATE TABLE IF NOT EXISTS shop (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50),
-    company VARCHAR(20)
-)";
-
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-
-$sql = "CREATE TABLE IF NOT EXISTS phone (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20),
-    company VARCHAR(20)
-)";
-
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-$sql = "CREATE TABLE IF NOT EXISTS visit (
-    SN INT AUTO_INCREMENT PRIMARY KEY,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    mo VARCHAR(20),
-    route VARCHAR(20),
-    shop VARCHAR(50),
-    phone VARCHAR(20),
-    latitude DECIMAL(10,8),
-    longitude DECIMAL(11,8),
-    reason VARCHAR(5),
-    memo bigint(20), 
-    company VARCHAR(10),
-    odate DATE,
-    ddate DATE,
-    comment VARCHAR(50),
-     serial INT default 0,
-    
-    status SMALLINT(1) DEFAULT 0
-    )";
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-
 function stringToInt($str) {
     $result = 0;
     

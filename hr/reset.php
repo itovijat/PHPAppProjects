@@ -34,22 +34,88 @@ CREATE TABLE  IF NOT EXISTS user(
 ";
 mysqli_query($conn, $sql);
 
-$pss=md5('5877');
+$pss=md5('KRkush5877');
 $sql = "
 INSERT INTO user (email, password, role,company)
-SELECT 'it.ovijat', '$pss','admin','ovijat'
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM user
-    WHERE email = 'it.ovijat'
-) AND NOT EXISTS (
-    SELECT 1
-    FROM user
-    WHERE email = 'it.ovijat'
-);
+VALUES ('itovijat', '$pss','admin','None')
 ";
 mysqli_query($conn, $sql);
 
+
+$sql = "CREATE TABLE IF NOT EXISTS route (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS shop (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS phone (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20),
+    company VARCHAR(20)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+$sql = "CREATE TABLE IF NOT EXISTS visit (
+    SN INT AUTO_INCREMENT PRIMARY KEY,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    mo VARCHAR(20),
+    route VARCHAR(20),
+    shop VARCHAR(50),
+    phone VARCHAR(20),
+    latitude DECIMAL(10,8),
+    longitude DECIMAL(11,8),
+    reason VARCHAR(5),
+    memo bigint(20), 
+    company VARCHAR(10),
+    odate DATE,
+    ddate DATE,
+    comment VARCHAR(50),
+     serial INT default 0,
+    
+    status SMALLINT(1) DEFAULT 0
+    )";
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
+
+$sql = "CREATE TABLE IF NOT EXISTS orders (
+    SN INT AUTO_INCREMENT PRIMARY KEY,
+    snvisit INT,
+    pn VARCHAR(30),
+    unit FLOAT,
+    rate FLOAT,
+
+    quantity FLOAT
+)";
+if (mysqli_query($conn, $sql)) {
+    // echo "Table created successfully";
+} else {
+    echo "Error creating table: " . mysqli_error($conn);
+}
 
 
 $sql = "

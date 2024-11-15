@@ -2,10 +2,11 @@
 
 include_once "head1.php";
 $currentPage = basename($_SERVER['PHP_SELF']);
-    if($_SESSION['cp'] == true && $currentPage != "profile.php")
-    {
-        echo '<script>location.replace("profile.php");</script>';
-    }
+$currentPage = basename($_SERVER['PHP_SELF']);
+if(isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profile.php")
+{
+    echo '<script>location.replace("profile.php");</script>';
+}
 ?>
 
 <!DOCTYPE html>
