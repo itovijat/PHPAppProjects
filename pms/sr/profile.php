@@ -16,7 +16,7 @@
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
-                            echo "<p>Role: ".$row['role']."</p>";
+                            echo "<p>Role: ". strtoupper($row['role'])."</p>";
                             
                             if($row['status'] == 0){
                                 echo "<p>Status: Active</p>";

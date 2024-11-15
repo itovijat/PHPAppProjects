@@ -9,11 +9,11 @@
             <div class="card">
                 <div class="card-header noPrint">
                 <div class="row">
-                    <div class="col-12 col-md-12"> <h1 >Orders' List:</h1></div>
-                    <form class="form-inline">
+                    <div class="col-12 col-md-12" style="text-align: center;"> <h1 >Order List</h1></div>
+                    <form class="form-inline mx-2">
 
                     
-                    <div class="col-6 col-md-1">
+                    <div class="col-6 col-md-1 ">
                     <input type="text" class="form-control " id="fromdate" name="fromdate" 
                     pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['fromdate']) )
                       {echo $_GET['fromdate'];}
@@ -69,21 +69,20 @@
                        ?> >
                     </div>
 
-                    <div class="col-6 col-md-1">
+                    <div class="col-6 col-md-1" style="width: 100%;">
                         <select class="form-control" id="status" name="status">
                             <option value="" <?= !isset($_GET['status']) || $_GET['status'] === null ? 'selected' : ''; ?>>all status</option>
                             <option value="0" <?= isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : ''; ?>>Pending</option>
                             <option value="1" <?= isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : ''; ?>>Accepted</option>
-                          
                             <option value="3" <?= isset($_GET['status']) && $_GET['status'] == '3' ? 'selected' : ''; ?>>Delivered</option>
                             <option value="4" <?= isset($_GET['status']) && $_GET['status'] == '4' ? 'selected' : ''; ?>>Rejected</option>
                             <option value="5" <?= isset($_GET['status']) && $_GET['status'] == '5' ? 'selected' : ''; ?>>Returned</option>
-
                         </select>
                     </div>
 
 
-                    <div class="col-12 mx-2 my-2 col-md-1 text-center">                            <button type="submit" class="btn btn-primary">Search</button>
+                    <div class="col-12 mx-2 my-2 col-md-1 text-center">                           
+                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                     </div>
                     </form>
 
@@ -120,7 +119,7 @@ if (isset($_GET['fromdate']) && isset($_GET['todate'])) {
     $todate = date('Y.m.d');
 }
 echo "<p id='up' style='text-align: center;'>Order List From: <b>".$fromdate."</b> To: <b>".
-$todate."</b> For : ".$_SESSION['company']."</p>";
+$todate."</b> ".$_SESSION['company']."</p>";
 $sql = "SELECT * FROM visit WHERE mo='" . $_SESSION['email'] .
 "' AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate BETWEEN '".
 $fromdate."' AND '".$todate."'";
@@ -171,7 +170,7 @@ $units = array();
 $totalQuantity = array();
 $productQuantities = array();
 if (mysqli_num_rows($result) > 0) {
-    echo "<table class='table' id='orderTable'>";
+    echo "<div class='table-responsive text-center'><table class='table table-bordered' id='orderTable'>";
     echo "<thead>";
     echo "<tr>";
     echo "<th class='noPrint'>Action</th>";
@@ -269,7 +268,7 @@ echo "<td>";
                 
                 echo " ".$orderRow['pn'] . " (<i>"
                  . $orderRow['unit'] ."</i>) ". $orderRow['quantity'] . "@" . $orderRow['rate'] .
-                  "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=   <span class='noPrint'><br></span>";
+                  "=" . ($orderRow['rate'] * $orderRow['quantity'])."/=   <span class='noPrint'><br><hr></span>";
                 $total += $orderRow['rate'] * $orderRow['quantity'];;
             }
 
@@ -310,7 +309,7 @@ echo "<td>";
     }
 
     echo "</tbody>";
-    echo "</table>";
+    echo "</table></div>";
 } else {
     echo "<p style='text-align: center; font-size: 2em; color: red'>0 results</p>";
 }
@@ -342,7 +341,7 @@ echo "<td>";
 
         </div>
         <div id="d2" style="flex: 1; margin-left: 10px;">
-            <h2>Total =<?= number_format($totalamount, 2)?>/=</h2>
+            <p>Total =<?= number_format($totalamount, 2)?>/=</p>
     
     
          <p><?php
@@ -353,12 +352,12 @@ echo "<td>";
         echo "<i>" . $product . " = </i>" . $quantity . " <br>";
     }
 
-    echo "</p><h5>";
+    echo "</p><p>";
     foreach ($units as $unit => $count) {
         echo "<i>Unit ". $unit . " = </i>" . $totalQuantity[$unit] ." Bag <br>";
      }
             ?>
-         </h5>
+         </p>
         </div>
 
 

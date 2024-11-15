@@ -1,5 +1,5 @@
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
     <script>
     const menuIcon = document.getElementById('menu-icon');
     const sidebar = document.getElementById('sidebar');

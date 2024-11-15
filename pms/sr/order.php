@@ -2,6 +2,9 @@
 
 
 <?php
+
+
+
 $sql = "CREATE TABLE IF NOT EXISTS orders (
     SN INT AUTO_INCREMENT PRIMARY KEY,
     snvisit INT,
@@ -26,18 +29,29 @@ if (isset($_GET['orderdel'])) {
         if ($row['status'] == 0) {
             $sql = "DELETE FROM orders WHERE SN='".$_GET['orderdel']."'";
             if (mysqli_query($conn, $sql)) {
-                echo "<script>alert('Record deleted successfully');window.location.href='order.php?order=".$_GET['order']."#productform';</script>";
+                echo "<script>window.location.href='order.php?order=".$_GET['order']."#productform';</script>";
+            die();
             } else {
                 echo "Error deleting record: " . mysqli_error($conn);
+                die();
             }
         } else {
             echo "<script>alert('Order already accepted or canceled. Can't delete.');</script>";
+            die();
         }
     } else {
         echo "<script>alert('Order already accepted or canceled. Can't delete.');</script>";
+        die();
     }
 }
-if (isset($_POST['pn'])) {
+
+if (!isset($_POST['pn']) && !isset($_GET['order'])) {
+    echo "<script>window.location.href='visitlist.php';</script>";
+    die();
+
+
+}
+if (isset($_POST['addproduct'])) {
     $snvisit = $_POST['snvisit'];
     $pn = $_POST['pn'];
     $unit = $_POST['unit'];
@@ -47,6 +61,7 @@ if (isset($_POST['pn'])) {
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully";
         echo "<script>window.location.href='order.php?order=".$snvisit."#productform';</script>";
+   
         
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -54,18 +69,20 @@ if (isset($_POST['pn'])) {
 
     $sql = "UPDATE visit SET reason='order' WHERE SN='".$_POST['snvisit']."'";
     if (mysqli_query($conn, $sql)) {
-        // echo "Record updated successfully";
+        
     } else {
         echo "Error updating record: " . mysqli_error($conn);
+      
     }
 
 $company = $_SESSION['company'];
     $sql = "INSERT INTO products (name, company) SELECT '$pn', '$company' FROM 
     dual WHERE NOT EXISTS (SELECT 1 FROM products WHERE name='$pn' AND company='$company')";
     if (mysqli_query($conn, $sql)) {
-        // echo "New route created successfully";
+        die();
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        die();
     }
 
 }
@@ -81,7 +98,7 @@ $company = $_SESSION['company'];
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h2>Order Add</h2>
+                    <div style="text-align: center;"><h2>Order Add</h2></div>
                 </div>
                 <div class="card-body">
 
@@ -111,24 +128,31 @@ $company = $_SESSION['company'];
                                 echo "DDate: ".date('Y.m.d', strtotime($row['ddate']))." ";
                                 echo "<i>".$row['comment']. "</i>";
                                 echo "</div>";
-                            } else {
-                                echo "<form style='background-color: #f1f1f1' action='order.php?order=".$order."' method='POST' class='d-flex flex-wrap p-2 border'>";
+                            } 
+                            
+                            
+                            else {
+                                echo "<form style='background-color: #f1f1f1' action='order.php?order=".$order."' method='POST' class='d-flex flex-wrap  p-1 border' oninput='document.querySelector(\".submitBtn\").style.display=\"block\"'>";
                                 echo "<div class='d-flex flex-wrap'>";
-                                echo "<div class='col-12 col-md-3 p-2'><div class='d-flex flex-row'><div><label>Memo:</label></div><div><input type='text' name='memo' value='".$row['memo']."' required class='form-control'></div></div></div>";
-                                echo "<div class='col-6 col-md-3 p-2'><div class='d-flex flex-row'><div><label>O</label></div><div><input type='text' name='odate' value='".date('Y.m.d', strtotime($row['odate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-                                echo "<div class='col-6 col-md-3 p-2'><div class='d-flex flex-row'><div><label>D</label></div><div><input type='text' name='ddate' value='".date('Y.m.d', strtotime($row['ddate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-                                echo "<div class='col-12 col-md-3 p-2'><div class='d-flex flex-row'><div><label>Note:</label></div><div><input type='text' name='comment' value='".$row['comment']."' maxlength='50' class='form-control'></div></div></div>";
+                                echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Memo</label></div><div><input type='number' name='memo' value='".$row['memo']."' required class='form-control'></div></div></div>";
+                                echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Order</label></div><div><input type='text' name='odate' value='".date('Y.m.d', strtotime($row['odate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
+                                echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Delivery</label></div><div><input type='text' name='ddate' value='".date('Y.m.d', strtotime($row['ddate']))."' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
+                                echo "<div class='col-12 col-md-1 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Serial</label></div><div><input type='number' name='serial' value='" . $row['serial'] . "' required class='form-control'></div></div></div>";
+                                echo "<div class='col-12 col-md-4 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Comment</label></div><div><input type='text' name='comment' value='".$row['comment']."' maxlength='50' class='form-control'></div></div></div>";
                                 echo "</div>";
-                                echo "<div class='text-center mx-auto my-auto'><input type='submit' value='Update' class='btn btn-primary'></div>";
+                                echo "<div class='text-center mx-auto my-auto'><input type='submit' name='orderdelbt' value='Update' class='btn btn-success submitBtn' style='display:none'></div>";
                                 echo "</form>";
                             }
+                            ?>
+
+                            <?php
                             echo "<br>";
                             
                         }
                     }
 
                     if (isset($_POST['memo'])) {
-                        $sql = "UPDATE visit SET memo='".$_POST['memo']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE SN='".$_GET['order']."'";
+                        $sql = "UPDATE visit SET memo='".$_POST['memo']."',serial='".$_POST['serial']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE SN='".$_GET['order']."'";
                         if (mysqli_query($conn, $sql)) {
                             echo "Record updated successfully";
                             echo "<script>window.location.href='order.php?order=".$_GET['order']."';</script>";
@@ -147,16 +171,16 @@ $company = $_SESSION['company'];
                         $row = mysqli_fetch_assoc($result);
                         if($row['status']=="0"){
                     ?>
-                    <form id="productform" style='background-color: #f1f1f1' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-                        <div class="form-group" style="display:none;">
+                    <form id="productform" style='background-color: #f1f1f1; padding: 10px;' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                        <div class="form-group " style="display:none;">
                             <label for="snvisit">SN Visit:</label>
                             <input type="text" class="form-control" id="snvisit" name="snvisit" value="<?php echo $_GET['order']; ?>" required>
                         </div>
                     <div class="form-row">
-                        <div class="form-group col-md-5">
-                            <label for="pn">Product: (Ovijat Miniket)</label>
+                        <div class="form-group col-8 col-md-6">
+                            <label for="pn">Product</label>
                             <select class="form-control" id="pn" name="pn" required>
-                                <option value="">Select Product</option>
+                                <option value="" >Name</option>
                             <?php
                             $sql = "SELECT name FROM products WHERE company='".$_SESSION['company']."'";
                             $result2 = mysqli_query($conn, $sql);
@@ -168,21 +192,24 @@ $company = $_SESSION['company'];
                             ?>
                             </select>
                         </div>
-                        <div class="form-group col-3 col-md-2">
-                            <label for="unit">Per Unit:</label>
-                            <input type="number" class="form-control" id="unit" name="unit" step="0.01" required>
-                        </div>
                         <div class="form-group col-4 col-md-2">
-                            <label for="quantity">Quantity:</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" step="0.01" required>
+                            <label for="unit">Per Unit</label>
+                            <select class="form-control" id="unit" name="unit" required>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
                         </div>
                         <div class="form-group col-5 col-md-2">
-                            <label for="rate">Rate:</label>
+                            <label for="quantity">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" step="0.01" required>
+                        </div>
+                        <div class="form-group col-7 col-md-2">
+                            <label for="rate">Rate</label>
                             <input type="number" class="form-control" id="rate" name="rate" step="0.01" required>
                         </div>
                       
                         <div class="form-group col-md-12 text-center col-12" style=" float: center;">
-                        <button type="submit" class="btn btn-primary" style="height: 100%; width: 100%;">+Add This Product</button>
+                        <button type="submit" class="btn btn-primary" name="addproduct" style="height: 100%; width: 100%;">+Add This Product</button>
 
                         </div>
                     </div>
@@ -214,11 +241,11 @@ $company = $_SESSION['company'];
                     $sql = "SELECT * FROM orders WHERE snvisit='".$_GET['order']."' ORDER BY SN DESC";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
-                        echo "<table style='background-color:  green; color: white'  class='table'>";
+                        echo "<table style='background-color: #28b334; color: white' class='table '>";
                         echo "<thead>";
                         echo "<tr>";
                       
-                        echo "<th>Products</th>";
+                        echo "<th>".$_SESSION['company']." Products</th>";
                         
                         
                         echo "<th></th>";
@@ -376,7 +403,7 @@ $company = $_SESSION['company'];
                         echo" 
                        <tr>
                       
-                       <td colspan='2' style='text-align: center'>=".$tq." =".number_format($tp, 2, '.', ',')."/=</td>
+                       <td colspan='2' style='text-align: center'>".$tq." Bags =".number_format($tp, 2, '.', ',')."/=</td>
                       
                        </tr>
                     <tr><td colspan='2'>".$integerWords . " TAKA " . $decimalWords." PAISA</td></tr>
@@ -390,7 +417,7 @@ $company = $_SESSION['company'];
 
                         
                     } else {
-                        echo "<p style='text-align: center; font-size: 2em; color: red'>0 results</p>";
+                        echo "<p style='text-align: center; font-size: 2em; color: red'>0 Products</p>";
 
 
                         $sql = "UPDATE visit SET reason='visit' WHERE SN='".$_GET['order']."'";
@@ -403,6 +430,8 @@ $company = $_SESSION['company'];
                     ?>
                 
                 <div style="text-align: center;">
+                    <a href="visitlist.php" class="btn btn-secondary">Back</a>
+                    &nbsp;&nbsp;
                     <a href="orderlist.php" class="btn btn-danger">Finish</a>
                     &nbsp;&nbsp;
                     <a href="invoice.php?order=<?php echo $_GET['order']; ?>" class="btn btn-primary">Invoice</a>
@@ -417,15 +446,28 @@ $company = $_SESSION['company'];
         
     </div>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+     
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--bootstrap .select2-selection--single,
+        .select2-container--bootstrap .select2-selection--multiple {
+            width: 100% !important;
+        }
+        .select2-dropdown--bootstrap {
+            width: auto !important; /* Adjust width to match container */
+            min-width: 100%;
+        }
+    </style>
     <script>
        $(document).ready(function() {
            
 
             // Initialize select2 for dynamic select fields
-            $('#pn').select2({
+            $('#pn, #unit').select2({
                 tags: true,
-                placeholder: 'Select or add an option',
+              theme: 'bootstrap',
                 allowClear: true
             });
         });

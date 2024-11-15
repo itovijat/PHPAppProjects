@@ -48,7 +48,7 @@ $sql = "CREATE TABLE IF NOT EXISTS visit (
     latitude DECIMAL(10,8),
     longitude DECIMAL(11,8),
     reason VARCHAR(5),
-    memo VARCHAR(20), 
+    memo bigint(20), 
     company VARCHAR(10),
     odate DATE,
     ddate DATE,
@@ -63,8 +63,20 @@ if (mysqli_query($conn, $sql)) {
     echo "Error creating table: " . mysqli_error($conn);
 }
 
+function stringToInt($str) {
+    $result = 0;
+    
+    for ($i = 0; $i < strlen($str); $i++) {
+        $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
+     
+    }
+    return $result;
+}
+if (isset($_POST['submitvisit'])) {
 
-if (isset($_POST['mo'])) {
+   
+    $idmi = stringToInt($_SESSION['email']);
+ 
     $mo = $_POST['mo'];
     $route = $_POST['route'];
     $shop = $_POST['shop'];
@@ -72,13 +84,14 @@ if (isset($_POST['mo'])) {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $reason = $_POST['reason'];
-    $memo = $_POST['memo'];
+    $idm = $idmi.$_POST['memo'];
     $company = $_SESSION['company'];
     $odate = date('Y.m.d');
     $ddate = date('Y.m.d', strtotime("+1 days"));
     $comment = $_POST['comment'];
-    
-    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$memo', '$company', '$odate', '$ddate', '$comment')";
+    $serial = $_POST['serial'];
+
+    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$idm', '$company', '$odate', '$ddate', '$comment', '$serial')";
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully";
         echo "<script>alert('New record created successfully');window.location.href='visitlist.php';</script>";
@@ -124,59 +137,38 @@ if (isset($_POST['mo'])) {
         <div class="col-12 col-md-12" style="text-align: center;">
             <div class="card">
                 <div class="card-header">
-                    <h2>Visit Details</h2>
+                    <h2>Shop Visit Details</h2>
                 </div>
                 <div class="card-body">
             
 <form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
     <div class="form-row">
-        <div class="form-group col-md-4 col-2">
-            <label for="mo">MO:</label>
+        <div class="form-group col-md-6 col-6">
+            <label for="mo">Marketing Officer</label>
             <input type="text" class="form-control" id="mo" name="mo" placeholder="Enter MO" value="<?php echo $_SESSION['email']; ?>" readonly required>
         </div>
-        <div class="form-group col-md-4 col-4">
-            <label for="reason">Reason:</label>
+        <div class="form-group col-md-0 col-0" style="display:none;">
+            <label for="reason">Reason</label>
             <select class="form-control" id="reason" name="reason" required>
                 <option value="visit">visit</option>
-                <option value="order">order</option>
+                
             </select>
         </div>
    
-        <div class="form-group col-md-4 col-6">
-            <label for="memo">Memo:</label>
-            <input type="text" class="form-control" id="memo"  name="memo"  value="<?php 
+        <div class="form-group col-md-6 col-6">
+            <label for="memo">Memo [Auto]</label>
+            <input type="number" class="form-control" id="memo" name="memo" value="<?php 
+                date_default_timezone_set('Asia/Dhaka');
+            $tm = date('ymdHis', strtotime('2024-11-01 00:00:00'));
+            $tn= date('ymdHis');
+            $t = $tn-$tm-14001500;
             
-date_default_timezone_set('Asia/Dhaka');
-            $t = time() ;
-
             
-            function stringToInt($str) {
-                $result = 0;
-                
-                for ($i = 0; $i < strlen($str); $i++) {
-                    $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
-                 
-                }
-                return $result;
-            }
-            
-
-            function intToAlphanumeric($num) {
-                return strtoupper(base_convert($num, 10, 36)); // Converts a base-10 integer to a base-36 string and makes it uppercase
-            }
-            
-
-            // Example usage:
-            $t = intToAlphanumeric($t);
-           
-            
-
-
-            $converted_value = intToAlphanumeric(stringToInt('Mehedi12Soft'));
-            echo ($converted_value ."-". $t);
+            echo ($t);
                     
-            ?>" maxlength="10" required>
+            ?>" required>
         </div>
+        
     </div>
 
 
@@ -186,9 +178,9 @@ date_default_timezone_set('Asia/Dhaka');
     
 
     <div class="form-group">
-        <label for="shop">Shop with Address:</label>
+        <label for="shop">Shop with Address</label>
         <select class="form-control select2" id="shop" name="shop" required>
-        <option value="" selected>Select</option>
+        <option value="" selected>Example Store, Place</option>
 
             <?php
                         $sql = "SELECT name FROM shop WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
@@ -205,9 +197,9 @@ date_default_timezone_set('Asia/Dhaka');
 
     <div class="form-row">
         <div class="form-group col-md-6 col-6">
-            <label for="route">Route:</label>
+            <label for="route">Route</label>
             <select class="form-control select2" id="route" name="route" required>
-            <option value="" selected>Select</option>
+            <option value="" selected>Name</option>
 
                 <?php
                 $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
@@ -221,9 +213,9 @@ date_default_timezone_set('Asia/Dhaka');
             </select>
         </div>
         <div class="form-group col-md-6 col-6">
-            <label for="phone">Phone:</label>
+            <label for="phone">Phone with Name</label>
             <select class="form-control select2" id="phone" name="phone" required>
-            <option value="" selected>Select</option>
+            <option value="" selected>017XX Name</option>
                 <?php
                 $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
                 $phoneResult = mysqli_query($conn, $sql);
@@ -239,11 +231,11 @@ date_default_timezone_set('Asia/Dhaka');
 
 
     <div class="form-group" style="display:none;">
-        <label for="latitude">Latitude:</label>
+        <label for="latitude">Latitude</label>
         <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter Latitude" required>
     </div>
     <div class="form-group" style="display:none;">
-        <label for="longitude">Longitude:</label>
+        <label for="longitude">Longitude</label>
         <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Enter Longitude" required>
     </div>
     <script>
@@ -269,13 +261,20 @@ date_default_timezone_set('Asia/Dhaka');
             
         }
     </script>
-   
-    <div class="form-group">
-        <label for="comment">Comment:</label>
-        <input type="text" class="form-control" id="comment" name="comment" placeholder="Enter comment">
+
+    <div class="form-row">
+    <div class="form-group col-md-2 col-5">
+        <label for="serial">Serial</label>
+        <input type="number" class="form-control" id="serial" name="serial" placeholder="For Delivery">
+    </div>
+
+    <div class="form-group col-md-10 col-7">
+        <label for="comment">Comment</label>
+        <input type="text" class="form-control" id="comment" name="comment" placeholder="Keep Empty">
+        </div>
     </div>
     
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" name="submitvisit" class="btn btn-primary">Submit</button>
 </form>
 
 
@@ -287,15 +286,33 @@ date_default_timezone_set('Asia/Dhaka');
         
     </div>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--bootstrap .select2-selection--single,
+        .select2-container--bootstrap .select2-selection--multiple {
+            width: 100% !important;
+        }
+        .select2-dropdown--bootstrap {
+            width: auto !important; /* Adjust width to match container */
+            min-width: 100%;
+        }
+    </style>
+  
+  
     <script>
        $(document).ready(function() {
            
-
+     
+            
             // Initialize select2 for dynamic select fields
             $('#route, #shop, #phone').select2({
                 tags: true,
-                placeholder: 'Select or add an option',
+               theme: 'bootstrap',
                 allowClear: true
             });
         });

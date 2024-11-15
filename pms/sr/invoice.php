@@ -168,8 +168,16 @@ width: 100% !important;
 </style>
 
 <?php
-if(!isset($_GET['order']) AND !isset($_GET['snList']) ) {
-    echo "<script>window.location.href='index.php';</script>";
+if ((!isset($_GET['order']) && !isset($_GET['snList'])) ) {
+    echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
+    exit();
+}
+if (($_GET['snList'] == '' && !isset($_GET['order'])) ) {
+    echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
+    exit();
+}
+if (($_GET['order'] == '' && !isset($_GET['snList'])) ) {
+    echo "<script>alert('No Data');window.location.href='orderserial.php';</script>";
     exit();
 }
 
@@ -328,7 +336,7 @@ if ((isset($_GET['snList']) && $_GET['snList'] != '') OR (isset($_GET['order']) 
 
                         
                     } else {
-                        echo "No orders found";
+                        echo "<p style='text-align: center;'>No orders found</p>";
 
 
                        

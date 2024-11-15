@@ -12,14 +12,14 @@
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h2>Visit Edit</h2>
+                    <h2 style="text-align: center;">Visit Edit</h2>
                 </div>
                 <div class="card-body">
        
                     <?php
 
-if(isset($_POST['route'])){
-    $sql = "UPDATE visit SET route='".$_POST['route']."', shop='".$_POST['shop']."', phone='".$_POST['phone']."', reason='".$_POST['reason']."', memo='".$_POST['memo']."' WHERE SN='".$_POST['visitedit']."'";
+if(isset($_POST['updatevisit'])){
+    $sql = "UPDATE visit SET route='".$_POST['route']."', shop='".$_POST['shop']."', phone='".$_POST['phone']."', serial='".$_POST['serial']."', memo='".$_POST['memo']."' WHERE SN='".$_POST['visitedit']."'";
     if (mysqli_query($conn, $sql)) {
         echo "Record updated successfully";
         echo "<script>alert('Record updated successfully'); location.replace('visitlist.php');</script>";
@@ -121,20 +121,20 @@ echo "<option value='" . $row['shop'] . "'>" . $row['shop']  . "</option>";
             }
             ?>
         </select>    </div>
-                            <div class="form-group">
-                                <label for="memo">Memo:</label>
-                                <input type="text" class="form-control" id="memo" name="memo" value="<?php echo $row['memo']; ?>" required>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 col-6">
+                                    <label for="memo">Memo:</label>
+                                    <input type="text" class="form-control" id="memo" name="memo" value="<?php echo $row['memo']; ?>" readonly>
+                                </div>
+                                <div class="form-group col-md-6 col-6">
+                                    <label for="serial">Serial:</label>
+                                    <input type="number" class="form-control" id="serial" name="serial" value="<?php echo $row['serial']; ?>" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="reason">Reason:</label>
-                                <select class="form-control" id="reason" name="reason" required>
-                                    <option value="visit" <?php if($row['reason']=="visit"){echo "selected";}?>>visit</option>
-                                    <option value="order" <?php if($row['reason']=="order"){echo "selected";}?>>order</option>
-                                </select>
-                            </div>
+                        
 
                             <input type="hidden" name="visitedit" value="<?php echo $_GET['visitedit']; ?>">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <div style="text-align: center;"><button type="button" onclick="window.history.back()" class="btn btn-secondary">Back</button> <button type="submit" name="updatevisit" class="btn btn-primary">Update</button></div>
                             </form>
                             <?php
                         }
@@ -152,15 +152,28 @@ echo "<option value='" . $row['shop'] . "'>" . $row['shop']  . "</option>";
         
     </div>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script>
+   
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-theme@0.1.0-beta.10/dist/select2-bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--bootstrap .select2-selection--single,
+        .select2-container--bootstrap .select2-selection--multiple {
+            width: 100% !important;
+        }
+        .select2-dropdown--bootstrap {
+            width: auto !important; /* Adjust width to match container */
+            min-width: 100%;
+        }
+    </style>
+     <script> 
        $(document).ready(function() {
            
 
             // Initialize select2 for dynamic select fields
             $('#route, #shop, #phone').select2({
                 tags: true,
-                placeholder: 'Select or add an option',
+                theme: 'bootstrap',
                 allowClear: true
             });
         });
