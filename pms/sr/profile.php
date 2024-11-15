@@ -1,7 +1,17 @@
 <?php include_once "head2.php"; ?>
 <div class="content2">
     <!-- Main content goes here -->
-
+    <?php if (isset($_SESSION['cp']) && $_SESSION['cp'] === true) { ?>
+    <div class="alert alert-danger text-center" role="alert" style="animation: fadeIn 2s infinite ease-in-out ;">
+        <strong>Please change the password first!</strong>
+    </div>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    <?php } ?>
     <div class="row g-4">
     <div class="col-md-6">
         <div class="card shadow-sm">
@@ -33,32 +43,42 @@
             </div>
             <div class="card-body">
                 <?php
+
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                     $email = $_POST['email'];
                     $oldpassword = md5($_POST['oldpassword']);
                     $newpassword = md5($_POST['password']);
                     $confirmpassword = md5($_POST['confirmpassword']);
-                    $sql = "SELECT * FROM user WHERE email='" . $_SESSION['email'] . "'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                        $row = mysqli_fetch_assoc($result);
-                        if ($row['password'] == $oldpassword) {
-                            if ($newpassword == $confirmpassword) {
-                                $update_sql = "UPDATE user SET email='$email', password='$newpassword' WHERE email='" . $_SESSION['email'] . "'";
-                                if (mysqli_query($conn, $update_sql)) {
-                                    echo "<script>alert('Profile updated successfully');</script>";
-                                    $_SESSION['email'] = $email;
+
+                    if ($newpassword == $confirmpassword) {
+                        $sql = "SELECT * FROM user WHERE email='" . $_SESSION['email'] . "'";
+                        $result = mysqli_query($conn, $sql);
+
+                        if (mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+
+                            if ($row['password'] == $oldpassword) {
+                                if ($newpassword == $confirmpassword) {
+                                    $update_sql = "UPDATE user SET email='$email', password='$newpassword' WHERE email='" . $_SESSION['email'] . "'";
+
+                                    if (mysqli_query($conn, $update_sql)) {
+                                        $_SESSION['cp'] = false;
+                                        echo "<script>alert('Profile updated successfully'); window.location.href = 'index.php';</script>";
+                                        $_SESSION['email'] = $email;
+                                    } else {
+                                        echo "<p class='text-danger'>Error updating profile.</p>";
+                                    }
                                 } else {
-                                    echo "<p class='text-danger'>Error updating profile.</p>";
+                                    echo "<script>alert('New password and confirm password do not match.');</script>";
                                 }
                             } else {
-                                echo "<script>alert('New password and confirm password do not match.');</script>";
+                                echo "<script>alert('Old password is incorrect.');</script>";
                             }
                         } else {
-                            echo "<script>alert('Old password is incorrect.');</script>";
+                            echo "<p class='text-danger'>No results found.</p>";
                         }
                     } else {
-                        echo "<p class='text-danger'>No results found.</p>";
+                        echo "<script>alert('New password and confirm password do not match.');</script>";
                     }
                 }
                 ?>

@@ -4,7 +4,9 @@ include_once "dbconnect.php";
 if(isset($_POST['loginbtn'])){
 $e= $_POST['email'];
 $p= $_POST['pass'];
-
+if ($e === $p) {
+    $_SESSION['cp'] = true;
+}
 $p=md5($p);
 $_SESSION['email']="";
 $_SESSION['role']="";
@@ -104,6 +106,8 @@ die();
         signupHeader.addEventListener("click", () => {
           wrapper.classList.remove("active");
         });
+        // open the login default
+        wrapper.classList.add("active");
       </script>
     </section>
   </body>

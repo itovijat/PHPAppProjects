@@ -1,7 +1,11 @@
 <?php include_once "head2.php"; ?>
 <div class="content">
     <!-- Main content goes here -->
-
+    <?php if (isset($_SESSION['cp']) && $_SESSION['cp'] === true) { ?>
+    <div class="alert alert-warning" role="alert">
+        <strong>Please change the password first!</strong>
+    </div>
+    <?php } ?>
     <div class="row">
         <div class="col-12 col-md-6">
             <div class="card">

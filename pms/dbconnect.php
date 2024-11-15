@@ -1,7 +1,7 @@
 <?php
 
 date_default_timezone_set('Asia/Dhaka');
-if($_SERVER['SERVER_NAME'] == "localhost")
+if($_SERVER['SERVER_NAME'] == "localhost" || strpos($_SERVER['SERVER_NAME'], "ngrok-free.app"))
 {
     $servername = "localhost";
     $username = "root";
@@ -10,14 +10,11 @@ if($_SERVER['SERVER_NAME'] == "localhost")
 }
 else
 {
-    // $servername = "localhost";
-    // $username = "ovijattt_adminush";
-    // $password = "IGQyDmcP!gi1";
-    // $dbname = "ovijattt_pms";
     $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "pms";
+    $username = "ovijattt_adminush";
+    $password = "IGQyDmcP!gi1";
+    $dbname = "ovijattt_pms";
+
 
 
   
@@ -38,6 +35,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname);
 
 
 session_start();
+
 
 
 ?>

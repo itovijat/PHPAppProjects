@@ -1,6 +1,13 @@
 <?php  
 
 include_once "head1.php";
+/*************  ✨ Codeium Command ⭐  *************/
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    if($_SESSION['cp'] == true && $currentPage != "profile.php")
+    {
+        echo '<script>location.replace("profile.php");</script>';
+    }
+    
 
 ?>
 
