@@ -19,14 +19,14 @@ if (isset($_POST['submit'])) {
     // Check if the product exists
     $vehocle_check = $conn->query("SELECT id FROM vehicles WHERE name='$vehicle_name' AND company='$company' ");
     if ($vehocle_check->num_rows == 0) {
-        // Insert new product if it doesn't exist
+        // Insert new product if it doeid't exist
         $conn->query("INSERT INTO vehicles (name, company) VALUES ('$vehicle_name', '$company')");
     }
 
      // Check if the product exists
      $person_check = $conn->query("SELECT id FROM persons WHERE name='$driver_name' AND company='$company'");
      if ($person_check->num_rows == 0) {
-         // Insert new product if it doesn't exist
+         // Insert new product if it doeid't exist
          $conn->query("INSERT INTO persons (name, company) VALUES ('$driver_name', '$company')");
      }
 

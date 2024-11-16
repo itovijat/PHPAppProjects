@@ -24,7 +24,7 @@
                     <?php
 
 if(isset($_POST['updatevisit'])){
-    $sql = "UPDATE visit SET route='".$_POST['route']."', shop='".$_POST['shop']."', phone='".$_POST['phone']."', serial='".$_POST['serial']."', memo='".$_POST['memo']."' WHERE SN='".$_POST['visitedit']."'";
+    $sql = "UPDATE visit SET route='".$_POST['route']."', shop='".$_POST['shop']."', phone='".$_POST['phone']."', serial='".$_POST['serial']."', memo='".$_POST['memo']."' WHERE id='".$_POST['visitedit']."'";
     if (mysqli_query($conn, $sql)) {
         echo "Record updated successfully";
         echo "<script>alert('Record updated successfully'); location.replace('visitlist.php');</script>";
@@ -67,7 +67,7 @@ if(!isset($_GET['visitedit'])){
     echo "<script>alert('No record found'); location.replace('visitlist.php');</script>";
     die();
 }
-                    $sql = "SELECT * FROM visit WHERE SN='".$_GET['visitedit']."'";
+                    $sql = "SELECT * FROM visit WHERE id='".$_GET['visitedit']."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {

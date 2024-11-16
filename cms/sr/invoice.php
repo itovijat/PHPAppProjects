@@ -179,10 +179,10 @@ if (isset($_GET['order']) && $_GET['order'] != '') {
   
    
   
-        $snList = $_GET['order'];
+        $idList = $_GET['order'];
    
-    $snListArray = explode(",", $snList);
-    foreach ($snListArray as $order) {?>
+    $idListArray = explode(",", $idList);
+    foreach ($idListArray as $order) {?>
 
 
 <?php
@@ -213,7 +213,7 @@ if (isset($_GET['order']) && $_GET['order'] != '') {
                     $count=1;
                     $memo="";
                     $shop="";
-                    $sql = "SELECT * FROM visit WHERE SN='".$order."'";
+                    $sql = "SELECT * FROM visit WHERE id='".$order."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
@@ -240,7 +240,7 @@ if (isset($_GET['order']) && $_GET['order'] != '') {
                  
 
 
-                    $sql = "SELECT * FROM orders WHERE snvisit='".$order."'";
+                    $sql = "SELECT * FROM orders WHERE idvisit='".$order."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         echo "<table class='table' style=' word-wrap: break-word;'>";

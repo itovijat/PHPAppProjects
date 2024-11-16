@@ -124,7 +124,7 @@
         <table class="table table-striped table-bordered" id="itemTable" >
           <thead class="thead-dark">
             <tr>
-              <th>SN</th>
+              <th>id</th>
               <th>Product Name</th>
               <th>In Quantity</th>
               <th>Out Quantity</th>

@@ -71,20 +71,20 @@
 
                     
 <?php
-if (isset($_GET['sn']) && isset($_GET['serial'])) {
+if (isset($_GET['id']) && isset($_GET['serial'])) {
    
-    $sn = $_GET['sn'];
+    $id = $_GET['id'];
     $serial = $_GET['serial'];
 
     if (($serial == null) ) {
-        $sql = "SELECT serial FROM visit WHERE SN='".$sn."'";
+        $sql = "SELECT serial FROM visit WHERE id='".$id."'";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
         $serial = $row['serial'] + 1;
     }
 
 
-    $sql = "UPDATE visit SET serial='".$serial."' WHERE SN='".$sn."'";
+    $sql = "UPDATE visit SET serial='".$serial."' WHERE id='".$id."'";
     if (mysqli_query($conn, $sql)) {
 
 
@@ -146,7 +146,7 @@ $sql .= " ORDER BY serial ";
 
 
 $result = mysqli_query($conn, $sql);
-$snList = [];
+$idList = [];
 $count=1;
 
 $totalamount=0.0;
@@ -174,7 +174,7 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
 
     
-        $snList[] = $row['SN'];
+        $idList[] = $row['id'];
 
         echo "<tr>";
      
@@ -182,8 +182,8 @@ if (mysqli_num_rows($result) > 0) {
         
 
         echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=".
-        $row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
-        $row['SN'];
+        $row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
+        $row['id'];
             if (isset($_GET['todate']) && $_GET['todate'] != null)
                 $todate=$_GET['todate'];
             else
@@ -199,7 +199,7 @@ if (mysqli_num_rows($result) > 0) {
             
         
         echo "<form action='orderserial.php' method='get'>
-        <input type='hidden' name='sn' value='".$row['SN']."'>
+        <input type='hidden' name='id' value='".$row['id']."'>
          <input type='hidden' name='todate' value='".$todate."'>
          <input type='hidden' name='mo' value='".$mo."'>
          <input type='hidden' name='route' value='".$route."'>
@@ -225,10 +225,10 @@ if (mysqli_num_rows($result) > 0) {
         echo "<i></td>"; $count++;
 
 echo "<td>";
-        $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
+        $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "'";
 
         if (isset($_GET['product']) && $_GET['product'] != '') {
-            $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "' AND pn LIKE '%".$_GET['product']."%'";
+            $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "' AND pn LIKE '%".$_GET['product']."%'";
         }
         $orderResult = mysqli_query($conn, $orderSql);
 
@@ -351,9 +351,9 @@ echo "<td>";
 
 
             <script>
-                var snList = <?= json_encode($snList) ?>;
+                var idList = <?= json_encode($idList) ?>;
                 function gotoInvoice() {
-                    window.location.href = "invoice.php?order=" + snList.join(",");
+                    window.location.href = "invoice.php?order=" + idList.join(",");
                 }
             </script>
 

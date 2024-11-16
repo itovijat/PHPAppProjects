@@ -39,7 +39,7 @@
         <table class="table table-striped table-bordered" id="tt">
             <thead class="thead-dark">
                 <tr>
-                    <th>SN</th>
+                    <th>id</th>
                     <th>Vehicle</th>
                     <th>Oil Quantity</th>
                     <th>Oil Price</th>

@@ -1,6 +1,11 @@
 <?php include_once "head1.php"; ?>
+<title>EOvijat Admin</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src='https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js'></script>
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+<link rel="manifest" href="../assets/site.webmanifest">
 
 <?php
 
@@ -63,6 +68,13 @@ $copy="";
                                 $role = $_POST['role'];
                                 $company = $_POST['company'];
                                 $status = $_POST['status'];
+
+                                $sqlcheck = "SELECT email FROM user WHERE email='$email'";
+                                $resultcheck = mysqli_query($conn, $sqlcheck);
+                                if (mysqli_num_rows($resultcheck) > 0) {
+                                    echo "<script>alert('User already exists'); location.replace('index.php');</script>";
+                                    die();
+                                }
                                 $sql = "INSERT INTO user (email, password, role, company, status) VALUES ('$email', '$password', '$role', '$company', '$status') ON DUPLICATE KEY UPDATE status='$status', role='$role', company='$company', password='$password'";
                                 if (mysqli_query($conn, $sql)) {
                                     echo "<script>alert('Record for $email updated successfully'); location.replace('index.php?copy=$email');</script>";
@@ -113,8 +125,122 @@ $copy="";
 
 <div class="container-fluid">
 
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <div class="d-flex align-items-center p-3" style="border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+        <img src="../assets/eovijatlogo.png" alt="EOvijat Logo" style="width: 50px; height: 50px; margin-right: 15px;">
+        <h2 class="mb-0">EOvijat Admin Panel</h2>
+    </div>
+</div>
 
+<br>
+<div>
+                        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="mb-3 d-flex justify-content-center">
+                            <div class="form-group">
+                                <label for="tablename" class="form-label">Table Name</label>
+                                <select class="form-control" id="tablename" name="tablename" required style="width: 250px;">
+                                    <?php
+                                    // Assuming you have a connection to the database in $conn
+                                    $sql = "SHOW TABLES ";
+                                    $result = mysqli_query($conn, $sql);
+                                    if ($result) {
+                                        $selected = isset($_POST['tablename']) ? $_POST['tablename'] : 'none';
+                                        while ($row = mysqli_fetch_row($result)) {
+                                            $selected_attr = ($selected == $row[0]) ? 'selected' : '';
+                                            if ($row[0] != 'user') {
+                                                echo '<option value="' . htmlspecialchars($row[0]) . '"' . $selected_attr . '>' . htmlspecialchars($row[0]) . '</option>';
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
 
+                            <div class="form-group">
+                                <label for="id" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="id" name="id" value="<?php echo isset($_POST['id']) ? $_POST['id'] : 0; ?>" required style="width: 250px;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="search" class="form-label">Search</label>
+                                <input type="text" class="form-control" id="search" name="search" value="<?php echo isset($_POST['search']) ? $_POST['search'] : ''; ?>" placeholder="Search by name or id" style="width: 250px;">
+                            </div>
+
+                            <button type="submit" name="v" class="btn btn-warning" style="width: 150px;">View</button>
+                        </form>
+                        </div>
+
+                            <?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tdeletebtn'])) {
+    if (isset($_POST['tablename'], $_POST['delete_id'])) {
+        $tablename = $_POST['tablename'];
+        $id = $_POST['delete_id'];
+        
+        $sql = "DELETE FROM $tablename WHERE id=$id";
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>alert('Record deleted successfully');</script>";
+        } else {
+            echo "<script>alert('Error deleting record');</script>";
+        }
+    }
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tablename'], $_POST['id'])) {
+    $tablename = $_POST['tablename'];
+    $id = $_POST['id'];
+
+    if ($id == 0) {
+        $sql = "SELECT * FROM $tablename";
+    } else {
+        $sql = "SELECT * FROM $tablename WHERE id=$id";
+    }
+    $columns = array();
+    $result_columns = mysqli_query($conn, "SHOW COLUMNS FROM $tablename");
+    while ($row = mysqli_fetch_assoc($result_columns)) {
+        $columns[] = $row['Field'];
+    }
+
+    if (isset($_POST['search']) && !empty($_POST['search'])) {
+        $search = $_POST['search'];
+        $sql = "SELECT * FROM $tablename WHERE " . implode(" LIKE '%$search%' OR ", $columns) . " LIKE '%$search%'";
+    }
+
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        echo '<h3 style="text-align: center;">Table Name: ' . htmlspecialchars($tablename) . '</h3>';
+        
+        echo '<table class="table table-bordered table-responsive w-100 ">';
+        echo '<thead>';
+        echo '<tr>';
+        $fields = mysqli_fetch_fields($result);
+        foreach ($fields as $field) {
+            echo '<th>' . htmlspecialchars($field->name) . '</th>';
+        }
+        echo '<th>Action</th>'; // Add a new column for actions
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<tr>';
+            foreach ($row as $cell) {
+                echo '<td>' . htmlspecialchars($cell) . '</td>';
+            }
+            echo '<td>';
+            echo '<form method="POST" action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" style="display:inline;">';
+            echo '<input type="hidden" name="tablename" value="' . htmlspecialchars($tablename) . '">';
+            echo '<input type="hidden" name="delete_id" value="' . htmlspecialchars($row['id']) . '">';
+            echo '<button type="submit" name="tdeletebtn" class="btn btn-danger btn-sm">Delete</button>';
+            echo '</form>';
+            echo '</td>';
+            echo '</tr>';
+        }
+        echo '</tbody>';
+        echo '</table>';
+    } else {
+        echo 'Error: ' . mysqli_error($conn);
+    }
+
+  
+}
+                            ?>
 <div class="row">
     <div class="col-md-6">
         <!-- User Profile -->
@@ -153,6 +279,32 @@ $copy="";
                 }
                 ?>
                 </div>
+
+<?php
+$date = date('YmdHis');
+$filename = "eovijatbackup-" . $date . ".csv";
+?>
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading"><i class="fas fa-download"></i> CSV Options</h4>
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="download_sql.php">
+                <input type="hidden" name="filename" value="<?php echo $filename; ?>">
+                <button type="submit" class="btn btn-success mb-2"><i class="fas fa-file-download"></i> Download SQL</button>
+            </form>
+        </div>
+        <div class="col">
+            <form method="POST" action="upload_sql.php" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="sqlFile" class="form-label"><i class="fas fa-file-upload"></i> Upload SQL</label>
+                    <input type="file" class="form-control" id="sqlFile" name="sqlFile" accept=".sql" required>
+                </div>
+                <button type="submit" name="uploadSql" class="btn btn-primary"><i class="fas fa-upload"></i> Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -224,7 +376,7 @@ $copy="";
 
         <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 ">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header bg-success text-white">
                             <h5>User Management</h5>
@@ -232,12 +384,7 @@ $copy="";
                         <div class="card-body">
                             
                             <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Username" required>
-                                </div>
-                             
-                                <div class="mb-3">
+                            <div class="mb-3">
                                     <label for="role" class="form-label">Role</label>
                                     <select class="form-control" id="role" name="role" required>
                                     <?php
@@ -256,12 +403,18 @@ $copy="";
                                 <option>admin</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Username" required>
+                                </div>
+                             
+                                
                                 
                                 <div class="mb-3">
                                     <label for="company" class="form-label">Company</label>
                                     <input type="text" class="form-control" id="company" name="company" placeholder="Enter company" required>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3" style="display: none;">
                                     <label for="status" class="form-label">Status</label>
                                     <select class="form-control" id="status" name="status" required>
                                         <option value="0">Active</option>
@@ -272,6 +425,8 @@ $copy="";
                             </form>
                         </div>
                     </div>
+
+                   
                 </div>
                 <div class="col-md-6">
                     <div class="card mb-4 shadow-sm">

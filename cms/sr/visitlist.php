@@ -1,9 +1,9 @@
 <?php include_once "head2.php"; 
 
 if (isset($_GET['ordercancel'])) {
-    $sql = "UPDATE visit SET status=2 , reason='visit' WHERE SN='".$_GET['ordercancel']."'";
+    $sql = "UPDATE visit SET status=2 , reason='visit' WHERE id='".$_GET['ordercancel']."'";
     if (mysqli_query($conn, $sql)) {
-        $sql = "DELETE FROM orders WHERE snvisit='".$_GET['ordercancel']."'";
+        $sql = "DELETE FROM orders WHERE idvisit='".$_GET['ordercancel']."'";
         if (mysqli_query($conn, $sql)) {
             
         } else {
@@ -82,7 +82,7 @@ if (isset($_GET['fromdate']) && isset($_GET['todate'])) {
 echo "<p style='text-align: center;'>Visit List From: <b>".$fromdate."</b> To: <b>".
 $todate."</b> ".$_SESSION['company']."</p>";
                     $sql = "SELECT * FROM visit WHERE mo='".$_SESSION['email']."' AND odate BETWEEN '".
-$fromdate."' AND '".$todate."' ORDER BY SN DESC";
+$fromdate."' AND '".$todate."' ORDER BY id DESC";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         echo "<div class='table-responsive'>";
@@ -97,7 +97,7 @@ $fromdate."' AND '".$todate."' ORDER BY SN DESC";
                         echo "<th>Phone</th>";
                         echo "<th>Reason</th>";
                         echo "<th>Memo</th>";
-                        echo "<th>SN</th>";
+                        echo "<th>id</th>";
                         echo "<th>Date</th>";
                         echo "<th class='noPrint'>Action</th>";
 
@@ -107,20 +107,20 @@ $fromdate."' AND '".$todate."' ORDER BY SN DESC";
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
                             if($row['status'] == 0){
-                                echo "<td class='noPrint'><a style='margin-bottom: 10px;' href='order.php?order=".$row['SN']
-                                ."' class='btn btn-success'><i class='fas fa-shopping-cart'></i></a> <a style='margin-bottom: 10px;' href='visitedit.php?visitedit=".$row['SN']
+                                echo "<td class='noPrint'><a style='margin-bottom: 10px;' href='order.php?order=".$row['id']
+                                ."' class='btn btn-success'><i class='fas fa-shopping-cart'></i></a> <a style='margin-bottom: 10px;' href='visitedit.php?visitedit=".$row['id']
                                 ."' class='btn btn-primary'><i class='fas fa-edit'></i></a></td>";
                             }
                             else if($row['status'] == 1){
-                                echo "<td class='noPrint' style='font-size:10px;'>Accepted <a href='order.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+                                echo "<td class='noPrint' style='font-size:10px;'>Accepted <a href='order.php?order=".$row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
                             } else if($row['status'] == 2){
-                                echo "<td class='noPrint' style='font-size:10px;'>Canceled <a href='order.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+                                echo "<td class='noPrint' style='font-size:10px;'>Canceled <a href='order.php?order=".$row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
                             } else if($row['status'] == 3){
-                                echo "<td class='noPrint' style='font-size:10px;'>Delivered <a href='order.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+                                echo "<td class='noPrint' style='font-size:10px;'>Delivered <a href='order.php?order=".$row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
                             } else if($row['status'] == 4){
-                                echo "<td class='noPrint style='font-size:10px;'Rejected <a href='order.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+                                echo "<td class='noPrint style='font-size:10px;'Rejected <a href='order.php?order=".$row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
                             } else if($row['status'] == 5){
-                                echo "<td class='noPrint' style='font-size:10px;'>Returned <a href='order.php?order=".$row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+                                echo "<td class='noPrint' style='font-size:10px;'>Returned <a href='order.php?order=".$row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
                             } else {
                                 echo "<td class='noPrint'></td>";
                             }
@@ -130,11 +130,11 @@ $fromdate."' AND '".$todate."' ORDER BY SN DESC";
                             echo "<td>".$row['phone']."</td>";
                             echo "<td>".$row['reason']."</td>";
                             echo "<td>".$row['memo']."</td>";
-                            echo "<td>".$row['SN']."</td>";
+                            echo "<td>".$row['id']."</td>";
                             echo "<td>".$row['date']."</td>";
                            
                             if($row['status'] == 0){
-                                echo "<td class='noPrint'> <a href='visitlist.php?ordercancel=".$row['SN']."' class='btn btn-danger'>X</a></td>";
+                                echo "<td class='noPrint'> <a href='visitlist.php?ordercancel=".$row['id']."' class='btn btn-danger'>X</a></td>";
                             }
                              else {
                                 echo "<td></td>";

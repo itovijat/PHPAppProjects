@@ -7,12 +7,12 @@
 
 
 if (isset($_GET['orderdel'])) {
-    $sql = "SELECT status FROM visit WHERE SN='".$_GET['order']."'";
+    $sql = "SELECT status FROM visit WHERE id='".$_GET['order']."'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         if ($row['status'] == 0) {
-            $sql = "DELETE FROM orders WHERE SN='".$_GET['orderdel']."'";
+            $sql = "DELETE FROM orders WHERE id='".$_GET['orderdel']."'";
             if (mysqli_query($conn, $sql)) {
                 echo "<script>window.location.href='order.php?order=".$_GET['order']."#productform';</script>";
             die();
@@ -37,22 +37,22 @@ if (!isset($_POST['pn']) && !isset($_GET['order'])) {
 
 }
 if (isset($_POST['addproduct'])) {
-    $snvisit = $_POST['snvisit'];
+    $idvisit = $_POST['idvisit'];
     $pn = $_POST['pn'];
     $unit = $_POST['unit'];
     $rate = $_POST['rate'];
     $quantity = $_POST['quantity'];
-    $sql = "INSERT INTO orders (snvisit, pn, unit, rate, quantity) VALUES ('$snvisit', '$pn', '$unit', '$rate', '$quantity')";
+    $sql = "INSERT INTO orders (idvisit, pn, unit, rate, quantity) VALUES ('$idvisit', '$pn', '$unit', '$rate', '$quantity')";
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully";
-        echo "<script>window.location.href='order.php?order=".$snvisit."#productform';</script>";
+        echo "<script>window.location.href='order.php?order=".$idvisit."#productform';</script>";
    
         
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
     }
 
-    $sql = "UPDATE visit SET reason='order' WHERE SN='".$_POST['snvisit']."'";
+    $sql = "UPDATE visit SET reason='order' WHERE id='".$_POST['idvisit']."'";
     if (mysqli_query($conn, $sql)) {
         
     } else {
@@ -89,14 +89,14 @@ $company = $_SESSION['company'];
 
 
                     <?php
-                    $sql = "SELECT * FROM visit WHERE SN='".$_GET['order']."'";
+                    $sql = "SELECT * FROM visit WHERE id='".$_GET['order']."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)) {
                             echo "<div class='row justify-content-center'>";
                             echo "<div class=' col-12 text-center'>".$row['reason']." ";
 
-                            echo "".$row['SN']." @ ";
+                            echo "".$row['id']." @ ";
 
                             echo "".$row['date']."</div>";
                             echo "<div class=' col-12 text-center'>".$row['shop']." ";
@@ -137,7 +137,7 @@ $company = $_SESSION['company'];
                     }
 
                     if (isset($_POST['memo'])) {
-                        $sql = "UPDATE visit SET memo='".$_POST['memo']."',serial='".$_POST['serial']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE SN='".$_GET['order']."'";
+                        $sql = "UPDATE visit SET memo='".$_POST['memo']."',serial='".$_POST['serial']."', odate='".$_POST['odate']."', ddate='".$_POST['ddate']."', comment='".$_POST['comment']."' WHERE id='".$_GET['order']."'";
                         if (mysqli_query($conn, $sql)) {
                             echo "Record updated successfully";
                             echo "<script>window.location.href='order.php?order=".$_GET['order']."';</script>";
@@ -150,7 +150,7 @@ $company = $_SESSION['company'];
 
 
                 
-                    $sql = "SELECT status FROM visit WHERE SN='".$_GET['order']."'";
+                    $sql = "SELECT status FROM visit WHERE id='".$_GET['order']."'";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         $row = mysqli_fetch_assoc($result);
@@ -158,8 +158,8 @@ $company = $_SESSION['company'];
                     ?>
                     <form id="productform" class=" bg-success text-white" style=' padding: 10px;' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                         <div class="form-group " style="display:none;">
-                            <label for="snvisit">SN Visit:</label>
-                            <input type="text" class="form-control" id="snvisit" name="snvisit" value="<?php echo $_GET['order']; ?>" required>
+                            <label for="idvisit">id Visit:</label>
+                            <input type="text" class="form-control" id="idvisit" name="idvisit" value="<?php echo $_GET['order']; ?>" required>
                         </div>
                     <div class="form-row">
                         <div class="form-group col-8 col-md-6">
@@ -223,7 +223,7 @@ $company = $_SESSION['company'];
 
 
 
-                    $sql = "SELECT * FROM orders WHERE snvisit='".$_GET['order']."' ORDER BY SN DESC";
+                    $sql = "SELECT * FROM orders WHERE idvisit='".$_GET['order']."' ORDER BY id DESC";
                     $result = mysqli_query($conn, $sql);
                     if (mysqli_num_rows($result) > 0) {
                         echo "<table style='background-color: #28b334; color: white' class='table '>";
@@ -250,7 +250,7 @@ $company = $_SESSION['company'];
                             
                             echo "".($row['rate']*$row['quantity'])."/=</td>";
                             
-                            echo "<td><a href='order.php?orderdel=".$row['SN']."&order=".$_GET['order']."' class='btn btn-danger'>X</a></td>";
+                            echo "<td><a href='order.php?orderdel=".$row['id']."&order=".$_GET['order']."' class='btn btn-danger'>X</a></td>";
                             
                             echo "</tr>";
                         }
@@ -405,7 +405,7 @@ $company = $_SESSION['company'];
                         echo "<p style='text-align: center; font-size: 2em; color: red'>0 Products</p>";
 
 
-                        $sql = "UPDATE visit SET reason='visit' WHERE SN='".$_GET['order']."'";
+                        $sql = "UPDATE visit SET reason='visit' WHERE id='".$_GET['order']."'";
                         if (mysqli_query($conn, $sql)) {
                             // echo "Record updated successfully";
                         } else {

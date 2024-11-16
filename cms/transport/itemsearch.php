@@ -121,7 +121,7 @@
         <table class="table table-striped table-bordered" id="itemTable">
           <thead class="thead-dark">
             <tr>
-              <th>SN</th>
+              <th>id</th>
               <th class="hideonprint">ID</th>
               <th>Product Name</th>
               <th>In Quantity</th>
@@ -238,7 +238,7 @@
           var totalbalance = 0;
           var totalproduct = 0;
           var totalperson = 0;
-          var sn = 0;
+          var id = 0;
           var products = [];
           var persons = [];
           
@@ -260,8 +260,8 @@
               totalbalance += parseInt(td[3].innerHTML) - parseInt(td[4].innerHTML);
               products.push(td[2].innerHTML);
               persons.push(td[6].innerHTML);
-              sn++;
-              td[0].innerHTML = sn;
+              id++;
+              td[0].innerHTML = id;
             } else {
               tr[i].style.display = "none";
             }

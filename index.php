@@ -1,3 +1,3 @@
 <script>
-    window.location.href = "pms";
+    window.location.href = "cms";
 </script>

@@ -96,7 +96,7 @@
         <table class="table table-striped table-bordered" id="kplTable">
           <thead class="thead-dark">
             <tr>
-              <th>SN</th>
+              <th>id</th>
               <th class="hideonprint">ID</th>
               <th>Vehicle Name</th>
               <th>Driver Name</th>

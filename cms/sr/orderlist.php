@@ -142,7 +142,7 @@ if (isset($_GET['route']) && $_GET['route'] != '') {
 }
 
 if (isset($_GET['id']) && $_GET['id'] != '') {
-    $sql .= " AND SN='" . $_GET['id'] . "'";
+    $sql .= " AND id='" . $_GET['id'] . "'";
     
 }
 if (isset($_GET['status']) && $_GET['status'] != '') {
@@ -150,7 +150,7 @@ if (isset($_GET['status']) && $_GET['status'] != '') {
 }
 
 
-$sql .= " ORDER BY SN DESC";
+$sql .= " ORDER BY id DESC";
 
 // echo "<p style='text-align: center; font-size: 1.5em; color: red'>SQL: ".$sql."</p>";
     
@@ -188,7 +188,7 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr><td  class='noPrint' style='font-size:10px;'>";
         if($row['status'] == 0){
-            echo "<a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['SN']
+            echo "<a style='margin-bottom: 10px;; margin-right: 10px; width: 50px;' href='order.php?order=".$row['id']
             ."' class='btn btn-success'><i class='fas fa-shopping-cart'></i></a>";
         } else if($row['status'] == 1){
             echo "Accepted ";
@@ -207,8 +207,8 @@ if (mysqli_num_rows($result) > 0) {
         }
 
         echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=".
-        $row['SN']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
-        $row['SN']." @".$row['date']."</td>";
+        $row['id']."' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:".
+        $row['id']." @".$row['date']."</td>";
        
        
         echo "<td>".$count.". Memo: ".$row['memo']." Route: ".$row['route']."<br>Shop: ".$row['shop']." ".$row['phone'].
@@ -235,10 +235,10 @@ switch ($row['status']) {
         echo "</i></td>"; $count++;
 
 echo "<td>";
-        $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "'";
+        $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "'";
 
         if (isset($_GET['product']) && $_GET['product'] != '') {
-            $orderSql = "SELECT * FROM orders WHERE snvisit='" . $row['SN'] . "' AND pn LIKE '%".$_GET['product']."%'";
+            $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "' AND pn LIKE '%".$_GET['product']."%'";
         }
         $orderResult = mysqli_query($conn, $orderSql);
         $total=0.0;
