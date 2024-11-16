@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']))
 
                 <form action="<?php echo htmlspecialchars(basename($_SERVER['PHP_SELF'])); ?>" method="POST">
                     <div class="mb-3">
-                        <input type="hidden" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" readonly required>
+                        <input type="text" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" readonly required>
                     </div>
                     <div class="mb-3">
                         <label for="oldpassword" class="form-label">Password <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i></label>
@@ -135,10 +135,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']))
                         <input type="password" class="form-control pass" id="password" name="password" placeholder="Enter new password" pattern="(?=.*\d)[A-Za-z\d]{8,}" title="Must contain at least 8 characters, including letters and numbers" required>
                     </div>
                     <div class="mb-3">
+                        
+                        <div class="progress">
+                            <div class="progress-bar" id="confirmPasswordMatch" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        
+                        </div>
+                        <div class="mt-2" id="confirmPasswordMatchText"></div>
+                    </div>
+                    <div class="mb-3">
                         <label for="confirmpassword" class="form-label">Confirm Password</label>
                         <input type="password" class="form-control pass" id="confirmpassword" name="confirmpassword" placeholder="Enter confirm password" pattern="(?=.*\d)[A-Za-z\d]{8,}" title="Must contain at least 8 characters, including letters and numbers" required>
                     </div>
+                    <div class="mb-3">
+                     
+                        <div class="progress">
+                            <div class="progress-bar" id="passwordStrength" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="mt-2" id="passwordStrengthText"></div>
+                    </div>
+                   
+                    
 
+                    <script>
+                        const passwordField = document.querySelector("#password");
+                        const confirmPasswordField = document.querySelector("#confirmpassword");
+                        const passwordStrengthBar = document.querySelector("#passwordStrength");
+                        const passwordStrengthText = document.querySelector("#passwordStrengthText");
+                        const confirmPasswordMatchBar = document.querySelector("#confirmPasswordMatch");
+                        const confirmPasswordMatchText = document.querySelector("#confirmPasswordMatchText");
+
+                        function checkPasswordStrength() {
+                            const password = passwordField.value;
+                            const passwordLength = password.length;
+                            let passwordStrength = 0;
+
+                            if (passwordLength > 7) {
+                                passwordStrength += 25;
+                            }
+                            if (password.match(/[a-z]/)) {
+                                passwordStrength += 25;
+                            }
+                            if (password.match(/[A-Z]/)) {
+                                passwordStrength += 25;
+                            }
+                            if (password.match(/[0-9]/)) {
+                                passwordStrength += 25;
+                            }
+
+                            let passwordStrengthText = "";
+                            let passwordStrengthColor = "";
+                            if (passwordStrength < 50) {
+                                passwordStrengthText = "Weak";
+                                passwordStrengthColor = "red";
+                            } else if (passwordStrength >= 50 && passwordStrength < 75) {
+                                passwordStrengthText = "Medium";
+                                passwordStrengthColor = "yellow";
+                            } else {
+                                passwordStrengthText = "Strong";
+                                passwordStrengthColor = "green";
+                            }
+
+                            passwordStrengthBar.style.width = passwordStrength + "%";
+                            passwordStrengthBar.style.backgroundColor = passwordStrengthColor;
+                            passwordStrengthText.textContent = passwordStrengthText;
+                        }
+
+                        function checkConfirmPasswordMatch() {
+                            const password = passwordField.value;
+                            const confirmPassword = confirmPasswordField.value;
+                            const confirmPasswordMatch = password === confirmPassword;
+                            const confirmPasswordMatchText = confirmPasswordMatch ? "Match" : "Not Match";
+
+                            confirmPasswordMatchBar.style.width = confirmPasswordMatch ? "100%" : "0%";
+                            confirmPasswordMatchText.textContent = confirmPasswordMatchText;
+                        }
+
+                        passwordField.addEventListener("input", checkPasswordStrength);
+                        confirmPasswordField.addEventListener("input", checkConfirmPasswordMatch);
+
+                        
+                    </script>
+
+                    <button type="submit" class="btn btn-danger w-100">Submit</button>
+                </form>
+                
 
                     
     <script>
@@ -159,8 +239,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']))
             });
         }
     </script>
-                    <button type="submit" class="btn btn-danger w-100">Submit</button>
-                </form>
             </div>
         </div>
     </div>

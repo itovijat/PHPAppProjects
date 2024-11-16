@@ -32,7 +32,14 @@ if (isset($_POST['loginbtn'])) {
             $_SESSION['email'] = $email;
             $_SESSION['role'] = $row['role'];
             $_SESSION['company'] = $row['company'];
-            $_SESSION['cp'] = true;
+
+
+
+            if ($_POST['email'] == $_POST['pass']) {
+                $_SESSION['cp'] = true;
+            } else {
+                $_SESSION['cp'] = false;
+            }
 
             echo "<script>location.replace('" . $row['role'] . "');</script>";
             exit;
