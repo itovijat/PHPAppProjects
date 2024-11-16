@@ -8,14 +8,12 @@
 <link rel="manifest" href="../assets/site.webmanifest">
 
 <?php
+$copy = "";
+if (isset($_GET['copy']))
+{
+    $copy = $_GET['copy'];
 
-$copy="";
-                            if (isset($_GET['copy'])) {
-                                $copy = $_GET['copy'];
-                              
-                             
-                            
-                            echo "<style>
+    echo "<style>
                             .copydiv {
                                 position: fixed;
                                 top: 50%;
@@ -34,11 +32,11 @@ $copy="";
                                 font-size: 1.5em;
                             }
                             </style>";
-                            $baseUrl = $_SERVER['SERVER_NAME']; // Use server's base name
-                            echo "<div class='copydiv'><p class='copytext' id='copytext'>Open App or Visit: <br>$baseUrl<br>User Name: $copy<br>Password: $copy</p>
+    $baseUrl = $_SERVER['SERVER_NAME']; // Use server's base name
+    echo "<div class='copydiv'><p class='copytext' id='copytext'>Open App or Visit: <br>$baseUrl<br>User Name: $copy<br>Password: $copy</p>
                             <button class='btn btn-primary' data-clipboard-target='#copytext' id='copyBtn'>Copy</button>
                             </div>";
-                            echo "<script>
+    echo "<script>
                             var clipboard = new ClipboardJS('#copyBtn');
                             clipboard.on('success', function(e) {
                                 console.log(e);
@@ -49,77 +47,95 @@ $copy="";
                                 console.log(e);
                             });
                             </script>";
-                            echo "";}
+    echo "";
+}
 
+if (isset($_GET['deleteid']))
+{
+    $deleteid = $_GET['deleteid'];
+    $sql = "DELETE FROM user WHERE email='$deleteid'";
+    if (mysqli_query($conn, $sql))
+    {
+        echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
+    }
+    else
+    {
+        echo "<script>alert('Error'); location.replace('index.php');</script>";
+    }
+}
 
-                            if (isset($_GET['deleteid'])) {
-                                $deleteid = $_GET['deleteid'];
-                                $sql = "DELETE FROM user WHERE email='$deleteid'";
-                                if (mysqli_query($conn, $sql)) {
-                                    echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
-                                } else {
-                                    echo "<script>alert('Error'); location.replace('index.php');</script>";
-                                }
-                            }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']))
+{
+    $email = $_POST['email'];
+    $password = md5($email);
+    $role = $_POST['role'];
+    $company = $_POST['company'];
+    $status = $_POST['status'];
 
-                            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
-                                $email = $_POST['email'];
-                                $password = md5($email);
-                                $role = $_POST['role'];
-                                $company = $_POST['company'];
-                                $status = $_POST['status'];
+    $sqlcheck = "SELECT email FROM user WHERE email='$email'";
+    $resultcheck = mysqli_query($conn, $sqlcheck);
+    if (mysqli_num_rows($resultcheck) > 0)
+    {
+        echo "<script>alert('User already exists'); location.replace('index.php');</script>";
+        die();
+    }
+    $sql = "INSERT INTO user (email, password, role, company, status) VALUES ('$email', '$password', '$role', '$company', '$status') ON DUPLICATE KEY UPDATE status='$status', role='$role', company='$company', password='$password'";
+    if (mysqli_query($conn, $sql))
+    {
+        echo "<script>alert('Record for $email updated successfully'); location.replace('index.php?copy=$email');</script>";
 
-                                $sqlcheck = "SELECT email FROM user WHERE email='$email'";
-                                $resultcheck = mysqli_query($conn, $sqlcheck);
-                                if (mysqli_num_rows($resultcheck) > 0) {
-                                    echo "<script>alert('User already exists'); location.replace('index.php');</script>";
-                                    die();
-                                }
-                                $sql = "INSERT INTO user (email, password, role, company, status) VALUES ('$email', '$password', '$role', '$company', '$status') ON DUPLICATE KEY UPDATE status='$status', role='$role', company='$company', password='$password'";
-                                if (mysqli_query($conn, $sql)) {
-                                    echo "<script>alert('Record for $email updated successfully'); location.replace('index.php?copy=$email');</script>";
-                              
-                              
-                                } else {
-                                    echo "<script>alert('Error'); location.replace('index.php');</script>";
-                                }
-                            }
+    }
+    else
+    {
+        echo "<script>alert('Error'); location.replace('index.php');</script>";
+    }
+}
 
-                            if (isset($_GET['activateid'])) {
-                                $activeid = $_GET['activateid'];
-                                $sql = "UPDATE user SET status=IF(status='0','1','0') WHERE email='$activeid'";
-                                if (mysqli_query($conn, $sql)) {
-                                    echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
-                                } else {
-                                    echo "<script>alert('Error'); location.replace('index.php');</script>";
-                                }
-                            }
-                            if (isset($_GET['resetid'])) {
-                                $resetid = $_GET['resetid'];
-                                $sql = "UPDATE user SET password=MD5('$resetid') WHERE email='$resetid'";
-                                if (mysqli_query($conn, $sql)) {
-                                    echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
-                                } else {
-                                    echo "<script>alert('Error'); location.replace('index.php');</script>";
-                                }
-                            }
+if (isset($_GET['activateid']))
+{
+    $activeid = $_GET['activateid'];
+    $sql = "UPDATE user SET status=IF(status='0','1','0') WHERE email='$activeid'";
+    if (mysqli_query($conn, $sql))
+    {
+        echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
+    }
+    else
+    {
+        echo "<script>alert('Error'); location.replace('index.php');</script>";
+    }
+}
+if (isset($_GET['resetid']))
+{
+    $resetid = $_GET['resetid'];
+    $sql = "UPDATE user SET password=MD5('$resetid') WHERE email='$resetid'";
+    if (mysqli_query($conn, $sql))
+    {
+        echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
+    }
+    else
+    {
+        echo "<script>alert('Error'); location.replace('index.php');</script>";
+    }
+}
 
-                            if (isset($_GET['loginid'])) {
+if (isset($_GET['loginid']))
+{
 
-                                $loginid = $_GET['loginid'];
-                                $sql = "SELECT * FROM user WHERE email='$loginid'";
-                                $result = mysqli_query($conn, $sql);
-                                if (mysqli_num_rows($result) > 0) {
-                                    $row = mysqli_fetch_assoc($result);
-                                    $_SESSION['email'] = $row['email'];
-                                    $_SESSION['role'] = $row['role'];
-                                    $_SESSION['company'] = $row['company'];
-                                    $_SESSION['cp'] = false;
-                                    echo "<script>alert('Login successfully'); location.replace('../$_SESSION[role]');</script>";
-                                }
-                            }
+    $loginid = $_GET['loginid'];
+    $sql = "SELECT * FROM user WHERE email='$loginid'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0)
+    {
+        $row = mysqli_fetch_assoc($result);
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['role'] = $row['role'];
+        $_SESSION['company'] = $row['company'];
+        $_SESSION['cp'] = false;
+        echo "<script>alert('Login successfully'); location.replace('../$_SESSION[role]');</script>";
+    }
+}
 
-                            ?>
+?>
 
 
 
@@ -139,19 +155,22 @@ $copy="";
                                 <label for="tablename" class="form-label">Table Name</label>
                                 <select class="form-control" id="tablename" name="tablename" required style="width: 250px;">
                                     <?php
-                                    // Assuming you have a connection to the database in $conn
-                                    $sql = "SHOW TABLES ";
-                                    $result = mysqli_query($conn, $sql);
-                                    if ($result) {
-                                        $selected = isset($_POST['tablename']) ? $_POST['tablename'] : 'none';
-                                        while ($row = mysqli_fetch_row($result)) {
-                                            $selected_attr = ($selected == $row[0]) ? 'selected' : '';
-                                            if ($row[0] != 'user') {
-                                                echo '<option value="' . htmlspecialchars($row[0]) . '"' . $selected_attr . '>' . htmlspecialchars($row[0]) . '</option>';
-                                            }
-                                        }
-                                    }
-                                    ?>
+// Assuming you have a connection to the database in $conn
+$sql = "SHOW TABLES ";
+$result = mysqli_query($conn, $sql);
+if ($result)
+{
+    $selected = isset($_POST['tablename']) ? $_POST['tablename'] : 'none';
+    while ($row = mysqli_fetch_row($result))
+    {
+        $selected_attr = ($selected == $row[0]) ? 'selected' : '';
+        if ($row[0] != 'user')
+        {
+            echo '<option value="' . htmlspecialchars($row[0]) . '"' . $selected_attr . '>' . htmlspecialchars($row[0]) . '</option>';
+        }
+    }
+}
+?>
                                 </select>
                             </div>
 
@@ -170,57 +189,72 @@ $copy="";
                         </div>
 
                             <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tdeletebtn'])) {
-    if (isset($_POST['tablename'], $_POST['delete_id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tdeletebtn']))
+{
+    if (isset($_POST['tablename'], $_POST['delete_id']))
+    {
         $tablename = $_POST['tablename'];
         $id = $_POST['delete_id'];
-        
+
         $sql = "DELETE FROM $tablename WHERE id=$id";
-        if (mysqli_query($conn, $sql)) {
+        if (mysqli_query($conn, $sql))
+        {
             echo "<script>alert('Record deleted successfully');</script>";
-        } else {
+        }
+        else
+        {
             echo "<script>alert('Error deleting record');</script>";
         }
     }
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tablename'], $_POST['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tablename'], $_POST['id']))
+{
     $tablename = $_POST['tablename'];
     $id = $_POST['id'];
 
-    if ($id == 0) {
+    if ($id == 0)
+    {
         $sql = "SELECT * FROM $tablename";
-    } else {
+    }
+    else
+    {
         $sql = "SELECT * FROM $tablename WHERE id=$id";
     }
     $columns = array();
     $result_columns = mysqli_query($conn, "SHOW COLUMNS FROM $tablename");
-    while ($row = mysqli_fetch_assoc($result_columns)) {
+    while ($row = mysqli_fetch_assoc($result_columns))
+    {
         $columns[] = $row['Field'];
     }
 
-    if (isset($_POST['search']) && !empty($_POST['search'])) {
+    if (isset($_POST['search']) && !empty($_POST['search']))
+    {
         $search = $_POST['search'];
         $sql = "SELECT * FROM $tablename WHERE " . implode(" LIKE '%$search%' OR ", $columns) . " LIKE '%$search%'";
     }
 
     $result = mysqli_query($conn, $sql);
-    if ($result) {
+    if ($result)
+    {
         echo '<h3 style="text-align: center;">Table Name: ' . htmlspecialchars($tablename) . '</h3>';
-        
+
         echo '<table class="table table-bordered table-responsive w-100 ">';
         echo '<thead>';
         echo '<tr>';
         $fields = mysqli_fetch_fields($result);
-        foreach ($fields as $field) {
+        foreach ($fields as $field)
+        {
             echo '<th>' . htmlspecialchars($field->name) . '</th>';
         }
         echo '<th>Action</th>'; // Add a new column for actions
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
-        while ($row = mysqli_fetch_assoc($result)) {
+        while ($row = mysqli_fetch_assoc($result))
+        {
             echo '<tr>';
-            foreach ($row as $cell) {
+            foreach ($row as $cell)
+            {
                 echo '<td>' . htmlspecialchars($cell) . '</td>';
             }
             echo '<td>';
@@ -234,13 +268,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tablename'], $_POST['
         }
         echo '</tbody>';
         echo '</table>';
-    } else {
+    }
+    else
+    {
         echo 'Error: ' . mysqli_error($conn);
     }
 
-  
 }
-                            ?>
+?>
 <div class="row">
     <div class="col-md-6">
         <!-- User Profile -->
@@ -255,29 +290,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tablename'], $_POST['
                         <span class="badge badge-secondary"><?php echo htmlspecialchars($_SESSION['email']); ?></span>
                     </div>
                     <?php
-                    $sql = "SELECT * FROM user WHERE email='" . $_SESSION['email'] . "'";
-                    $result = mysqli_query($conn, $sql);
-                    if (mysqli_num_rows($result) > 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Role:</strong><span class='badge badge-info'>" . htmlspecialchars(strtoupper($row['role'])) . "</span></div>";
-                            echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Status:</strong><span class='badge badge-" . ($row['status'] == 0 ? 'success' : 'danger') . "'>" . ($row['status'] == 0 ? 'Active' : 'Blocked') . "</span></div>";
-                            echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Company:</strong><span class='badge badge-secondary'>" . htmlspecialchars($row['company']) . "</span></div>";
-                        }
-                    } else {
-                        echo "<div class='list-group-item list-group-item-danger'>No results found.</div>";
-                    }
-                    ?>
+$sql = "SELECT * FROM user WHERE email='" . $_SESSION['email'] . "'";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0)
+{
+    while ($row = mysqli_fetch_assoc($result))
+    {
+        echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Role:</strong><span class='badge badge-info'>" . htmlspecialchars(strtoupper($row['role'])) . "</span></div>";
+        echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Status:</strong><span class='badge badge-" . ($row['status'] == 0 ? 'success' : 'danger') . "'>" . ($row['status'] == 0 ? 'Active' : 'Blocked') . "</span></div>";
+        echo "<div class='list-group-item d-flex justify-content-between align-items-center'><strong>Company:</strong><span class='badge badge-secondary'>" . htmlspecialchars($row['company']) . "</span></div>";
+    }
+}
+else
+{
+    echo "<div class='list-group-item list-group-item-danger'>No results found.</div>";
+}
+?>
                 </div>
 
                 <div class="alert alert-primary" role="alert">
                 <h4 class="alert-heading"><i class="fas fa-users"></i> User Summary</h4>
                 <?php
-                $sql = "SELECT company, status, role, COUNT(DISTINCT email) AS total FROM user GROUP BY company, status, role";
-                $result = mysqli_query($conn, $sql);
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<p class='mb-2'><i class='fas fa-building'></i> <strong>Company:</strong> <span class='badge badge-secondary'>" . htmlspecialchars($row['company']) . "</span> - <i class='fas fa-circle'></i> <strong>Status:</strong> <span class='badge badge-" . ($row['status'] == 0 ? 'success' : 'danger') . "'>" . ($row['status'] == 0 ? 'Active' : 'Blocked') . "</span> - <i class='fas fa-user-tag'></i> <strong>Role:</strong> <span class='badge badge-info'>" . htmlspecialchars($row['role']) . "</span> - <i class='fas fa-user-friends'></i> <strong>Number of users:</strong> <span class='badge badge-light'>" . $row['total'] . "</span></p>";
-                }
-                ?>
+$sql = "SELECT company, status, role, COUNT(DISTINCT email) AS total FROM user GROUP BY company, status, role";
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_assoc($result))
+{
+    echo "<p class='mb-2'><i class='fas fa-building'></i> <strong>Company:</strong> <span class='badge badge-secondary'>" . htmlspecialchars($row['company']) . "</span> - <i class='fas fa-circle'></i> <strong>Status:</strong> <span class='badge badge-" . ($row['status'] == 0 ? 'success' : 'danger') . "'>" . ($row['status'] == 0 ? 'Active' : 'Blocked') . "</span> - <i class='fas fa-user-tag'></i> <strong>Role:</strong> <span class='badge badge-info'>" . htmlspecialchars($row['role']) . "</span> - <i class='fas fa-user-friends'></i> <strong>Number of users:</strong> <span class='badge badge-light'>" . $row['total'] . "</span></p>";
+}
+?>
                 </div>
 
 <?php
@@ -333,36 +373,48 @@ $filename = "eovijatbackup-" . $date . ".csv";
                 </form>
 
                 <?php
-                if (isset($_POST['updatepassword'])) {
-                    $oldpassword = md5($_POST['oldpassword']);
-                    $newpassword = md5($_POST['password']);
-                    $confirmpassword = md5($_POST['confirmpassword']);
+if (isset($_POST['updatepassword']))
+{
+    $oldpassword = md5($_POST['oldpassword']);
+    $newpassword = md5($_POST['password']);
+    $confirmpassword = md5($_POST['confirmpassword']);
 
-                    if ($newpassword === $confirmpassword) {
-                        // Update password logic here
-
-                        $sql = "SELECT password FROM user WHERE email='" . $_SESSION['email'] . "'";
-                        $result = mysqli_query($conn, $sql);
-                        if (mysqli_num_rows($result) > 0) {
-                            $row = mysqli_fetch_assoc($result);
-                            if ($row['password'] == $oldpassword) {
-                                $update_sql = "UPDATE user SET password='$newpassword' WHERE email='" . $_SESSION['email'] . "'";
-                                if (mysqli_query($conn, $update_sql)) {
-                                    echo "<script>alert('Password updated successfully');</script>";
-                                } else {
-                                    echo "<script>alert('Error.');</script>"; 
-                                }
-                            } else {
-                                echo "<script>alert('Old password is incorrect.');</script>";
-                            }
-                        } else {
-                            echo "<script>alert('No results found.');</script>";
-                        }
-                    } else {
-                        echo "<script>alert('New password and confirm password do not match.');</script>";
-                    }
+    if ($newpassword === $confirmpassword)
+    {
+        // Update password logic here
+        $sql = "SELECT password FROM user WHERE email='" . $_SESSION['email'] . "'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0)
+        {
+            $row = mysqli_fetch_assoc($result);
+            if ($row['password'] == $oldpassword)
+            {
+                $update_sql = "UPDATE user SET password='$newpassword' WHERE email='" . $_SESSION['email'] . "'";
+                if (mysqli_query($conn, $update_sql))
+                {
+                    echo "<script>alert('Password updated successfully');</script>";
                 }
-                ?>
+                else
+                {
+                    echo "<script>alert('Error.');</script>";
+                }
+            }
+            else
+            {
+                echo "<script>alert('Old password is incorrect.');</script>";
+            }
+        }
+        else
+        {
+            echo "<script>alert('No results found.');</script>";
+        }
+    }
+    else
+    {
+        echo "<script>alert('New password and confirm password do not match.');</script>";
+    }
+}
+?>
             </div>
 
             <div class="card-footer text-muted">
@@ -389,17 +441,26 @@ $filename = "eovijatbackup-" . $date . ".csv";
                                     <select class="form-control" id="role" name="role" required>
                                     <?php
 
-                                       
-                                  
-                                  
-                                       
-                                $files = array_diff(scandir(dirname(__FILE__, 2)), array('..', '.', '.git', '.idea', 'vendor', 'composer.json', 'composer.lock', 'assets', 'person', 'admin'));
-                                foreach ($files as $file) {
-                                    if (is_dir(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . $file)) {
-                                        echo "<option value='$file'>$file</option>";
-                                    }
-                                }
-                                ?>
+$files = array_diff(scandir(dirname(__FILE__, 2)) , array(
+    '..',
+    '.',
+    '.git',
+    '.idea',
+    'vendor',
+    'composer.json',
+    'composer.lock',
+    'assets',
+    'person',
+    'admin'
+));
+foreach ($files as $file)
+{
+    if (is_dir(dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . $file))
+    {
+        echo "<option value='$file'>$file</option>";
+    }
+}
+?>
                                 <option>admin</option>
                                     </select>
                                 </div>
@@ -445,27 +506,30 @@ $filename = "eovijatbackup-" . $date . ".csv";
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
+                                                                        <?php
                                     $sql = "SELECT email, role, company, status FROM user where email != '$_SESSION[email]'";
                                     $result = mysqli_query($conn, $sql);
-                                    if (mysqli_num_rows($result) > 0) {
-                                        while ($row = mysqli_fetch_assoc($result)) {
+                                    if (mysqli_num_rows($result) > 0)
+                                    {
+                                        while ($row = mysqli_fetch_assoc($result))
+                                        {
                                             echo "<tr>";
                                             echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                                             echo "<td>" . htmlspecialchars($row['role']) . "</td>";
                                             echo "<td>" . htmlspecialchars($row['company']) . "</td>";
                                             echo "<td>" . htmlspecialchars($row['status']) . "</td>";
                                             echo "<td>
-                                                    <a href='index.php?activateid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm " . ($row['status'] == 0 ? 'btn-warning' : 'btn-danger') . "'>" . ($row['status'] == 0 ? 'Deactive' : 'Active') . "</a>
-                                                    <a href='index.php?deleteid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-danger'>Delete</a>
-                                                    <a href='index.php?resetid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-secondary'>Reset</a>
-                                                    <a href='index.php?loginid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-primary'>Login</a>
-                                                  </td>";
-                                        
-                                        
+                                                                                        <a href='index.php?activateid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm " . ($row['status'] == 0 ? 'btn-warning' : 'btn-danger') . "'>" . ($row['status'] == 0 ? 'Deactive' : 'Active') . "</a>
+                                                                                        <a href='index.php?deleteid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-danger'>Delete</a>
+                                                                                        <a href='index.php?resetid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-secondary'>Reset</a>
+                                                                                        <a href='index.php?loginid=" . htmlspecialchars($row['email']) . "' class='btn btn-sm btn-primary'>Login</a>
+                                                                                    </td>";
+
                                             echo "</tr>";
                                         }
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         echo "<tr><td colspan='5' class='text-center'>No results found</td></tr>";
                                     }
                                     ?>
@@ -478,4 +542,3 @@ $filename = "eovijatbackup-" . $date . ".csv";
         </main>
     </div>
 </div>
-

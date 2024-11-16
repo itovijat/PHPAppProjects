@@ -2,21 +2,22 @@
 
 
 <?php
-
-function stringToInt($str) {
+function stringToInt($str)
+{
     $result = 0;
-    
-    for ($i = 0; $i < strlen($str); $i++) {
-        $result = $result + (ord($str[$i])*$i);  // ord() returns the ASCII value of the character
-     
+
+    for ($i = 0;$i < strlen($str);$i++)
+    {
+        $result = $result + (ord($str[$i]) * $i);
+
     }
     return $result;
 }
-if (isset($_POST['submitvisit'])) {
+if (isset($_POST['submitvisit']))
+{
 
-   
     $idmi = stringToInt($_SESSION['email']);
- 
+
     $mo = $_POST['mo'];
     $route = $_POST['route'];
     $shop = $_POST['shop'];
@@ -24,7 +25,7 @@ if (isset($_POST['submitvisit'])) {
     $latitude = $_POST['latitude'];
     $longitude = $_POST['longitude'];
     $reason = $_POST['reason'];
-    $idm = $idmi.$_POST['memo'];
+    $idm = $idmi . $_POST['memo'];
     $company = $_SESSION['company'];
     $odate = date('Y.m.d');
     $ddate = date('Y.m.d', strtotime("+1 days"));
@@ -32,46 +33,55 @@ if (isset($_POST['submitvisit'])) {
     $serial = $_POST['serial'];
 
     $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$idm', '$company', '$odate', '$ddate', '$comment', '$serial')";
-    if (mysqli_query($conn, $sql)) {
-        echo "New record created successfully";
+    if (mysqli_query($conn, $sql))
+    {
+
         echo "<script>alert('New record created successfully');window.location.href='visitlist.php';</script>";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+    else
+    {
+        echo "<script>alert('Error: " . $sql . "<br>" . mysqli_error($conn) . "');</script>";
     }
 
-
     $sql = "INSERT INTO route (name, company) SELECT '$route', '$company' FROM dual WHERE NOT EXISTS (SELECT 1 FROM route WHERE name='$route' AND company='$company')";
-    if (mysqli_query($conn, $sql)) {
-        // echo "New route created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    if (mysqli_query($conn, $sql))
+    {
+
+    }
+    else
+    {
+        echo "<script>alert('Error: " . addslashes($sql) . "\\n" . addslashes(mysqli_error($conn)) . "');</script>";
     }
 
     $sql = "INSERT INTO phone (name, company) SELECT '$phone', '$company' FROM 
     dual WHERE NOT EXISTS (SELECT 1 FROM phone WHERE name='$phone' AND company='$company')";
-    if (mysqli_query($conn, $sql)) {
-        // echo "New route created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    if (mysqli_query($conn, $sql))
+    {
+
+    }
+    else
+    {
+        echo "<script>alert('Error: " . addslashes($sql) . "\\n" . addslashes(mysqli_error($conn)) . "');</script>";
     }
 
     $sql = "INSERT INTO shop (name, company) SELECT '$shop', '$company' FROM 
     dual WHERE NOT EXISTS (SELECT 1 FROM shop WHERE name='$shop' AND company='$company')";
-    if (mysqli_query($conn, $sql)) {
-        // echo "New route created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    if (mysqli_query($conn, $sql))
+    {
+
+    }
+    else
+    {
+        echo "<script>alert('Error: " . addslashes($sql) . "\\n" . addslashes(mysqli_error($conn)) . "');</script>";
     }
 }
-
-
 
 ?>
 
 
 
 <div class="content">
-    <!-- Main content goes here -->
+
 
     <div class="row">
         <div class="col-12 col-md-12" style="text-align: center;">
@@ -97,16 +107,15 @@ if (isset($_POST['submitvisit'])) {
    
         <div class="form-group col-md-6 col-6">
             <label for="memo">Memo [Auto]</label>
-            <input type="number" class="form-control" id="memo" name="memo" value="<?php 
-                date_default_timezone_set('Asia/Dhaka');
-            $tm = date('ymdHis', strtotime('2024-11-01 00:00:00'));
-            $tn= date('ymdHis');
-            $t = $tn-$tm-14001500;
-            
-            
-            echo ($t);
-                    
-            ?>" required>
+            <input type="number" class="form-control" id="memo" name="memo" value="<?php
+date_default_timezone_set('Asia/Dhaka');
+$tm = date('ymdHis', strtotime('2024-11-01 00:00:00'));
+$tn = date('ymdHis');
+$t = $tn - $tm - 14001500;
+
+echo ($t);
+
+?>" required>
         </div>
         
     </div>
@@ -123,15 +132,17 @@ if (isset($_POST['submitvisit'])) {
         <option value="" selected>Example Store, Place</option>
 
             <?php
-                        $sql = "SELECT name FROM shop WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+$sql = "SELECT name FROM shop WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
 
-            $shopResult = mysqli_query($conn, $sql);
-            if (mysqli_num_rows($shopResult) > 0) {
-                while ($shopRow = mysqli_fetch_assoc($shopResult)) {
-                    echo "<option value='" . $shopRow['name'] . "'>" . $shopRow['name'] . "</option>";
-                }
-            }
-            ?>
+$shopResult = mysqli_query($conn, $sql);
+if (mysqli_num_rows($shopResult) > 0)
+{
+    while ($shopRow = mysqli_fetch_assoc($shopResult))
+    {
+        echo "<option value='" . $shopRow['name'] . "'>" . $shopRow['name'] . "</option>";
+    }
+}
+?>
         </select>    
     </div>
 
@@ -142,14 +153,16 @@ if (isset($_POST['submitvisit'])) {
             <option value="" selected>Name</option>
 
                 <?php
-                $sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
-                $routeResult = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($routeResult) > 0) {
-                    while ($routeRow = mysqli_fetch_assoc($routeResult)) {
-                        echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
-                    }
-                }
-                ?>
+$sql = "SELECT name FROM route WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+$routeResult = mysqli_query($conn, $sql);
+if (mysqli_num_rows($routeResult) > 0)
+{
+    while ($routeRow = mysqli_fetch_assoc($routeResult))
+    {
+        echo "<option value='" . $routeRow['name'] . "'>" . $routeRow['name'] . "</option>";
+    }
+}
+?>
             </select>
         </div>
         <div class="form-group col-md-6 col-6">
@@ -157,14 +170,16 @@ if (isset($_POST['submitvisit'])) {
             <select class="form-control select2" id="phone" name="phone" required>
             <option value="" selected>017XX Name</option>
                 <?php
-                $sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
-                $phoneResult = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($phoneResult) > 0) {
-                    while ($phoneRow = mysqli_fetch_assoc($phoneResult)) {
-                        echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
-                    }
-                }
-                ?>
+$sql = "SELECT name FROM phone WHERE company='" . $_SESSION['company'] . "' ORDER BY id DESC";
+$phoneResult = mysqli_query($conn, $sql);
+if (mysqli_num_rows($phoneResult) > 0)
+{
+    while ($phoneRow = mysqli_fetch_assoc($phoneResult))
+    {
+        echo "<option value='" . $phoneRow['name'] . "'>" . $phoneRow['name'] . "</option>";
+    }
+}
+?>
             </select>    
         </div>
     </div>
@@ -238,7 +253,7 @@ if (isset($_POST['submitvisit'])) {
             width: 100% !important;
         }
         .select2-dropdown--bootstrap {
-            width: auto !important; /* Adjust width to match container */
+            width: auto !important; 
             min-width: 100%;
         }
     </style>
@@ -246,10 +261,6 @@ if (isset($_POST['submitvisit'])) {
   
     <script>
        $(document).ready(function() {
-           
-     
-            
-            // Initialize select2 for dynamic select fields
             $('#route, #shop, #phone').select2({
                 tags: true,
                theme: 'bootstrap',

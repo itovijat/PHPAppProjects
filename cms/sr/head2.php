@@ -1,13 +1,12 @@
-<?php  
+<?php
 
 include_once "head1.php";
 
-    $currentPage = basename($_SERVER['PHP_SELF']);
-    if(isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profile.php")
-    {
-        echo '<script>location.replace("profile.php");</script>';
-    }
-    
+$currentPage = basename($_SERVER['PHP_SELF']);
+if (isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profile.php")
+{
+    echo '<script>location.replace("profile.php");</script>';
+}
 
 ?>
 
@@ -16,7 +15,7 @@ include_once "head1.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EOvijat</title>
+    <title>EOvijat <?php echo $_SESSION['company']; ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
@@ -118,5 +117,3 @@ include_once "head1.php";
         </nav>
     </aside>
     <main>
-       
-

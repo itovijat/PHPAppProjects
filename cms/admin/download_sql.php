@@ -4,7 +4,8 @@ include_once "head1.php";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
+if ($conn->connect_error)
+{
     die("Connection failed: " . $conn->connect_error);
 }
 
@@ -14,14 +15,16 @@ $filename = "eovijatbackup-" . date('YmdHis') . ".sql";
 $tables = [];
 $result = $conn->query("SHOW TABLES");
 
-while ($row = $result->fetch_row()) {
+while ($row = $result->fetch_row())
+{
     $tables[] = $row[0];
 }
 
 $sqlContent = "";
 
 // Iterate through the tables and create SQL dump
-foreach ($tables as $table) {
+foreach ($tables as $table)
+{
     $result = $conn->query("SELECT * FROM $table");
     $numColumns = $result->field_count;
 
@@ -30,18 +33,25 @@ foreach ($tables as $table) {
     $createTableRow = $createTableResult->fetch_row();
     $sqlContent .= $createTableRow[1] . ";\n\n";
 
-    for ($i = 0; $i < $numColumns; $i++) {
-        while ($row = $result->fetch_row()) {
+    for ($i = 0;$i < $numColumns;$i++)
+    {
+        while ($row = $result->fetch_row())
+        {
             $sqlContent .= "INSERT INTO `$table` VALUES(";
-            for ($j = 0; $j < $numColumns; $j++) {
+            for ($j = 0;$j < $numColumns;$j++)
+            {
                 $row[$j] = addslashes($row[$j]);
                 $row[$j] = str_replace("\n", "\\n", $row[$j]);
-                if (isset($row[$j])) {
+                if (isset($row[$j]))
+                {
                     $sqlContent .= '"' . $row[$j] . '"';
-                } else {
+                }
+                else
+                {
                     $sqlContent .= '""';
                 }
-                if ($j < ($numColumns - 1)) {
+                if ($j < ($numColumns - 1))
+                {
                     $sqlContent .= ', ';
                 }
             }
@@ -64,4 +74,3 @@ echo "Backup saved";
 
 $conn->close();
 ?>
-

@@ -1,15 +1,16 @@
 <?php
 include "dbconnect.php";
 
-
-
-if (isset($_POST['password']) && $_POST['password'] !='') {
+if (isset($_POST['password']) && $_POST['password'] != '')
+{
 
     $sql = "SELECT password FROM user WHERE email='itovijat'";
     $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0)
+    {
         $row = mysqli_fetch_assoc($result);
-        if (md5($_POST['password']) != $row['password']) {
+        if (md5($_POST['password']) != $row['password'])
+        {
             echo "<style>
             .error-box {
                 display: flex;
@@ -32,9 +33,11 @@ if (isset($_POST['password']) && $_POST['password'] !='') {
             </form>
             </div>";
             die();
-            
+
         }
-    } else {
+    }
+    else
+    {
         die("User not found");
     }
 
@@ -42,19 +45,19 @@ if (isset($_POST['password']) && $_POST['password'] !='') {
     mysqli_query($conn, $sql);
     $tables = array();
     $result = mysqli_query($conn, "SHOW TABLES");
-    while($row = mysqli_fetch_row($result)) {
+    while ($row = mysqli_fetch_row($result))
+    {
         $tables[] = $row[0];
     }
-    foreach($tables as $table) {
+    foreach ($tables as $table)
+    {
         $sql = "DROP TABLE $table";
         mysqli_query($conn, $sql);
     }
     $sql = "SET FOREIGN_KEY_CHECKS = 1";
     mysqli_query($conn, $sql);
 
-  
-
-$sql = "
+    $sql = "
 CREATE TABLE  IF NOT EXISTS user(
     
     email VARCHAR(10) NOT NULL PRIMARY KEY,
@@ -65,52 +68,63 @@ CREATE TABLE  IF NOT EXISTS user(
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 ";
-mysqli_query($conn, $sql);
+    mysqli_query($conn, $sql);
 
-$pss=md5('KRkush5877');
-$sql = "
+    $pss = md5('KRkush5877');
+    $sql = "
 INSERT INTO user (email, password, role,company)
 VALUES ('itovijat', '$pss','admin','None')
 ";
-mysqli_query($conn, $sql);
+    mysqli_query($conn, $sql);
 
-
-$sql = "CREATE TABLE IF NOT EXISTS route (
+    $sql = "CREATE TABLE IF NOT EXISTS route (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20),
     company VARCHAR(20)
 )";
 
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
+    if (mysqli_query($conn, $sql))
+    {
+        // echo "Table created successfully";
+        
+    }
+    else
+    {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
 
-$sql = "CREATE TABLE IF NOT EXISTS shop (
+    $sql = "CREATE TABLE IF NOT EXISTS shop (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50),
     company VARCHAR(20)
 )";
 
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
+    if (mysqli_query($conn, $sql))
+    {
+        // echo "Table created successfully";
+        
+    }
+    else
+    {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
 
-$sql = "CREATE TABLE IF NOT EXISTS phone (
+    $sql = "CREATE TABLE IF NOT EXISTS phone (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20),
     company VARCHAR(20)
 )";
 
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
-$sql = "CREATE TABLE IF NOT EXISTS visit (
+    if (mysqli_query($conn, $sql))
+    {
+        // echo "Table created successfully";
+        
+    }
+    else
+    {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
+    $sql = "CREATE TABLE IF NOT EXISTS visit (
     id INT AUTO_INCREMENT PRIMARY KEY,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     mo VARCHAR(20),
@@ -129,13 +143,17 @@ $sql = "CREATE TABLE IF NOT EXISTS visit (
     
     status SMALLINT(1) DEFAULT 0
     )";
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
+    if (mysqli_query($conn, $sql))
+    {
+        // echo "Table created successfully";
+        
+    }
+    else
+    {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
 
-$sql = "CREATE TABLE IF NOT EXISTS orders (
+    $sql = "CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     idvisit INT,
     pn VARCHAR(30),
@@ -144,14 +162,17 @@ $sql = "CREATE TABLE IF NOT EXISTS orders (
 
     quantity FLOAT
 )";
-if (mysqli_query($conn, $sql)) {
-    // echo "Table created successfully";
-} else {
-    echo "Error creating table: " . mysqli_error($conn);
-}
+    if (mysqli_query($conn, $sql))
+    {
+        // echo "Table created successfully";
+        
+    }
+    else
+    {
+        echo "Error creating table: " . mysqli_error($conn);
+    }
 
-
-$sql = "
+    $sql = "
 CREATE TABLE  IF NOT EXISTS person(
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
@@ -168,40 +189,41 @@ CREATE TABLE  IF NOT EXISTS person(
      dept VARCHAR(30) NOT NULL
     )
 ";
-mysqli_query($conn, $sql);
+    mysqli_query($conn, $sql);
 
-
-
-
-
-$sql="
+    $sql = "
 CREATE TABLE IF NOT EXISTS products  (
   id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(50) NOT NULL,
   company VARCHAR(10) NOT NULL
 )";
 
-if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true)
+    {
 
-} else {
- echo "Error creating table: " . $conn->error;
-}
+    }
+    else
+    {
+        echo "Error creating table: " . $conn->error;
+    }
 
-
-$sql="
+    $sql = "
  CREATE TABLE IF NOT EXISTS persons  (
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(50) NOT NULL,
   company VARCHAR(10) NOT NULL
 )";
 
-if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true)
+    {
 
-} else {
-echo "Error creating table: " . $conn->error;
-}   
+    }
+    else
+    {
+        echo "Error creating table: " . $conn->error;
+    }
 
-$sql="
+    $sql = "
 CREATE TABLE IF NOT EXISTS inventory   (
  id INT AUTO_INCREMENT PRIMARY KEY,
  product_name VARCHAR(50) NOT NULL,
@@ -215,12 +237,15 @@ CREATE TABLE IF NOT EXISTS inventory   (
 company VARCHAR(10) NOT NULL
 )";
 
-if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true)
+    {
 
-} else {
-echo "Error creating table: " . $conn->error;
-} 
-$sql="
+    }
+    else
+    {
+        echo "Error creating table: " . $conn->error;
+    }
+    $sql = "
 CREATE TABLE IF NOT EXISTS kpl (
     id INT AUTO_INCREMENT PRIMARY KEY,
     vehicle_name VARCHAR(50) NOT NULL,
@@ -233,80 +258,72 @@ CREATE TABLE IF NOT EXISTS kpl (
      remark VARCHAR(20) NULL,
   company VARCHAR(10) NOT NULL
 )";
- 
- if ($conn->query($sql) === TRUE) {
- 
- } else {
- echo "Error creating table: " . $conn->error;
- }
 
+    if ($conn->query($sql) === true)
+    {
 
- $sql="
+    }
+    else
+    {
+        echo "Error creating table: " . $conn->error;
+    }
+
+    $sql = "
  CREATE TABLE IF NOT EXISTS vehicles  (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
    company VARCHAR(10) NOT NULL
  )";
- 
- if ($conn->query($sql) === TRUE) {
- 
- } else {
- echo "Error creating table: " . $conn->error;
- }
 
+    if ($conn->query($sql) === true)
+    {
 
-
-
-
-
-
-echo "<script>alert('Done');</script>";
-
-function addDemoData($conn){
-    $sql = "INSERT INTO user (email, password, role,company) VALUES ('demo','".md5('demo')."','admin','None')";
-    $conn->query($sql);
-    $sql = "INSERT INTO route (name, company) VALUES ('Demo Route','None')";
-    $conn->query($sql);
-    $sql = "INSERT INTO phone (name, company) VALUES ('Demo Phone','None')";
-    $conn->query($sql);
-    $sql = "INSERT INTO visit (date, mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial, status) VALUES (now(),'Demo MO','Demo Route','Demo Shop','Demo Phone',0,0,'demo',0,'None',now(),now(),'Demo comment',0,0)";
-    $conn->query($sql);
-    $sql = "INSERT INTO orders (idvisit, pn, unit, rate, quantity) VALUES (1,'Demo PN',1,1,1)";
-    $conn->query($sql);
-    $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, value, entry_date, person_name, expiry_date, remark, company) VALUES ('Demo Product',1,0,1,now(),'Demo Person',now(),'Demo Remark','None')";
-    $conn->query($sql);
-    $sql = "INSERT INTO kpl (vehicle_name, driver_name, entry_date, oil_quantity, oil_price, distance, km, remark, company) VALUES ('Demo Vehicle','Demo Driver',now(),1,1,1,1,'Demo Remark','None')";
-    $conn->query($sql);
-    $sql = "INSERT INTO vehicles (name, company) VALUES ('Demo Vehicle','None')";
-    $conn->query($sql);
-    for ($i=0; $i < 40; $i++) {
-        $sql = "INSERT INTO user (email, password, role,company) VALUES ('demo".($i+1)."','".md5('demo')."', 'admin','None')";
-        $conn->query($sql);
-        $sql = "INSERT INTO route (name, company) VALUES ('Demo Route".($i+1)."','None')";
-        $conn->query($sql);
-        $sql = "INSERT INTO phone (name, company) VALUES ('Demo Phone".($i+1)."','None')";
-        $conn->query($sql);
-        $sql = "INSERT INTO visit (date, mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial, status) VALUES (now(),'Demo MO".($i+1)."','Demo Route".($i+1)."','Demo Shop".($i+1)."','Demo Phone".($i+1)."',0,0,'demo',0,'None',now(),now(),'Demo comment".($i+1)."',0,0)";
-        $conn->query($sql);
-        $sql = "INSERT INTO orders (idvisit, pn, unit, rate, quantity) VALUES (".($i+2).",'Demo PN".($i+1)."',1,1,1)";
-        $conn->query($sql);
-        $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, value, entry_date, person_name, expiry_date, remark, company) VALUES ('Demo Product".($i+1)."',1,0,1,now(),'Demo Person".($i+1)."',now(),'Demo Remark".($i+1)."','None')";
-        $conn->query($sql);
-        $sql = "INSERT INTO kpl (vehicle_name, driver_name, entry_date, oil_quantity, oil_price, distance, km, remark, company) VALUES ('Demo Vehicle".($i+1)."','Demo Driver".($i+1)."',now(),1,1,1,1,'Demo Remark".($i+1)."','None')";
-        $conn->query($sql);
-        $sql = "INSERT INTO vehicles (name, company) VALUES ('Demo Vehicle".($i+1)."','None')";
-        $conn->query($sql);
     }
-}
-addDemoData($conn);
+    else
+    {
+        echo "Error creating table: " . $conn->error;
+    }
+
+    echo "<script>alert('Done');</script>";
+
+    function addDemoData($conn)
+    {
+        $number = $_POST['number'];
+
+        if ($number != 0)
+        {
+            for ($i = 0; $i < $number; $i++)
+            {
+                $sql = "INSERT INTO user (email, password, role,company) VALUES ('demo" . ($i + 1) . "','" . md5('demo') . "', 'admin','None')";
+                $conn->query($sql);
+                $sql = "INSERT INTO route (name, company) VALUES ('Demo Route" . ($i + 1) . "','None')";
+                $conn->query($sql);
+                $sql = "INSERT INTO phone (name, company) VALUES ('Demo Phone" . ($i + 1) . "','None')";
+                $conn->query($sql);
+                $sql = "INSERT INTO visit (date, mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial, status) VALUES (now(),'Demo MO" . ($i + 1) . "','Demo Route" . ($i + 1) . "','Demo Shop" . ($i + 1) . "','Demo Phone" . ($i + 1) . "',0,0,'demo',0,'None',now(),now(),'Demo comment" . ($i + 1) . "',0,0)";
+                $conn->query($sql);
+                $sql = "INSERT INTO orders (idvisit, pn, unit, rate, quantity) VALUES (" . ($i + 2) . ",'Demo PN" . ($i + 1) . "',1,1,1)";
+                $conn->query($sql);
+                $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, value, entry_date, person_name, expiry_date, remark, company) VALUES ('Demo Product" . ($i + 1) . "',1,0,1,now(),'Demo Person" . ($i + 1) . "',now(),'Demo Remark" . ($i + 1) . "','None')";
+                $conn->query($sql);
+                $sql = "INSERT INTO kpl (vehicle_name, driver_name, entry_date, oil_quantity, oil_price, distance, km, remark, company) VALUES ('Demo Vehicle" . ($i + 1) . "','Demo Driver" . ($i + 1) . "',now(),1,1,1,1,'Demo Remark" . ($i + 1) . "','None')";
+                $conn->query($sql);
+                $sql = "INSERT INTO vehicles (name, company) VALUES ('Demo Vehicle" . ($i + 1) . "','None')";
+                $conn->query($sql);
+            }
+        }
+    }
+    addDemoData($conn);
 
 }
 
 ?>
 
 <div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 300px;">
         <h2 style="text-align: center;">Reset Database</h2>
+        <label for="number">Number</label>
+        <input type="number" name="number" value="0" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
         <label for="password">Password</label>
         <input type="password" name="password" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
         <input type="submit" value="Submit" style="width: 100%; background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
