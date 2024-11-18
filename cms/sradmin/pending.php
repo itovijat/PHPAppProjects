@@ -92,9 +92,16 @@ if (isset($_GET['id']) )
     $id = $_GET['id'];
   
 
-    $dd = $_GET['dd'];
+    if (isset($_GET['dd'])) {
+        $dd = $_GET['dd'];
+        $sql = "UPDATE visit SET status=1, ddate='" . $dd . "' WHERE id='" . $id . "'";
+    }
+    else {
+        $sql = "UPDATE visit SET status=0, odate='" . date('Y-m-d') . "' WHERE id='" . $id . "'";
+    }
 
-    $sql = "UPDATE visit SET status=1, ddate='" . $dd . "' WHERE id='" . $id . "'";
+
+
     if (mysqli_query($conn, $sql))
     {
 
@@ -127,7 +134,7 @@ else
     $todate = date('Y.m.d');
 }
 echo "<p id='up' style='text-align: center;'>Orders Pending @ <b>" . $todate . "</b> " . $_SESSION['company'] . "</p><p style='text-align: center;'></p>";
-$sql = "SELECT * FROM visit WHERE status=0  AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate = '" . $todate . "'";
+$sql = "SELECT * FROM visit WHERE (status=0 or status=1) AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate = '" . $todate . "'";
 
 if (isset($_GET['mo']) && $_GET['mo'] != '')
 {
@@ -177,26 +184,47 @@ if (mysqli_num_rows($result) > 0)
 
         echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=" . $row['id'] . "' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:" . $row['id'];
         if (isset($_GET['todate']) && $_GET['todate'] != null) $todate = $_GET['todate'];
-        else $todate = date('Y.m.d', strtotime("+1 day"));
+        else $todate = date('Y.m.d');
         if (isset($_GET['mo']) && $_GET['mo'] != null) $mo = $_GET['mo'];
-        else $mo = $_SESSION['email'];
+        else $mo = "";
         if (isset($_GET['route']) && $_GET['route'] != null) $route = $_GET['route'];
         else $route = "";
 
-        echo "<form action='pending.php' method='get' class='form-inline' style='display: flex; justify-content: center; align-items: center;'>
-        <input type='hidden' name='id' value='" . $row['id'] . "'>
-        <input type='hidden' name='todate' value='" . $todate . "'>
-        <input type='hidden' name='mo' value='" . $mo . "'>
-        <input type='hidden' name='route' value='" . $route . "'>
+        if ($row['status'] == 0)
+        {
+            echo "<form action='pending.php' method='get' class='form-inline' style='display: flex; justify-content: center; align-items: center;'>
+            <input type='hidden' name='id' value='" . $row['id'] . "'>
+            <input type='hidden' name='todate' value='" . $todate . "'>
+            <input type='hidden' name='mo' value='" . $mo . "'>
+            <input type='hidden' name='route' value='" . $route . "'>
 
-        <div class='input-group' style='width: auto;'>
-            <input type='date' name='dd' value='" . date('Y-m-d', max(strtotime($row['ddate']), strtotime("+1 day"))) . "' min='" .
-             date('Y-m-d') . "' class='form-control' style='width: 150px;' required>
-            <div class='input-group-append'>
-                <button type='submit' class='btn btn-success'><i class='fas fa-check-circle'></i></button>
+            <div class='input-group' style='width: auto;'>
+                <input type='date' name='dd' value='" . date('Y-m-d', max(strtotime($row['ddate']), strtotime("+1 day"))) . "' min='" .
+                 date('Y-m-d') . "' class='form-control' style='width: 150px;' required>
+                <div class='input-group-append'>
+                    <button type='submit' class='btn btn-success'><i class='fas fa-check-circle'></i></button>
+                </div>
             </div>
-        </div>
-        </form>";
+            </form>";
+        }
+        else {
+
+            echo "<form action='pending.php' method='get' class='form-inline' style='display: flex; justify-content: center; align-items: center;'>
+            <input type='hidden' name='id' value='" . $row['id'] . "'>
+            <input type='hidden' name='todate' value='" . $todate . "'>
+            <input type='hidden' name='mo' value='" . $mo . "'>
+            <input type='hidden' name='route' value='" . $route . "'>
+
+            <div class='input-group' style='width: auto;'>
+                <input type='text' value='Accepted' class='form-control' style='width: 150px;' readonly>
+                
+                <div class='input-group-append'>
+                    <button type='submit' class='btn btn-danger'><i class='fas fa-ban'></i></button>
+                </div>
+            </div>
+            </form>";
+
+        }
 
         echo "</td>";
 

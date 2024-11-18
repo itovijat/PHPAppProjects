@@ -105,6 +105,7 @@ if (isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profil
         <nav>
             <ul>
             <li><a href="index.php"><i style="width: 30px;" class="fas fa-tv"></i> Dashboard</li>
+            <li><a href="location.php"><i style="width: 30px;" class="fas fa-map-marker"></i> Location</a></li>
             <li><a href="pending.php"><i style="width: 30px;" class="fas fa-spinner"></i> Pendings</a></li>
             <hr>
 

@@ -13,7 +13,7 @@
 
                     
                     
-                    <div class="col-6 col-md-4">
+                    <div class="col-6 col-md-3">
                         <input type="text" class="form-control w-100" id="todate" name="todate"
                          pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['todate']))
 {
@@ -27,8 +27,8 @@ else
                     </div>
 
 
-                    <div class="col-0 col-md-0">
-                        <input type="hidden" class="form-control w-100" id="mo" name="mo"
+                    <div class="col-6 col-md-3">
+                        <input type="text" class="form-control w-100" id="mo" name="mo"
                          <?php if (isset($_GET['mo']) && $_GET['mo'] != null)
 {
     echo "value='" . $_GET['mo'] . "'";
@@ -40,7 +40,7 @@ else
 ?> >
                     </div>
 
-                    <div class="col-6 col-md-4">
+                    <div class="col-6 col-md-3">
                         <input type="text" class="form-control w-100" id="route" name="route"
                          <?php if (isset($_GET['route']) && $_GET['route'] != null)
 {
