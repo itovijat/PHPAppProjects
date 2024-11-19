@@ -1,3 +1,3 @@
-<script>
-    window.location.href = "cms";
-</script>
+    <script>
+        location.replace("../cms/index.php");
+    </script>
