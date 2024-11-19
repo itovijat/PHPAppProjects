@@ -1,3 +1,3 @@
     <script>
-        location.replace("../cms/index.php");
+        location.replace("cms/index.php");
     </script>
