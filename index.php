@@ -1,3 +1,4 @@
-    <script>
-        location.replace("cms/index.php");
-    </script>
+<script>
+    // Redirect to the CMS page
+    window.location.href = '/cms/';
+</script>
