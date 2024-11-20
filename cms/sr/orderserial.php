@@ -8,60 +8,8 @@
             <div class="card">
                 <div class="card-header noPrint bg-success text-white">
                 <div class="row">
-                    <div class="col-12 col-md-6" style="text-align: center;"> <h1 >Order Serial</h1></div>
-                    <form class="form-inline">
-
-                    
-                    
-                    <div class="col-6 col-md-4">
-                        <input type="text" class="form-control w-100" id="todate" name="todate"
-                         pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' value="<?php if (isset($_GET['todate']))
-{
-    echo $_GET['todate'];
-}
-else
-{
-    echo date('Y.m.d', strtotime("+1 day"));
-}
-?>" required>
-                    </div>
-
-
-                    <div class="col-0 col-md-0">
-                        <input type="hidden" class="form-control w-100" id="mo" name="mo"
-                         <?php if (isset($_GET['mo']) && $_GET['mo'] != null)
-{
-    echo "value='" . $_GET['mo'] . "'";
-}
-else
-{
-    echo "placeholder='all mo'";
-}
-?> >
-                    </div>
-
-                    <div class="col-6 col-md-4">
-                        <input type="text" class="form-control w-100" id="route" name="route"
-                         <?php if (isset($_GET['route']) && $_GET['route'] != null)
-{
-    echo "value='" . $_GET['route'] . "'";
-}
-else
-{
-    echo "placeholder='all route'";
-}
-?> >
-                    </div>
-
-                    
-
-                    
-
-
-                    <div class="col-12 mx-2 my-2 col-md-1  text-center"> 
-                                                   <button type="submit" class="btn btn-primary "><i class="fas fa-search"></i></button>
-                    </div>
-                    </form>
+                    <div class="col-12 col-md-12" style="text-align: center;"> <h1 >Order Serial</h1></div>
+                   
 
                 </div>
 
@@ -86,66 +34,17 @@ else
 
                     
 <?php
-if (isset($_GET['id']) && isset($_GET['serial']))
+
+
+echo "<p id='up' style='text-align: center;'>Order Serial for Delivery @  " . $_SESSION['company'] . "</p><p style='text-align: center;'>First Delivery First</p>";
+$sql = "SELECT * FROM visit WHERE status=1 AND mo='" . $_SESSION['email'] . "' AND company='" . $_SESSION['company'] . "' AND reason='order'  ORDER BY route, ddate ASC";
+if (isset($_GET['ids']) && $_GET['ids'] != null)
 {
-
-    $id = $_GET['id'];
-    $serial = $_GET['serial'];
-
-    if (($serial == null))
-    {
-        $sql = "SELECT serial FROM visit WHERE id='" . $id . "'";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        $serial = $row['serial'] + 1;
-    }
-
-    $sql = "UPDATE visit SET serial='" . $serial . "' WHERE id='" . $id . "'";
-    if (mysqli_query($conn, $sql))
-    {
-
-        $params = [];
-        if (isset($_GET['todate'])) $params['todate'] = $_GET['todate'];
-        if (isset($_GET['mo'])) $params['mo'] = $_GET['mo'];
-        if (isset($_GET['route'])) $params['route'] = $_GET['route'];
-
-        $query = http_build_query($params);
-        $url = 'orderserial.php' . ($query ? '?' . $query : '');
-
-        echo "<script>window.location.href='" . $url . "';</script>";
-        die();
-
-    }
-    else
-    {
-        echo "Error updating record: " . mysqli_error($conn);
-    }
+    //echo "<script>alert('Showing selected orders');</script>";
+    
+    $ids = explode(',', $_GET['ids']);
+ $sql = "SELECT * FROM visit WHERE status=1 AND id IN (" . implode(',', array_map('intval', $ids)) . ") AND company='" . mysqli_real_escape_string($conn, $_SESSION['company']) . "' AND mo='" . mysqli_real_escape_string($conn, $_SESSION['email']) . "' ORDER BY FIELD(id, " . implode(',', array_map('intval', $ids)) . ")";
 }
-if (isset($_GET['todate']))
-{
-
-    $todate = $_GET['todate'];
-
-}
-else
-{
-
-    $todate = date('Y.m.d', strtotime("+1 day"));
-}
-echo "<p id='up' style='text-align: center;'>Order Serial for Delivery @ <b>" . $todate . "</b> " . $_SESSION['company'] . "</p><p style='text-align: center;'>First Delivery First</p>";
-$sql = "SELECT * FROM visit WHERE status=1 AND mo='" . $_SESSION['email'] . "' AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND ddate = '" . $todate . "'";
-
-if (isset($_GET['mo']) && $_GET['mo'] != '')
-{
-    $sql .= " AND mo LIKE '%" . $_GET['mo'] . "%'";
-
-}
-if (isset($_GET['route']) && $_GET['route'] != '')
-{
-    $sql .= " AND route LIKE '%" . $_GET['route'] . "%'";
-}
-
-$sql .= " ORDER BY serial ";
 
 // echo "<p style='text-align: center; font-size: 1.5em; color: red'>SQL: ".$sql."</p>";
 
@@ -161,118 +60,142 @@ $productQuantities = array();
 
 if (mysqli_num_rows($result) > 0)
 {
+?>
+    <?php
+echo "<div class='table-responsive text-center'><table class='table table-bordered mx-auto' id='orderTable'>";
+echo "<thead>";
+echo "<tr>";
+echo "<th>Serial</th>";
+echo "<th class='noPrint'></th>";
+echo "<th>Details</th>";
+echo "<th>Orders</th>";
+echo "</tr>";
+echo "</thead>";
+echo "<tbody>";
 
-    echo "<div class='table-responsive text-center'><table class='table table-bordered mx-auto' id='orderTable'>";
-    echo "<thead>";
-    echo "<tr>";
-    echo "<th class='noPrint'></th>";
-    echo "<th>Details</th>";
-    echo "<th>Orders</th>";
-    echo "</tr>";
-    echo "</thead>";
-    echo "<tbody>";
+$idList = [];
+$count = 1;
 
-    while ($row = mysqli_fetch_assoc($result))
-    {
+while ($row = mysqli_fetch_assoc($result)) {
+    $idList[] = $row['id'];
 
-        $idList[] = $row['id'];
+    echo "<tr data-id='" . $row['id'] . "'> <td class='serial-number'></td>";
+    echo "<td class='noPrint'>";
+    echo "<input type='checkbox' class='order-checkbox' value='" . $row['id'] . "'>";
+    echo "<br>ID:" . $row['id'];
+    echo "<br><a href='order.php?order=" . $row['id'] . "' class='btn btn-warning'><i class='fas fa-edit'></i></a>";
 
-        echo "<tr>";
+   
 
-        echo "<td  class='noPrint'>";
+    echo "</td>";
+    echo "<td class='order-count'>" . $count . ". <span class='noPrint'> Memo:</span>" . $row['memo'] . " <span class='noPrint'>Route: </span>(" . strtoupper($row['route']) . ")<span class='noPrint'><br>Shop:</span> " . strtoupper($row['shop']) . " " . $row['phone'] . " <span class='noPrint'><br></span>" . $row['mo'] . "@" . $row['odate'] . "<span class='noPrint'> Delivery: " . $row['ddate'] . "</span></td>";
+    $count++;
+    echo "<td>";
+    $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "'";
 
-        echo "<a  style='margin-bottom: 10px;  width: 50px;' href='invoice.php?order=" . $row['id'] . "' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a><br>ID:" . $row['id'];
-        if (isset($_GET['todate']) && $_GET['todate'] != null) $todate = $_GET['todate'];
-        else $todate = date('Y.m.d', strtotime("+1 day"));
-        if (isset($_GET['mo']) && $_GET['mo'] != null) $mo = $_GET['mo'];
-        else $mo = $_SESSION['email'];
-        if (isset($_GET['route']) && $_GET['route'] != null) $route = $_GET['route'];
-        else $route = "";
+    if (isset($_GET['product']) && $_GET['product'] != '') {
+        $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "' AND pn LIKE '%" . $_GET['product'] . "%'";
+    }
+    $orderResult = mysqli_query($conn, $orderSql);
 
-        echo "<form action='orderserial.php' method='get'>
-        <input type='hidden' name='id' value='" . $row['id'] . "'>
-         <input type='hidden' name='todate' value='" . $todate . "'>
-         <input type='hidden' name='mo' value='" . $mo . "'>
-         <input type='hidden' name='route' value='" . $route . "'>
-      
-        <input type='number' name='serial' placeholder='" . $row['serial'] . "' style='width: 50px;' >
-        <button type='submit' class='btn btn-primary'><i class='fas fa-arrow-alt-circle-down'></i></button>
-        </form>";
+    if (mysqli_num_rows($orderResult) > 0) {
+        $total = 0.0;
 
-        echo "</td>";
-
-        echo "<td>" . $count . ". <span class='noPrint'> Memo:</span>" . $row['memo'] . " <span class='noPrint'>Route: </span>(" . strtoupper($row['route']) . ")<span class='noPrint'><br>Shop:</span> " . strtoupper($row['shop']) . " " . $row['phone'] . " <span class='noPrint'><br></span>" . $row['mo'] . "@" . $row['odate'] . "<span class='noPrint'> Delivery: " . $row['ddate'] . " <i></span>";
-
-        echo "<i></td>";
-        $count++;
-
-        echo "<td>";
-        $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "'";
-
-        if (isset($_GET['product']) && $_GET['product'] != '')
-        {
-            $orderSql = "SELECT * FROM orders WHERE idvisit='" . $row['id'] . "' AND pn LIKE '%" . $_GET['product'] . "%'";
-        }
-        $orderResult = mysqli_query($conn, $orderSql);
-
-        if (mysqli_num_rows($orderResult) > 0)
-        {
-
-            $total = 0.0;
-
-            while ($orderRow = mysqli_fetch_assoc($orderResult))
-            {
-                $productKey = $orderRow['pn'] . ' (' . $orderRow['unit'] . ")";
-
-                if (!isset($units[$orderRow['unit']]))
-                {
-                    $units[$orderRow['unit']] = 1;
-                    $totalQuantity[$orderRow['unit']] = $orderRow['quantity'];
-                }
-                else
-                {
-                    $units[$orderRow['unit']]++;
-                    $totalQuantity[$orderRow['unit']] += $orderRow['quantity'];
-                }
-
-                if (!isset($productQuantities[$productKey]))
-                {
-                    $productQuantities[$productKey] = $orderRow['quantity'];
-                }
-                else
-                {
-                    $productQuantities[$productKey] += $orderRow['quantity'];
-                }
-
-                echo "" . $orderRow['pn'] . " (<i>" . $orderRow['unit'] . "</i>) " . $orderRow['quantity'];
-                echo "<span class='noPrint'>@" . $orderRow['rate'];
-                echo "=" . ($orderRow['rate'] * $orderRow['quantity']) . "/=</span> ";
-
-                $total += $orderRow['rate'] * $orderRow['quantity'];
-                echo "<span class='noPrint'> <br><hr></span>";
+        while ($orderRow = mysqli_fetch_assoc($orderResult)) {
+            $productKey = $orderRow['pn'] . ' (' . $orderRow['unit'] . ")";
+            if (!isset($units[$orderRow['unit']])) {
+                $units[$orderRow['unit']] = 1;
+                $totalQuantity[$orderRow['unit']] = $orderRow['quantity'];
+            } else {
+                $units[$orderRow['unit']]++;
+                $totalQuantity[$orderRow['unit']] += $orderRow['quantity'];
             }
 
-        }
-        else
-        {
-            echo "No orders found";
-        }
-        echo " <b>Total: " . number_format($total, 2) . "/=</b> <i style='font-size: 12px'>" . $row['comment'] . "</i>";
-        $totalamount = $totalamount + $total;
+            if (!isset($productQuantities[$productKey])) {
+                $productQuantities[$productKey] = $orderRow['quantity'];
+            } else {
+                $productQuantities[$productKey] += $orderRow['quantity'];
+            }
 
-        echo "</td>";
+            echo "" . $orderRow['pn'] . " (<i>" . $orderRow['unit'] . "</i>) " . $orderRow['quantity'];
+            echo "<span class='noPrint'>@" . $orderRow['rate'];
+            echo "=" . ($orderRow['rate'] * $orderRow['quantity']) . "/=</span> ";
 
-        echo "</tr>";
+            $total += $orderRow['rate'] * $orderRow['quantity'];
+            echo "<span class='noPrint'><br><hr></span>";
+        }
+    } else {
+        echo "No orders found";
+    }
+    echo " <b>Total: " . number_format($total, 2) . "/=</b> <i style='font-size: 12px'>" . $row['comment'] . "</i>";
+    $totalamount = $totalamount + $total;
+
+    echo "</td>";
+
+    echo "</tr>";
+}
+
+echo "</tbody>";
+echo "</table></div>";
+
+echo "<div class='text-center'><button class='btn btn-success' onclick='gotoOrderSerialConfirm()'>View Marked Orders</button></div>";
+
+if (isset($_GET['ids']) && $_GET['ids'] != '') {
+    echo "<br><div class='text-center'><a href='deliveryslip.php?ids=" .
+     $_GET['ids'] . "' class='btn btn-success'>Confirm Delivery</a></div>
+     <br><div class='text-center'><button class='btn btn-primary' onclick='window.location.href=window.location.pathname'>Refresh</button></div>";
+}
+
+
+
+?>
+
+<script>
+    let markingOrder = [];
+
+    document.querySelectorAll('.order-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const rowId = this.value;
+            const row = document.querySelector(`tr[data-id='${rowId}']`);
+
+            if (this.checked) {
+                markingOrder.push(rowId);
+            } else {
+                const index = markingOrder.indexOf(rowId);
+                if (index > -1) {
+                    markingOrder.splice(index, 1);
+                }
+                // Clear the serial number cell if unchecked
+                row.querySelector('.serial-number').textContent = '';
+            }
+            updateSerialNumbers();
+        });
+    });
+
+    function updateSerialNumbers() {
+        markingOrder.forEach((id, index) => {
+            document.querySelector(`tr[data-id='${id}'] .serial-number`).textContent = index + 1;
+        });
     }
 
-    echo "</tbody>";
-    echo "</table></div>";
+    function gotoOrderSerialConfirm() {
+        if (markingOrder.length > 0) {
+            window.location.href = 'orderserial.php?ids=' + markingOrder.join(',');
+        }
+    }
+</script>
+
+
+<?php
+
 }
 else
 {
     echo "<p style='text-align: center; font-size: 2em; color: red'>0 results</p>";
 }
 ?>
+
+
 
     <div id='d1' style="display: flex; flex-direction: row; width: 100%; ">
                         <div style="flex: 1; margin-right: 10px;">

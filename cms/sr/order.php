@@ -10,7 +10,7 @@ if (isset($_GET['orderdel']))
     if (mysqli_num_rows($result) > 0)
     {
         $row = mysqli_fetch_assoc($result);
-        if ($row['status'] == 0)
+        if ($row['status'] == 0 || $row['status'] == 1)
         {
             $sql = "DELETE FROM orders WHERE id='" . $_GET['orderdel'] . "'";
             if (mysqli_query($conn, $sql))
@@ -173,7 +173,7 @@ $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0)
 {
     $row = mysqli_fetch_assoc($result);
-    if ($row['status'] == "0")
+    if ($row['status'] == "0" || $row['status'] == "1")
     {
 ?>
                     <form id="productform" class=" bg-success text-white" style=' padding: 10px;' action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
@@ -246,7 +246,7 @@ if (mysqli_num_rows($result) > 0)
     }
 
 }
-
+$st=0;
 $sql = "SELECT * FROM orders WHERE idvisit='" . $_GET['order'] . "' ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0)
@@ -263,8 +263,10 @@ if (mysqli_num_rows($result) > 0)
     echo "<tbody>";
     $tq = 0;
     $tp = 0;
+    $st=$row['status'];
     while ($row = mysqli_fetch_assoc($result))
     {
+        
         echo "<tr>";
         $tq += $row['quantity'];
         $tp += ($row['rate'] * $row['quantity']);
@@ -584,10 +586,13 @@ else
 ?>
                 
                 <div style="text-align: center;">
-                    <a href="visitlist.php" class="btn btn-secondary">Back</a>
+                <?php if ($st == 0) { ?>
+                    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
                     &nbsp;&nbsp;
+                    
                     <a href="orderlist.php" class="btn btn-danger">Finish</a>
                     &nbsp;&nbsp;
+                    <?php } ?>
                     <a href="invoice.php?order=<?php echo $_GET['order']; ?>" class="btn btn-primary">Invoice</a>
                 </div>
                     
