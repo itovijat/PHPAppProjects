@@ -208,21 +208,38 @@ if (mysqli_num_rows($result) > 0)
             </form>";
         }
         else {
+            if ($row['deliveryserial'] == 0){
 
-            echo "<form action='pending.php' method='get' class='form-inline' style='display: flex; justify-content: center; align-items: center;'>
-            <input type='hidden' name='id' value='" . $row['id'] . "'>
-            <input type='hidden' name='todate' value='" . $todate . "'>
-            <input type='hidden' name='mo' value='" . $mo . "'>
-            <input type='hidden' name='route' value='" . $route . "'>
+                echo "<form action='pending.php' method='get' class='form-inline' style='display: flex; justify-content: center; align-items: center;'>
+                <input type='hidden' name='id' value='" . $row['id'] . "'>
+                <input type='hidden' name='todate' value='" . $todate . "'>
+                <input type='hidden' name='mo' value='" . $mo . "'>
+                <input type='hidden' name='route' value='" . $route . "'>
+    
+                <div class='input-group ' style='width: auto;'>
+                    <input type='text' value='Accepted' class='form-control text-center' style='width: 150px; background-color: lightgreen;' readonly>
+                    <div class='input-group-append'>
+                        <button type='submit' class='btn btn-danger'><i class='fas fa-ban'></i></button>
+                    </div>
+                </div>
+                </form>";
 
-            <div class='input-group' style='width: auto;'>
-                <input type='text' value='Accepted' class='form-control' style='width: 150px;' readonly>
-                
+
+            }
+            else {
+
+                echo "
+                  <div class='input-group' style='width: auto;'>
+                <input type='text' value='Slip Created' class='form-control text-center bg-warning' style='width: 150px;' readonly>
                 <div class='input-group-append'>
-                    <button type='submit' class='btn btn-danger'><i class='fas fa-ban'></i></button>
                 </div>
             </div>
-            </form>";
+
+                ";
+              
+            }
+
+            
 
         }
 

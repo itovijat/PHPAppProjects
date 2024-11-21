@@ -37,13 +37,13 @@
 
 
 echo "<p id='up' style='text-align: center;'>Order Serial for Delivery @  " . $_SESSION['company'] . "</p><p style='text-align: center;'>First Delivery First</p>";
-$sql = "SELECT * FROM visit WHERE status=1 AND mo='" . $_SESSION['email'] . "' AND company='" . $_SESSION['company'] . "' AND reason='order'  ORDER BY route, ddate ASC";
+$sql = "SELECT * FROM visit WHERE status=1 AND deliveryserial=0 AND mo='" . $_SESSION['email'] . "' AND company='" . $_SESSION['company'] . "' AND reason='order'  ORDER BY route, ddate ASC";
 if (isset($_GET['ids']) && $_GET['ids'] != null)
 {
     //echo "<script>alert('Showing selected orders');</script>";
     
     $ids = explode(',', $_GET['ids']);
- $sql = "SELECT * FROM visit WHERE status=1 AND id IN (" . implode(',', array_map('intval', $ids)) . ") AND company='" . mysqli_real_escape_string($conn, $_SESSION['company']) . "' AND mo='" . mysqli_real_escape_string($conn, $_SESSION['email']) . "' ORDER BY FIELD(id, " . implode(',', array_map('intval', $ids)) . ")";
+ $sql = "SELECT * FROM visit WHERE status=1 AND deliveryserial!=1 AND id IN (" . implode(',', array_map('intval', $ids)) . ") AND company='" . mysqli_real_escape_string($conn, $_SESSION['company']) . "' AND mo='" . mysqli_real_escape_string($conn, $_SESSION['email']) . "' ORDER BY FIELD(id, " . implode(',', array_map('intval', $ids)) . ")";
 }
 
 // echo "<p style='text-align: center; font-size: 1.5em; color: red'>SQL: ".$sql."</p>";

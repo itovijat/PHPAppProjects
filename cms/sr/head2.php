@@ -111,6 +111,7 @@ if (isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profil
             <li><a href="orderlist.php"><i style="width: 30px;" class="fas fa-list"></i> Order List</a></li>
 
             <li><a href="orderserial.php"><i style="width: 30px;" class="fas fa-truck"></i> Order Serial</a></li>
+            <li><a href="deliveryslip.php"><i style="width: 30px;" class="fas fa-truck"></i> Delivery Slip</a></li>
 
             <li><a href="profile.php"><i style="width: 30px;" class="fas fa-user-secret"></i> Profile</a></li>
             </ul>

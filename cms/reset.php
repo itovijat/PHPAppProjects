@@ -140,6 +140,8 @@ VALUES ('itovijat', '$pss','admin','None')
     ddate DATE,
     comment VARCHAR(50),
      serial INT default 0,
+    deliveryserial BOOLEAN default 0,
+    dsmemo VARCHAR(20),
     
     status SMALLINT(1) DEFAULT 0
     )";
