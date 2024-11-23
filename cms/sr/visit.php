@@ -109,11 +109,14 @@ if (isset($_POST['submitvisit']))
             <label for="memo">Memo [Auto]</label>
             <input type="number" class="form-control" id="memo" name="memo" value="<?php
 date_default_timezone_set('Asia/Dhaka');
-$tm = date('ymdHis', strtotime('2024-11-01 00:00:00'));
+$tm = date('ymdHis', strtotime('2004-11-01 00:00:00'));
 $tn = date('ymdHis');
-$t = $tn - $tm - 14001500;
+$t = $tn - $tm ;
 
-echo ($t);
+
+
+            echo $t;
+
 
 ?>" required>
         </div>

@@ -111,7 +111,30 @@
             $sql2 = "SELECT * FROM visit WHERE dsmemo='".$row['dsmemo']."' AND mo='".$_SESSION['email']."' AND company='".$_SESSION['company']."' order by serial";
             $result2 = mysqli_query($conn, $sql2);
             if (mysqli_num_rows($result2) > 0) {
-                echo "<tr><td> Delivery Slip Memo: ".$row['dsmemo']."</td></tr><tr><td><table class='table'><tr><th>ID</th><th>Details</th><th>Orders</th></tr>";
+                echo "<tr><td> Delivery Slip Memo: ".$row['dsmemo'];
+
+$sql3 = "SELECT DISTINCT route FROM visit WHERE dsmemo='".$row['dsmemo']."' AND mo='".$_SESSION['email']."' AND company='".$_SESSION['company']."'";
+$result3 = mysqli_query($conn, $sql3);
+
+if (mysqli_num_rows($result3) > 0) {
+  
+    while ($row3 = mysqli_fetch_assoc($result3)) {
+        echo " Routes: " . $row3['route'] . " ";
+    }
+
+} else {
+    
+}
+
+                $sql4 = "SELECT ddate, mo FROM visit WHERE dsmemo='".$row['dsmemo']."' AND mo='".$_SESSION['email']."' AND company='".$_SESSION['company']."' ORDER BY ddate ASC LIMIT 1";
+                $result4 = mysqli_query($conn, $sql4);
+                if (mysqli_num_rows($result4) > 0) {
+                    $row4 = mysqli_fetch_assoc($result4);
+                    echo " Marketing Officer: " . $row4['mo'] . " ";
+                    echo " Delivery Date: " . $row4['ddate'] . " ";
+                }
+
+                echo "</td></tr><tr><td><table class='table'><tr><th>ID</th><th>Details</th><th>Orders</th></tr>";
                 while ($row2 = mysqli_fetch_assoc($result2)) {
                     echo "<tr><td>" . $row2['id'] . "</td><td>" . $row2['memo'] . "<br>" . $row2['route'] . "<br>" . $row2['shop'] . "<br>" . $row2['phone'] . "<br>" . $row2['odate'] .
                      "</td><td><table class='table'><thead><tr><th>Product</th><th>Unit</th><th>Quantity</th><th>Rate</th><th>Total</th></tr></thead><tbody>";
