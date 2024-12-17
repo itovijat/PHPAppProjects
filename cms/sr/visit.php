@@ -30,9 +30,9 @@ if (isset($_POST['submitvisit']))
     $odate = date('Y.m.d');
     $ddate = date('Y.m.d', strtotime("+1 days"));
     $comment = $_POST['comment'];
-    $serial = $_POST['serial'];
+ 
 
-    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment, serial) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$idm', '$company', '$odate', '$ddate', '$comment', '$serial')";
+    $sql = "INSERT INTO visit (mo, route, shop, phone, latitude, longitude, reason, memo, company, odate, ddate, comment) VALUES ('$mo', '$route', '$shop', '$phone', '$latitude', '$longitude', '$reason', '$idm', '$company', '$odate', '$ddate', '$comment')";
     if (mysqli_query($conn, $sql))
     {
 
@@ -221,12 +221,9 @@ if (mysqli_num_rows($phoneResult) > 0)
     </script>
 
     <div class="form-row">
-    <div class="form-group col-md-2 col-5">
-        <label for="serial">Serial</label>
-        <input type="number" class="form-control" id="serial" name="serial" placeholder="For Delivery">
-    </div>
+   
 
-    <div class="form-group col-md-10 col-7">
+    <div class="form-group col-md-12 col-12">
         <label for="comment">Comment</label>
         <input type="text" class="form-control" id="comment" name="comment" placeholder="Keep Empty">
         </div>

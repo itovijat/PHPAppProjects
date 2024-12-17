@@ -135,13 +135,12 @@ if (mysqli_num_rows($result) > 0)
 
         else
         {
-            echo "<form style='background-color: #f1f1f1' action='order.php?order=" . $order . "' method='POST' class='d-flex flex-wrap  p-1 border' oninput='document.querySelector(\".submitBtn\").style.display=\"block\"'>";
+            echo "<form style='background-color: #f1f1f1' action='order.php?order=" . $order . "' method='POST' class='d-flex flex-wrap p-1 border' oninput='document.querySelector(\".submitBtn\").style.display=\"block\"'>";
             echo "<div class='d-flex flex-wrap'>";
             echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Memo</label></div><div><input type='number' name='memo' value='" . $row['memo'] . "' required class='form-control'></div></div></div>";
-            echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Order</label></div><div><input type='text' name='odate' value='" . date('Y.m.d', strtotime($row['odate'])) . "' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-            echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Delivery</label></div><div><input type='text' name='ddate' value='" . date('Y.m.d', strtotime($row['ddate'])) . "' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
-            echo "<div class='col-12 col-md-1 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Serial</label></div><div><input type='number' name='serial' value='" . $row['serial'] . "' required class='form-control'></div></div></div>";
-            echo "<div class='col-12 col-md-4 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label >Comment</label></div><div><input type='text' name='comment' value='" . $row['comment'] . "' maxlength='50' class='form-control'></div></div></div>";
+            echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Order</label></div><div><input type='text' name='odate' value='" . date('Y.m.d', strtotime($row['odate'])) . "' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
+            echo "<div class='col-12 col-md-2 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Delivery</label></div><div><input type='text' name='ddate' value='" . date('Y.m.d', strtotime($row['ddate'])) . "' required pattern='[0-9]{4}\.[0-9]{2}\.[0-9]{2}' title='Year.Month.Day' class='form-control'></div></div></div>";
+            echo "<div class='col-12 col-md-4 p-1'><div class='d-flex flex-row'><div style='width: 90px;'><label>Comment</label></div><div><input type='text' name='comment' value='" . $row['comment'] . "' maxlength='50' class='form-control'></div></div></div>";
             echo "</div>";
             echo "<div class='text-center mx-auto my-auto'><input type='submit' name='orderdelbt' value='Update' class='btn btn-success submitBtn' style='display:none'></div>";
             echo "</form>";
@@ -156,7 +155,7 @@ if (mysqli_num_rows($result) > 0)
 
 if (isset($_POST['memo']))
 {
-    $sql = "UPDATE visit SET memo='" . $_POST['memo'] . "',serial='" . $_POST['serial'] . "', odate='" . $_POST['odate'] . "', ddate='" . $_POST['ddate'] . "', comment='" . $_POST['comment'] . "' WHERE id='" . $_GET['order'] . "'";
+    $sql = "UPDATE visit SET memo='" . $_POST['memo'] . "', odate='" . $_POST['odate'] . "', ddate='" . $_POST['ddate'] . "', comment='" . $_POST['comment'] . "' WHERE id='" . $_GET['order'] . "'";
     if (mysqli_query($conn, $sql))
     {
         echo "Record updated successfully";

@@ -151,7 +151,7 @@ if (mysqli_num_rows($result) > 0)
                                 </div>
                                 <div class="form-group col-md-6 col-6">
                                     <label for="serial">Serial:</label>
-                                    <input type="number" class="form-control" id="serial" name="serial" value="<?php echo $row['serial']; ?>" required>
+                                    <input type="number" class="form-control" id="serial" name="serial" value="<?php echo $row['serial']; ?>" readonly>
                                 </div>
                             </div>
                         
