@@ -238,66 +238,10 @@ CREATE TABLE IF NOT EXISTS products  (
         echo "Error creating table: " . $conn->error;
     }
 
-    $sql = "
-CREATE TABLE IF NOT EXISTS inventory   (
- id INT AUTO_INCREMENT PRIMARY KEY,
- product_name VARCHAR(50) NOT NULL,
- in_quantity float,
- out_quantity float,
-  value float,
- entry_date DATE,
- person_name VARCHAR(50),
- expiry_date DATE,
- remark TEXT,
-company VARCHAR(10) NOT NULL
-)";
+   
+    
 
-    if ($conn->query($sql) === true)
-    {
-
-    }
-    else
-    {
-        echo "Error creating table: " . $conn->error;
-    }
-    $sql = "
-CREATE TABLE IF NOT EXISTS kpl (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    vehicle_name VARCHAR(50) NOT NULL,
-    driver_name VARCHAR(50) NOT NULL,
-    entry_date DATE NOT NULL,
-    oil_quantity FLOAT NOT NULL,
-    oil_price FLOAT NOT NULL,
-    distance FLOAT NOT NULL,
-    km FLOAT NOT NULL,
-     remark VARCHAR(20) NULL,
-  company VARCHAR(10) NOT NULL
-)";
-
-    if ($conn->query($sql) === true)
-    {
-
-    }
-    else
-    {
-        echo "Error creating table: " . $conn->error;
-    }
-
-    $sql = "
- CREATE TABLE IF NOT EXISTS vehicles  (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(50) NOT NULL,
-   company VARCHAR(10) NOT NULL
- )";
-
-    if ($conn->query($sql) === true)
-    {
-
-    }
-    else
-    {
-        echo "Error creating table: " . $conn->error;
-    }
+   
 
     echo "<script>alert('Done');</script>";
 
@@ -319,12 +263,7 @@ CREATE TABLE IF NOT EXISTS kpl (
                 $conn->query($sql);
                 $sql = "INSERT INTO orders (idvisit, pn, unit, rate, quantity) VALUES (" . ($i + 2) . ",'Demo PN" . ($i + 1) . "',1,1,1)";
                 $conn->query($sql);
-                $sql = "INSERT INTO inventory (product_name, in_quantity, out_quantity, value, entry_date, person_name, expiry_date, remark, company) VALUES ('Demo Product" . ($i + 1) . "',1,0,1,now(),'Demo Person" . ($i + 1) . "',now(),'Demo Remark" . ($i + 1) . "','None')";
-                $conn->query($sql);
-                $sql = "INSERT INTO kpl (vehicle_name, driver_name, entry_date, oil_quantity, oil_price, distance, km, remark, company) VALUES ('Demo Vehicle" . ($i + 1) . "','Demo Driver" . ($i + 1) . "',now(),1,1,1,1,'Demo Remark" . ($i + 1) . "','None')";
-                $conn->query($sql);
-                $sql = "INSERT INTO vehicles (name, company) VALUES ('Demo Vehicle" . ($i + 1) . "','None')";
-                $conn->query($sql);
+               
             }
         }
     }
