@@ -148,6 +148,10 @@ if (mysqli_num_rows($result) > 0)
         {
             echo "<td class='noPrint' style='font-size:10px;'>Returned <a href='order.php?order=" . $row['id'] . "' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
         }
+        else if ($row['status'] == 6)   
+        {
+            echo "<td class='noPrint' style='font-size:10px;'>Out For Delivery <a href='order.php?order=" . $row['id'] . "' class='btn btn-warning'><i class='fas fa-file-invoice'></i></a></td>";
+        }
         else
         {
             echo "<td class='noPrint'></td>";

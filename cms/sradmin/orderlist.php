@@ -94,14 +94,14 @@ else
                     </div>
 
                     <div class="col-6 col-md-2">
-                        <input type="number" class="form-control w-100" id="id" name="id"
-                         <?php if (isset($_GET['id']) && $_GET['id'] != null)
+                        <input type="text" class="form-control w-100" id="mo" name="mo"
+                         <?php if (isset($_GET['mo']) && $_GET['mo'] != null)
 {
-    echo "value='" . $_GET['id'] . "'";
+    echo "value='" . $_GET['mo'] . "'";
 }
 else
 {
-    echo "placeholder='all id'";
+    echo "placeholder='all mo'";
 }
 ?> >
                     </div>
@@ -158,7 +158,7 @@ else
     $todate = date('Y.m.d');
 }
 echo "<p id='up' style='text-align: center;'>Order List From: <b>" . $fromdate . "</b> To: <b>" . $todate . "</b> " . $_SESSION['company'] . "</p>";
-$sql = "SELECT * FROM visit WHERE mo='" . $_SESSION['email'] . "' AND company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate BETWEEN '" . $fromdate . "' AND '" . $todate . "'";
+$sql = "SELECT * FROM visit WHERE company='" . $_SESSION['company'] . "' AND reason='order' AND status != 2 AND odate BETWEEN '" . $fromdate . "' AND '" . $todate . "'";
 
 if (isset($_GET['memo']) && $_GET['memo'] != '')
 {
@@ -178,9 +178,9 @@ if (isset($_GET['route']) && $_GET['route'] != '')
     $sql .= " AND route LIKE '%" . $_GET['route'] . "%'";
 }
 
-if (isset($_GET['id']) && $_GET['id'] != '')
+if (isset($_GET['mo']) && $_GET['mo'] != '')
 {
-    $sql .= " AND id='" . $_GET['id'] . "'";
+    $sql .= " AND mo='" . $_GET['mo'] . "'";
 
 }
 if (isset($_GET['status']) && $_GET['status'] != '')

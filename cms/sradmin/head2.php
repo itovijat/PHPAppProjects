@@ -107,6 +107,7 @@ if (isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profil
             <li><a href="index.php"><i style="width: 30px;" class="fas fa-tv"></i> Dashboard</li>
             <li><a href="location.php"><i style="width: 30px;" class="fas fa-map-marker"></i> Location</a></li>
             <li><a href="pending.php"><i style="width: 30px;" class="fas fa-spinner"></i> Pendings</a></li>
+            <li><a href="deliveryslip.php"><i style="width: 30px;" class="fas fa-truck"></i> Delivery Slip</a></li>
             <hr>
 
 
@@ -116,12 +117,9 @@ if (isset($_SESSION['cp']) && $_SESSION['cp'] == true && $currentPage != "profil
 
 
 
-            <li><a href="visit.php"><i style="width: 30px;" class="fas fa-map-marker-alt"></i> Visit</li>
-            <li><a href="visitlist.php"><i style="width: 30px;" class="fas fa-map-marked-alt"></i> Visit List</li>
-
+           
             <li><a href="orderlist.php"><i style="width: 30px;" class="fas fa-list"></i> Order List</a></li>
 
-            <li><a href="orderserial.php"><i style="width: 30px;" class="fas fa-truck"></i> Order Serial</a></li>
 
             <li><a href="profile.php"><i style="width: 30px;" class="fas fa-user-secret"></i> Profile</a></li>
             </ul>

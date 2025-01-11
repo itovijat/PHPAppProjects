@@ -79,7 +79,7 @@
                                 <div class='input-group-prepend'>
                                     <span class='input-group-text' id='basic-addon1'>Memo</span>
                                 </div>
-                                <input type='text' name='dsmemo' value='' class='form-control' required>
+                                <input type='text' name='dsmemo' value='". $t ."' class='form-control' required>
                             </div>";
                         echo "<button type='submit' name='submit' class='btn btn-primary'>Submit</button>";
                         echo "</form>";

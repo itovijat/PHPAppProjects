@@ -114,6 +114,7 @@ else
                             <option value="3" <?=isset($_GET['status']) && $_GET['status'] == '3' ? 'selected' : ''; ?>>Delivered</option>
                             <option value="4" <?=isset($_GET['status']) && $_GET['status'] == '4' ? 'selected' : ''; ?>>Rejected</option>
                             <option value="5" <?=isset($_GET['status']) && $_GET['status'] == '5' ? 'selected' : ''; ?>>Returned</option>
+                            <option value="6" <?=isset($_GET['status']) && $_GET['status'] == '6' ? 'selected' : ''; ?>>Out For Delivery</option>
                         </select>
                     </div>
 
@@ -200,6 +201,7 @@ $totalaccepted = 0.0;
 $totalrejected = 0.0;
 $totalreturned = 0.0;
 $totaldelivered = 0.0;
+$totalout = 0.0;
 $totalamount = 0.0;
 $units = array();
 $totalQuantity = array();
@@ -244,6 +246,10 @@ if (mysqli_num_rows($result) > 0)
         {
             echo "Returned ";
         }
+        else if ($row['status'] == 6)
+        {
+            echo "Out For Delivery ";
+        }
         else
         {
             echo "";
@@ -268,6 +274,9 @@ if (mysqli_num_rows($result) > 0)
             break;
             case 5:
                 echo "Returned";
+            break;
+            case 6:
+                echo "Out For Delivery";
             break;
             default:
                 echo "Unknown";
@@ -348,6 +357,11 @@ if (mysqli_num_rows($result) > 0)
             $totalreturned = $totalreturned + $total;
 
         }
+        elseif ($row['status'] == 6)
+        {
+            $totalout = $totalout + $total;
+
+        }
 
         echo "</td>";
 
@@ -381,12 +395,16 @@ elseif (isset($_GET['status']) && $_GET['status'] == '4'): ?>
 elseif (isset($_GET['status']) && $_GET['status'] == '5'): ?>
             <p>Returned =<?=number_format($totalreturned, 2) ?>/=</p>
         <?php
+elseif (isset($_GET['status']) && $_GET['status'] == '6'): ?>
+            <p>Out For Delivery =<?=number_format($totalout, 2) ?>/=</p>
+        <?php
 else: ?>
             <p>Pending =<?=number_format($totalpending, 2) ?>/=</p>
             <p>Accepted =<?=number_format($totalaccepted, 2) ?>/=</p>
             <p>Delivered =<?=number_format($totaldelivered, 2) ?>/=</p>
             <p>Rejected =<?=number_format($totalrejected, 2) ?>/=</p>
             <p>Returned =<?=number_format($totalreturned, 2) ?>/=</p>
+            <p>Out For Delivery =<?=number_format($totalout, 2) ?>/=</p>
         <?php
 endif; ?>
        
