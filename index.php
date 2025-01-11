@@ -1,4 +1,4 @@
 <script>
 
-window.location.replace('cms');
+window.location.replace('erp');
     </script>
