@@ -97,6 +97,12 @@ include_once '../db.php';
         <nav>
             <ul>
             <li><a href="index.php"><i style="width: 30px;" class="fas fa-tv"></i> Dashboard</li>
+            <li><a href="visit.php"><i style="width: 30px;" class="fas fa-tv"></i> Visit</li>
+            <li><a href="visitlist.php"><i style="width: 30px;" class="fas fa-tv"></i> Visit List</li>
+            <li><a href="orderlist.php"><i style="width: 30px;" class="fas fa-tv"></i> Order List</li>
+            <li><a href="deliveryserial.php"><i style="width: 30px;" class="fas fa-tv"></i> Delivery Serial</li>
+            <li><a href="deliverylist.php"><i style="width: 30px;" class="fas fa-tv"></i> Delivery List</li>
+
             
             <li><a href="profile.php"><i style="width: 30px;" class="fas fa-user-secret"></i> Profile</a></li>
             </ul>
