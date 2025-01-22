@@ -7,10 +7,14 @@ if ($_SESSION['role'] != 'superadmin')
 }
 if (isset($_GET['resetid']) && isset($_GET['un']))
 {
+
+    
     $resetid = $_GET['resetid'];
     $un=$_GET['un'];
     $un=md5($un);
-    $sql = "UPDATE users SET password='$un' WHERE username='$resetid'";
+
+  
+    $sql = "UPDATE users SET password='$un' WHERE id='$resetid'";
     if (mysqli_query($conn, $sql))
     {
         echo "<script>alert('Record successfully'); location.replace('index.php');</script>";
@@ -179,7 +183,7 @@ if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['role
                                 }
                                 
                                 echo " 
-                                <a href='index.php?resetid=" . htmlspecialchars($row["id"]) . "?un=" . htmlspecialchars($row["username"]) . "' class='btn btn-secondary'>Reset</a>
+                                <a href='index.php?resetid=" . htmlspecialchars($row["id"]) . "&    un=" . htmlspecialchars($row["username"]) . "' class='btn btn-secondary'>Reset</a>
                             </td>
                             
                         </tr>";

@@ -33,7 +33,7 @@ while ($row = $result->fetch_row()) {
     $tables[] = $row[0];
 }
 
-// Drop each table
+// Drop each table if it exists
 foreach ($tables as $table) {
     $conn->query("DROP TABLE IF EXISTS $table");
 }
