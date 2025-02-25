@@ -98,6 +98,8 @@ include_once '../db.php';
             <ul>
             <li><a href="index.php"><i style="width: 30px;" class="fas fa-tv"></i> Dashboard</li>
             <li><a href="visit.php"><i style="width: 30px;" class="fas fa-tv"></i> Visit</li>
+            <li><a href="route.php"><i style="width: 30px;" class="fas fa-tv"></i> Route</li>
+            <li><a href="product.php"><i style="width: 30px;" class="fas fa-tv"></i> Product</li>
             <li><a href="visitlist.php"><i style="width: 30px;" class="fas fa-tv"></i> Visit List</li>
             <li><a href="orderlist.php"><i style="width: 30px;" class="fas fa-tv"></i> Order List</li>
             <li><a href="deliveryserial.php"><i style="width: 30px;" class="fas fa-tv"></i> Delivery Serial</li>

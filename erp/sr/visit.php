@@ -9,14 +9,12 @@ include_once 'head2.php';
             navigator.geolocation.getCurrentPosition(function(position) {
             }, function() {
                 // if geolocation is blocked
-                document.querySelector("form").style.display = "none";
                 alert("Geolocation is blocked. Please allow geolocation permission in your browser settings to submit the form.");
                 
 
             });
         } else {
             // if geolocation is not supported
-            document.querySelector("form").style.display = "none";
                 alert("Geolocation is not supported by this browser. Please allow geolocation permission in your browser settings to submit the form.");
             
         }
@@ -27,7 +25,7 @@ if (!mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `visits` (
   `orderdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deliverydate` date NOT NULL,
   `route` varchar(20) NOT NULL,
-  `shop` varchar(50) NOT NULL,
+  `shop` varchar(100) NOT NULL,
   `comment` varchar(50) NULL,
   `latitude` decimal(10,8) NOT NULL,
   `longitude` decimal(11,8) NOT NULL,

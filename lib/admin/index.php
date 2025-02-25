@@ -32,7 +32,7 @@ if (isset($_POST['username']) && isset($_POST['password']))
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div class="card">
                     <div class="card-header bg-primary text-white text-center">
-                        <h5>Librarium.com Admin Login</h5>
+                        <h5>Librariam.com Admin Login</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group">

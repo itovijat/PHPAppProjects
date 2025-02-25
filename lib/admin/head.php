@@ -161,7 +161,7 @@
 <body>
     <nav>
         <div class="nav-dropdown">
-            <h1>Librarium.com Admin Panel</h1>
+            <h1>Librariam.com Admin Panel</h1>
             <a class="dropbtn" href="#">Menu</a>
             <div class="nav-dropdown-content">
                 <a href="#">Users</a>
@@ -171,6 +171,7 @@
                 <a href="#">Publishers</a>
                 <a href="#">Authors</a>
                 <a href="#">Genres</a>
+                <a href="#">Reviews</a>
                 <a href="#">Stock</a>
                 <a href="#">Reports</a>
                 <a href="#">Logout</a>
